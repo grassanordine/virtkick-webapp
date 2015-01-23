@@ -58,6 +58,7 @@ define(function(require) {
 
     $scope.machine = JSON.parse($('#initialMachineData').html());
       // THIS is workaround for null value in rest endpoint
+
     $scope.machine.vnc_password = $('#vnc_password').val();
 
     $scope.idToCode = {};
@@ -73,6 +74,7 @@ define(function(require) {
 
     $scope.diskPlans = {};
     JSON.parse($('#diskPlans').html()).forEach(function(plan) {
+
       $scope.diskTypes.forEach(function(type) {
         if(!$scope.diskPlans[type.id])
          $scope.diskPlans[type.id] = [];
@@ -122,7 +124,6 @@ define(function(require) {
         contentType: "application/json"
       });
     };
-
     $scope.machine.createDisk = function(a, b) {
       $scope.storage.showDetails = false;
       $scope.storage.creatingDisk = true;

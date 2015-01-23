@@ -98,7 +98,6 @@ define(function(require) {
         console.log('VNC: Password required');
       }
     });
-
     // http://stackoverflow.com/questions/16881478/how-to-call-a-method-defined-in-an-angularjs-directive
     if(scope.control) {
       scope.control.connect = function() {
@@ -111,7 +110,6 @@ define(function(require) {
         scope.rfb.sendCtrlAltDel();
       };
     }
-
 
     $(window).on('resize', updateConsole);
 
