@@ -15,8 +15,6 @@ define(function(require) {
         'title': '@title'
       },
       link: function(scope, elem, attrs) {
-        //scope.machine = scope.$parent.machine;
-        console.log("MACHINE", scope.$parent.machine);
         elem.on('click', function() {
           var modalInstance = $modal.open({
             template: require('jade!./ng-confirm'),
@@ -40,7 +38,6 @@ define(function(require) {
             }
           });
           modalInstance.result.then(function (/*text*/) {
-            console.log("ACTION");
             scope.action();
           }, function () {
           });

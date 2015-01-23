@@ -23,7 +23,6 @@ define(function(require) {
   function link(scope, element, attrs) {
 
     var rfb;
-    var hardResetRequested = false;
     var connectLoop = false;
     var $canvasWrapper = element;
 
@@ -108,6 +107,9 @@ define(function(require) {
         connectLoop = true;
         connect();
       };
+      scope.control.sendCtrlAltDel = function() {
+        scope.rfb.sendCtrlAltDel();
+      };
     }
 
 
@@ -121,16 +123,6 @@ define(function(require) {
       clearTimeout(connectTimeout);
       delete scope.rfb;
     }); 
-
-    //$('.side-menu-wrapper').addClass('collapsed');
-
-    $('#page-console .ctrlaltdel').click(function() {
-      scope.rfb.sendCtrlAltDel();
-    });
-
-    $('#page-console .hardreset').click(function() {
-      hardResetRequested = true;
-    });
 
     updateConsole();
 

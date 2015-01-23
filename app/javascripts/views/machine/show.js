@@ -58,9 +58,7 @@ define(function(require) {
 
     $scope.machine = JSON.parse($('#initialMachineData').html());
       // THIS is workaround for null value in rest endpoint
-      $scope.machine.vnc_password = $('#vnc_password').val();
-
-    console.log($scope.machine);
+    $scope.machine.vnc_password = $('#vnc_password').val();
 
     $scope.idToCode = {};
     JSON.parse($("#isoData").html()).forEach(function(image) {
@@ -75,7 +73,6 @@ define(function(require) {
 
     $scope.diskPlans = {};
     JSON.parse($('#diskPlans').html()).forEach(function(plan) {
-      
       $scope.diskTypes.forEach(function(type) {
         if(!$scope.diskPlans[type.id])
          $scope.diskPlans[type.id] = [];
@@ -105,7 +102,6 @@ define(function(require) {
     updateSelectedIso();
 
     $scope.machine.deletePermanently = function() {
-      console.log("Post", '/machines/' + $scope.machine.id);
       $.ajax({
         url: '/machines/' + $scope.machine.id,
         type: 'DELETE',
@@ -166,6 +162,36 @@ define(function(require) {
         // TODO handle error
         $scope.machine.mountingIso = false;
       });
+    };
+
+    $scope.machine.restart = function(cb) {
+      $scope.console.sendCtrlAltDel()
+//      $.ajax({
+//        url: '/machines/' + $scope.machine.id + '/restart',
+//        type: 'POST',
+//        success: function(data) {
+//          if(cb) cb(null, data);
+//        },
+//        error: function(err) {
+//          if(cb) cb(err);
+//        },
+//        contentType: "application/json"
+//      });
+    };
+
+
+    $scope.machine.forceRestart = function(cb) {
+      $.ajax({
+        url: '/machines/' + $scope.machine.id + '/force_restart',
+        type: 'POST',
+        success: function(data) {
+          if(cb) cb(null, data);
+        },
+        error: function(err) {
+          if(cb) cb(err);
+        },
+        contentType: "application/json"
+      });      
     };
 
     $scope.machine.resume = function(cb) {
@@ -269,7 +295,7 @@ define(function(require) {
       var skipIsoUpdate = !$scope.machine.mountingIso;
       $http.get(baseUrl + '.json').then(function(response) {
 
-        $scope.machine = $.extend(true, $scope.machine, response.data);
+        $scope.machine = $.extend($scope.machine, response.data);
         // THIS is workaround for null value in rest endpoint
         $scope.machine.vnc_password = $('#vnc_password').val();
 

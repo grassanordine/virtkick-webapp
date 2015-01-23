@@ -9,7 +9,7 @@
         .rocket-menu
           img(src='/assets/logo/virtkick-logo-pixelart-gray-24.png')
         .restart
-          a.btn.btn-default.ctrlaltdel
+          a.btn.btn-default.ctrlaltdel(ng-click="machine.restart()")
             | Reboot
-          a.btn.btn-default.hardreset(ng-confirm='Are you sure? This may cause data loss.')
+          a.btn.btn-default.hardreset(title="Hard reset", confirm='Are you sure? This may cause data loss.', action="machine.forceRestart()")
             | Hard reset
