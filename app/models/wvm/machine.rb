@@ -24,8 +24,6 @@ class Wvm::Machine < Wvm::Base
       disks: Wvm::Disk.array_of(response.disks),
       iso_dir: hypervisor[:iso][:path]
     }
-    puts "DUPA"
-    puts params.to_s
 
     if response.media and not response.media.empty?
       file = response.media.first.image
