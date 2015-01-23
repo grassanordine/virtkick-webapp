@@ -124,6 +124,7 @@ define(function(require) {
         contentType: "application/json"
       });
     };
+
     $scope.machine.createDisk = function(a, b) {
       $scope.storage.showDetails = false;
       $scope.storage.creatingDisk = true;
