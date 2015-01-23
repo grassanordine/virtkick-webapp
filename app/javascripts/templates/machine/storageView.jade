@@ -43,7 +43,7 @@
             span.error.message
           td.actions
             div.buttons
-              a.btn.delete-disk(title="Delete {{disk.device}}",ng-confirm='Are you sure? This cannot be undone.')
+              a.btn.delete-disk(title="Delete {{disk.device}}",confirm='Are you sure? This cannot be undone.',action="machine.deleteDisk(disk.device)")
                 span.fa.fa-remove
                 span.action Delete
           td.type {{disk.type}}

@@ -116,6 +116,17 @@ define(function(require) {
       });
     };
 
+    $scope.machine.deleteDisk = function(disk) {
+      $.ajax({
+        url: '/machines/' + $scope.machine.id + '/disks/' + disk,
+        type: 'DELETE',
+        success: function(data) {
+          
+        },
+        contentType: "application/json"
+      });
+    };
+
     $scope.machine.createDisk = function(a, b) {
       $scope.storage.showDetails = false;
       $scope.storage.creatingDisk = true;
