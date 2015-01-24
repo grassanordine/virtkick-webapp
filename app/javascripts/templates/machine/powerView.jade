@@ -1,0 +1,84 @@
+#power
+  .row.stats
+    .col-sm-3
+      .key Memory:
+      .val.bigger
+        | {{machine.memory}} MB
+    .col-sm-3
+      .key Processors:
+      .val(ng-class="{bigger: machine.status.attributes.stopped}")
+        | {{machine.processors}}
+        |  CPU
+      .progress
+        .progress-bar(role='progressbar', style="width: {{machine.processor_usage}}; min-width: 1%")
+          span.sr-only
+            | {{machine.processor_usage}}
+            | % usage
+    .col-sm-3
+      .key Storage:
+      //- TODO: sum all disks
+      .val {{toHumanValue(machine.disks[0].size)}}
+      .progress
+        .progress-bar(role='progressbar', style="width: {{machine.disks.usage}}%; min-width: 1%")
+          span.sr-only
+            | {{machine.disks.used}}
+            |  used (
+            | {{machine.disks.usage}}
+            | %)
+    .col-sm-3
+      .key State:
+      .val.power-state.bigger(data-running="{{machine.status.running}}")
+        span
+          i(class="icon {{machine.status.attributes.icon}}")
+          span.status 
+            | {{machine.status.attributes.name}}
+
+  //- = render partial: '/flash', locals: {section: 'power'}
+
+  .alert.alert-danger.fade.in(ng-if="data.error")
+    | {{data.error}}
+  .controls
+    .btn-group
+      a.btn.btn-default(ng-click="doAction('start')" ng-class="{disabled: !canDo.start}")
+        span(ng-if="!requesting.start")
+          i.icon.fa.fa-play
+        span(ng-if="requesting.start")
+          i.icon.fa.fa-spinner.fa-spin
+        span.status Start
+      a.btn.btn-default(ng-click="doAction('pause')" ng-class="{disabled: !canDo.pause}")
+        span(ng-if="!requesting.pause")
+          i.icon.fa.fa-pause
+        span(ng-if="requesting.pause")
+          i.icon.fa.fa-spinner.fa-spin
+        span.status Pause
+      a.btn.btn-default(ng-click="doAction('resume')" ng-class="{disabled: !canDo.resume}")
+        span(ng-if="!requesting.resume")
+          i.icon.fa.fa-forward
+        span(ng-if="requesting.resume")
+          i.icon.fa.fa-spinner.fa-spin
+        span.status Resume
+      a.btn.btn-default(ng-click="doAction('stop')" ng-class="{disabled: !canDo.stop}")
+        span(ng-if="!requesting.stop")
+          i.icon.fa.fa-stop
+        span(ng-if="requesting.stop")
+          i.icon.fa.fa-spinner.fa-spin
+        span.status Stop
+      .btn-group
+        button.only-on.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', ng-class="{disabled: !canDo.force_stop}")
+          i.fa.fa-caret-down
+        ul.dropdown-menu
+          li
+            a.btn.btn-default(ng-click="doAction('force_stop')")
+              span.fa.fa-power-off
+              span.status Hard stop
+      a.btn.btn-default(ng-click="doAction('restart')", ng-class="{disabled: !canDo.restart}")
+        i.icon.fa.fa-repeat
+        span.status Restart
+      .btn-group
+        button.only-on.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', ng-class="{disabled: !canDo.force_restart}")
+          i.fa.fa-caret-down
+        ul.dropdown-menu
+          li
+            a.btn.btn-default(ng-click="doAction('force_restart')")
+              span.icon.fa.fa-power-off
+              span.status Hard reset

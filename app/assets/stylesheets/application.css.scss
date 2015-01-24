@@ -351,8 +351,10 @@ h3 {
   }
 }
 
-@import 'pages/*';
-@import 'views/**/*';
+//@import 'pages/machine/storage.css.scss';
+
+@import 'pages/all';
+@import 'views/setup/index';
 //@import 'vendor/*.css.scss';
 
 @import 'ui-select';
@@ -367,4 +369,9 @@ h3 {
 // https://github.com/angular-ui/bootstrap/commit/8620aedba99b05822311c4529a7877e6f62754d6
 .nav, .pagination, .carousel a {
   cursor: pointer;
+}
+
+.modal-backdrop {
+  position: fixed;
+  bottom: 0;
 }

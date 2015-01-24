@@ -1,7 +1,6 @@
 define(function(require) {
   require('appcommon');
   var $ = require('jquery');
-  //require('bootstrap');
   require('!domReady');
 
   require('twitter/bootstrap/rails/confirm');
@@ -13,10 +12,36 @@ define(function(require) {
 
   var angular = require('angular');
   
+  require('angular-route');
+  require('ui-select');
+
   // ngSanitize is for ng-bind-html
   var app = angular.module('app',
-    ['ui.bootstrap','ngMessages', require('./console'), require('directives/distroselect/distroselect'), require('directives/ajaxloader/ajaxloader')]
+    ['ui.bootstrap', require('directives/ng-confirm'), 'ngRoute', require('angular-ui-router'), 'ngMessages', require('./console'), require('directives/distroselect/distroselect'), require('directives/ajaxloader/ajaxloader')]
   );
+
+  app.controller('PowerCtrl', function($scope) {
+    console.log("Power");
+  });
+  app.controller('ConsoleCtrl', function($scope) {
+    console.log("Console");
+  });
+  app.controller('StorageCtrl', function($scope) {
+  });
+  app.controller('SettingsCtrl', function($scope) {
+    console.log("Settings", $scope.machine);
+  });
+
+
+  app.config(function($routeProvider, $locationProvider) {
+    $locationProvider.html5Mode(true);
+    $routeProvider.
+      when('/power', {template: require('jade!templates/machine/powerView'), controller: 'PowerCtrl' }).
+      when('/console', {template: require('jade!templates/machine/consoleView'), controller: 'ConsoleCtrl' }).
+      when('/storage', {template: require('jade!templates/machine/storageView'), controller: 'StorageCtrl' }).
+      when('/settings', {template: require('jade!templates/machine/settingsView'), controller: 'SettingsCtrl' }).
+      otherwise({redirectTo: '/power'});
+  });
 
   app.controller('AppCtrl', function($scope) {
     $scope.data = {
@@ -24,8 +49,18 @@ define(function(require) {
     };
   });
 
-  app.controller('ShowMachineCtrl', function($scope, $rootScope, $http) {
+  app.controller('ShowMachineCtrl', function($scope, $rootScope, $http, $location) {
+
+    $scope.activate = function(tab) {
+      console.log($location.path());
+      $location.path( "/" + tab);
+    };
+
     $scope.machine = JSON.parse($('#initialMachineData').html());
+      // THIS is workaround for null value in rest endpoint
+      $scope.machine.vnc_password = $('#vnc_password').val();
+
+    console.log($scope.machine);
 
     $scope.idToCode = {};
     JSON.parse($("#isoData").html()).forEach(function(image) {
@@ -36,11 +71,30 @@ define(function(require) {
       return image.attributes;
     });
 
+    $scope.diskTypes = JSON.parse($('#diskTypes').html());
+
+    $scope.diskPlans = {};
+    JSON.parse($('#diskPlans').html()).forEach(function(plan) {
+      
+      $scope.diskTypes.forEach(function(type) {
+        if(!$scope.diskPlans[type.id])
+         $scope.diskPlans[type.id] = [];
+       $scope.diskPlans[type.id].push(plan.attributes);
+      });
+    });
+    console.log($scope.diskPlans);
+
+    $scope.storage = {
+      newDiskType: $scope.diskTypes[0],
+      newDiskPlan: $scope.diskPlans[$scope.diskTypes[0].id][0] 
+    };
+
+
     $scope.data = {
       active: {
-        power: true,
       }
     };
+    $scope.data.active[$location.path().substr(1)] = true;
 
     var updateSelectedIso = function() {
       $scope.machine.selectedIso = $scope.isoImages.filter(function(image) {
@@ -49,6 +103,41 @@ define(function(require) {
     };
 
     updateSelectedIso();
+
+    $scope.machine.deletePermanently = function() {
+      console.log("Post", '/machines/' + $scope.machine.id);
+      $.ajax({
+        url: '/machines/' + $scope.machine.id,
+        type: 'DELETE',
+        success: function(data) {
+          window.location.href = '/machines';
+        },
+        contentType: "application/json"
+      });
+    };
+
+    $scope.machine.createDisk = function(a, b) {
+      $scope.storage.showDetails = false;
+      $scope.storage.creatingDisk = true;
+      $.post('/machines/' + $scope.machine.id + '/disks',  {
+        disk: {
+          // TODO changing type here to a.name does not yield error in progress
+          type: a.id,
+          size_plan: b.id
+        }
+      }).then(function(data) {
+        handleProgress(data.progress_id, function() {
+          $scope.storage.creatingDisk = false;
+        }, function() {
+          // TODO: show error
+          $scope.storage.creatingDisk = false;
+        });
+
+        console.log(data);
+      }, function(error) {
+
+      });
+    };
 
     $scope.machine.changeIso = function(imageId) {
       $scope.machine.mountingIso = true;
@@ -89,8 +178,24 @@ define(function(require) {
     var baseUrl = '/machines/' + $scope.machine.id;
 
     $scope.toHumanValue = function(val) {
-      val += " MB";
-      return val;
+      var unit = 'B';
+      if(val > 1024) {
+        val /= 1024;
+        unit = 'KB';
+        if(val > 1024) {
+          val /= 1024;
+          unit = 'MB';
+          if(val > 1024) {
+            val /= 1024;
+            unit = 'GB';
+            if(val > 1024) {
+              val /= 1024;
+              unit = 'TB';
+            }
+          }
+        }
+      }
+      return val + ' ' + unit;
     }
 
     var handleProgress = function(progressId, onSuccess, onError) {
@@ -154,6 +259,9 @@ define(function(require) {
       $http.get(baseUrl + '.json').then(function(response) {
 
         $scope.machine = $.extend(true, $scope.machine, response.data);
+        // THIS is workaround for null value in rest endpoint
+        $scope.machine.vnc_password = $('#vnc_password').val();
+
         $scope.console.paused = response.data.status.attributes.id === 'suspended';
         
         // prevent live updates from changing this until the process ended
@@ -175,8 +283,6 @@ define(function(require) {
     
 
     $scope.$watch('data.active.console', function(val) {
-      if($scope.console.connect)
-        $scope.console.connect();
       $scope.$parent.data.menuCollapse = $scope.data.active.console;
     });
   });
@@ -198,93 +304,6 @@ define(function(require) {
       });
     }, 500);
   };
-
-  // ISO image change (Console & Settings Tabs)
-
-  $('.iso_dropdown').change(function() {
-    var form = $(this).closest('form');
-    form.submit();
-    var spinner = form.find('.fa-spinner');
-    spinner.removeClass('hidden');
-    form.on('ajax:success', function(e, data) {
-      handleProgress(data.progress_id, function() {
-        spinner.addClass('hidden');
-
-        var tick = form.find('.fa-check');
-        tick.removeClass('hidden');
-        setTimeout(function() {
-          tick.fadeOut('slow', function() {
-            tick.addClass('hidden');
-            tick.show();
-          });
-        }, 500);
-
-      }, function(error) {
-        spinner.addClass('hidden');
-        form.find('fa-warning').removeClass('hidden');
-      })
-    })
-  });
-
-
-  // Storage Tab
-
-  $('#page-storage .create-button').click(function() {
-    $('#page-storage .create-button').fadeOut(200, function () {
-      $('#page-storage .new').fadeIn(200);
-    });
-  });
-
-  $('#page-storage .save-button').click(function() {
-    $('#page-storage .new').fadeOut(200, function () {
-      $('#page-storage .create-button').fadeIn(200);
-    });
-  });
-
-  $('#new_disk').submit(function() {
-    var form = $(this);
-    var example = $('.example');
-    var row = example.clone();
-    row.removeClass('example hidden');
-    row.find('.name .name').text(form.find('.name').text());
-    row.find('.type').text(form.find('.type select :selected').text());
-    row.find('.size').text(form.find('.size select :selected').text() + ' GB');
-    example.closest('table').prepend(row);
-
-    $.post(form.attr('action'), form.serializeArray()).success(function(data) {
-      handleProgress(data.progress_id, function() {
-        row.find('.name .fa-spinner').remove();
-        var tick = row.find('.name .fa-check');
-        tick.removeClass('hidden');
-        setTimeout(function() {
-          tick.fadeOut('slow');
-        }, 500);
-      }, function (error) {
-        row.find('.name .fa-spinner').remove();
-        row.find('.name .error').removeClass('hidden');
-        row.find('.name .message').text(error);
-      });
-    });
-
-    return false;
-  });
-
-  $('a.delete-disk').on('ajax:success', function(e, data) {
-    var link = $(e.currentTarget);
-    var row = link.closest('tr');
-    row.find('.name .fa-spinner').removeClass('hidden');
-
-    handleProgress(data.progress_id, function() {
-      row.fadeOut('slow');
-      setTimeout(function () {
-        row.remove();
-      }, 1000);
-    }, function (error) {
-      row.find('.name .fa-spinner').addClass('hidden');
-      row.find('.name .error').removeClass('hidden');
-      row.find('.name .message').text(error);
-    });
-  });
 
 });
 

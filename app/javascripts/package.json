@@ -1,0 +1,7 @@
+{
+  "volo": {
+    "dependencies": {
+      "angular-route": "github:componentizr/angular-route/master"
+    }
+  }
+}

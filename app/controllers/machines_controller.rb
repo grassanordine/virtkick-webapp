@@ -5,7 +5,7 @@ class MachinesController < ApplicationController
   find_machine_before_action :id, except: [:index, :new, :create]
 
   respond_to :html
-  respond_to :json, only: [:create, :show, :vnc]
+  respond_to :json
 
 
   def index
@@ -40,17 +40,37 @@ class MachinesController < ApplicationController
     new
   end
 
+  def power
+    show
+  end
+
+  def console
+    show
+  end
+
+  def storage
+    show
+  end
+
+  def settings
+    show
+  end
+
   def show
     @disk_types = Infra::DiskType.all
     @disk = Infra::Disk.new
     @iso_images = Plans::IsoImage.all
     @isos = Plans::IsoDistro.all
-    respond_with @machine
+
+    respond_with @machine do |format|
+      format.html { render :show }
+      format.json { render @machine }
+    end
   end
 
   def destroy
     MachineDeleteJob.perform_later @meta_machine.id
-    redirect_to machines_path
+    render json: nil
   end
 
   %w(start pause resume stop force_stop restart force_restart).each do |operation|

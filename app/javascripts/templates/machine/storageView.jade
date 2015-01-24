@@ -1,0 +1,61 @@
+#storage.text-center
+
+  form#new_disk
+    .create.text-right
+
+
+      a.btn.btn-primary.create-button(ng-show="!storage.showDetails",ng-click="storage.showDetails = true",ng-disabled="storage.creatingDisk")
+        div(ng-if='!storage.creatingDisk') Create new disk
+        div(ng-if='storage.creatingDisk')
+          | Creating...
+      div.new(ng-show="storage.showDetails")
+        div.name {{machine.disks.next_device_name}}
+        div.type
+          ui-select(ng-model='storage.newDiskType',theme="bootstrap",style="width: 200px;")
+            ui-select-match(placeholder="Select disk plan") 
+              | {{$select.selected.name}}
+            ui-select-choices(repeat="type in diskTypes | filter: $select.search",value="{{$select.selected.value}}")
+              span(ng-bind-html="type.name | highlight: $select.search")
+        div.size
+          ui-select(ng-model='storage.newDiskPlan',theme="bootstrap",style="width: 200px;")
+            ui-select-match(placeholder="Select disk size") 
+              | {{$select.selected.name}}
+            ui-select-choices(repeat="type in diskPlans[storage.newDiskType.id] | filter: $select.search", value="{{$select.selected.value}}")
+              span(ng-bind-html="toHumanValue(type.size) | highlight: $select.search")
+        a.btn.btn-primary.save-button(ng-click="machine.createDisk(storage.newDiskType, storage.newDiskPlan)") Create
+
+  //-TODO: snapshot all images (the only revertable way for snapshots in libvirt)
+
+  table.table.table-striped.text-left
+    thead
+      tr
+        th.name Disk name
+        th.actions
+        th.type Type
+        th.size Size
+    tbody
+        tr(ng-repeat='disk in machine.disks')
+          td.name
+            | {{disk.device}}
+            i.fa.fa-spinner.fa-spin.hidden
+            i.fa.fa-check.hidden
+            i.fa.error.fa-warning.hidden
+            span.error.message
+          td.actions
+            div.buttons
+              a.btn.delete-disk(title="Delete {{disk.device}}",ng-confirm='Are you sure? This cannot be undone.')
+                span.fa.fa-remove
+                span.action Delete
+          td.type {{disk.type}}
+          td.size {{toHumanValue(disk.size)}}
+      tr.example.hidden
+        td.name
+          span.name
+          i.fa.fa-spinner.fa-spin
+          i.fa.fa-check.hidden
+          i.fa.error.fa-warning.hidden
+          span.error.message
+        td.actions
+          div.buttons
+        td.type
+        td.size

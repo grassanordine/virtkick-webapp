@@ -5,8 +5,10 @@
     margin-bottom: 20px;
 
     .btn {
-      padding: 15px 35px;
-      width: 210px;
+      &.save-button,&.create-button {
+        padding: 15px 35px;
+        width: 210px;
+      }
 
       &.save-button {
         margin-left: 10px;
@@ -15,7 +17,7 @@
 
     .new {
       text-align: right;
-      display: none;
+      //display: none;
 
       .name, .type, .size {
         display: inline-block;

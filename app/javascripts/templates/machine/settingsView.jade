@@ -1,0 +1,10 @@
+#page-settings
+  h3 CD image
+
+  form
+    label
+      | Mount ISO: &nbsp;
+      distroselect(machine='machine')
+  h3 Danger Zone
+  p
+    a.btn.btn-danger(confirm='Are you sure? This cannot be undone.',title='Delete {{machine.hostname}}?',action="machine.deletePermanently()") Delete machine

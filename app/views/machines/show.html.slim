@@ -3,10 +3,15 @@
     i.oi.oi-monitor
     = @machine.hostname
 
+- content_for :header do 
+  base href="/machines/#{@machine.id}/"
 
 - content_for :scripts do
   = requirejs_include_tag 'pages/machineShow'
 
+input(type='hidden' id='vnc_password' value=@machine.vnc_password)
+- puts @machine.to_s
+machine view
 #page-machine.ng-cloak ng-controller="ShowMachineCtrl as machine"
   - tabs = %w(power console storage settings)
 
@@ -16,13 +21,18 @@
   script type="application/json" id="isoImagesData"
     = @iso_images.to_json.html_safe
 
+  script type="application/json" id="diskTypes"
+    = @disk_types.to_json.html_safe
+
   script type="application/json" id="isoData"
     = @isos.to_json.html_safe
 
+  script type="application/json" id="diskPlans"
+    = Defaults::DiskSizePlan.all.to_json.html_safe
+
   tabset justified=1 type='pills'
     - for tab in tabs
-      tab heading=tab.capitalize active="data.active.#{tab}"
-        div id="#{tab}"
-          = render partial: "machines/index/#{tab}"
+      tab heading=tab.capitalize active="data.active.#{tab}" select="activate('#{tab}')"
+  div.tab-content(ng-view ng-animate)
 
 

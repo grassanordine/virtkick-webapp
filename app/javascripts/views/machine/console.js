@@ -29,12 +29,12 @@ define(function(require) {
 
     function updateConsole() {
       var width, height;
-      if (!rfb) {
+      if (!scope.rfb) {
         width = 640;
         height = 480;
       } else {
-        width = rfb.get_display().get_width();
-        height = rfb.get_display().get_height();
+        width = scope.rfb.get_display().get_width();
+        height = scope.rfb.get_display().get_height();
       }
 
       // after connecting first noVNC frames are not real screens, so catch only
@@ -58,26 +58,20 @@ define(function(require) {
       if (!connectLoop) {
         return;
       }
-
       var host = window.location.hostname;
       var port = window.location.port;
       var password = attrs.password;
       var uuid = attrs.uuid;
 
-      rfb.connect(host, port, password, window.location.pathname.substr(1) + "/vnc");
+      var m = window.location.pathname.match(/\/machines\/(\d+)/);
+
+      scope.rfb.connect(host, port, password, 'machines/' + m[1]+ "/vnc");
     };
 
-    // http://stackoverflow.com/questions/16881478/how-to-call-a-method-defined-in-an-angularjs-directive
-    if(scope.control) {
-      scope.control.connect = function() {
-        if(scope.state.vncState == 'normal')
-          return;
-        connectLoop = true;
-        connect();
-      };
-    }
+    var connectTimeout;
 
-    scope.rfb = rfb = new RFB({
+    var destroying = false;
+    scope.rfb = new RFB({
       'target': element.find('canvas')[0],
       'repeaterID': '',
       'encrypt': location.protocol === 'https:',
@@ -87,12 +81,13 @@ define(function(require) {
       'focused': false,
       'onUpdateState': function(rfb, state, oldstate, statusMsg) {
         scope.state.vncState = state;
-        if(state === 'failed') {
-          setTimeout(connect, 1000);
+        if(state === 'failed' && !destroying) {
+          console.log("Trying to connect!!");
+          connectTimeout = setTimeout(connect, 1000);
         }
         // force ungrab mouse if not focused
         if(!scope.focused) {
-          rfb.get_keyboard().ungrab();
+          //scope.rfb.get_keyboard().ungrab();
         }
         return;
       },
@@ -104,22 +99,43 @@ define(function(require) {
         console.log('VNC: Password required');
       }
     });
-    
+
+    // http://stackoverflow.com/questions/16881478/how-to-call-a-method-defined-in-an-angularjs-directive
+    if(scope.control) {
+      scope.control.connect = function() {
+        if(scope.state.vncState == 'normal')
+          return;
+        connectLoop = true;
+        connect();
+      };
+    }
+
+
+    $(window).on('resize', updateConsole);
+
+    scope.$on("$destroy", function() {
+      $(window).off('resize', updateConsole);
+      destroying = true;
+      scope.rfb.disconnect();
+      $canvasWrapper.remove();
+      clearTimeout(connectTimeout);
+      delete scope.rfb;
+    }); 
+
     //$('.side-menu-wrapper').addClass('collapsed');
 
     $('#page-console .ctrlaltdel').click(function() {
-      rfb.sendCtrlAltDel();
+      scope.rfb.sendCtrlAltDel();
     });
 
     $('#page-console .hardreset').click(function() {
       hardResetRequested = true;
     });
 
-    $(window).resize(function () {
-      updateConsole();
-    });
-
     updateConsole();
+
+    connectLoop = true;
+    connect();
   }
 
   angular.module(module.uri, []).directive('console', function() {

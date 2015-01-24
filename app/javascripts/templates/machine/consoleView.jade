@@ -1,0 +1,15 @@
+#page-console.text-center(ng-class="{focused: consoleFocused}")
+  .console-window-wrapper
+    .console-window(ng-class="{focused: consoleFocused, paused: console.paused}")
+      .focus-indicator
+      console(password="{{machine.vnc_password}}",uuid="{{machine.uuid}}",focused="consoleFocused",state="machine",control='console')
+      .vm-actions
+        .iso
+          distroselect(machine='machine')
+        .rocket-menu
+          img(src='/assets/logo/virtkick-logo-pixelart-gray-24.png')
+        .restart
+          a.btn.btn-default.ctrlaltdel
+            | Reboot
+          a.btn.btn-default.hardreset(ng-confirm='Are you sure? This may cause data loss.')
+            | Hard reset

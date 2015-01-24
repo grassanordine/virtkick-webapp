@@ -9,3 +9,4 @@
 /public/javascripts
 /node_modules
 vendor/cache
+bower_components

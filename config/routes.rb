@@ -12,6 +12,11 @@ Rails.application.routes.draw do
 
   resources :machines do
     member do
+      get 'power'
+      get 'console'
+      get 'storage'
+      get 'settings'
+
       post 'start'
       post 'pause'
       post 'resume'
