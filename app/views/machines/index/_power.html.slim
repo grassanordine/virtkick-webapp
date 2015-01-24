@@ -52,8 +52,7 @@
         span.status Pause
       a.btn.btn-default ng-click="doAction('resume')" ng-class="{disabled: !canDo.resume}"
         span(ng-if="!requesting.resume")
-          ajaxloader(size=24)
-          //i.icon.fa.fa-forward
+          i.icon.fa.fa-forward
         span(ng-if="requesting.resume")
           ajaxloader(size=11)
         span.status Resume
