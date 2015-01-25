@@ -47,8 +47,8 @@ ActiveRecord::Schema.define(version: 20150125001808) do
     t.integer  "user_id"
     t.integer  "libvirt_hypervisor_id"
     t.string   "libvirt_machine_name"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.boolean  "deleted",               default: false
   end
 

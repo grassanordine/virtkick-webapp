@@ -11,7 +11,8 @@ define(function(require) {
   require('angular-messages');
 
   var angular = require('angular');
-  
+
+  var handleProgres = require('handleProgress');
   require('angular-route');
   require('ui-select');
 
@@ -329,20 +330,6 @@ define(function(require) {
   angular.element().ready(function() {
     angular.bootstrap(document, ['app']);
   });
-
-
-  var handleProgress = function(progressId, onSuccess, onError) {
-    var id = setInterval(function() {
-      return $.ajax('/progress/' + progressId).success(function(data) {
-        if (!data.finished) {
-          return;
-        }
-        clearInterval(id);
-
-        data.error === null ? onSuccess() : onError(data.error);
-      });
-    }, 500);
-  };
 
 });
 

@@ -1,12 +1,14 @@
 define(function(require) {
   require('appcommon');
   var $ = require('jquery');
-  
+
+  var handleProgress = require('handleProgress');
+
   var angular = require('angular');
   require('angular-messages'); // for ngMessages
   require('ui-bootstrap');
 
-  var app = angular.module('app', ['ui.bootstrap', 'ngMessages']);
+  var app = angular.module('app', ['ui.bootstrap', 'ngMessages', require('directives/preloader/preloader')]);
 
   app.controller('AppCtrl', function($scope) {
     $scope.data = {
@@ -62,6 +64,39 @@ define(function(require) {
 
   app.controller('NewMachineCtrl', function($scope) {
     $scope.data = {};
+
+
+    $scope.createMachine = function(cb) {
+      $.ajax({
+        url: '/machines',
+        type: 'POST',
+        data: {
+          machine: {
+            hostname: $scope.data.hostname,
+            plan_id: $scope.data.planId,
+            image_type: $scope.data.imageType,
+            iso_distro_id: $scope.data.isoId
+          }
+        },
+        dataType: "json",
+        success: function(data) {
+          $scope.$apply(function() {
+            $scope.data.creatingMachine = true;
+          });
+          handleProgress(data.progress_id, function() {
+            console.log("Success");
+
+          }, function(err) {
+            console.log("Epic fail", err);
+          });
+
+          if(cb) cb(null, data);
+        },
+        error: function(err) {
+          if(cb) cb(err);
+        }
+      });
+    };
 
   });
 

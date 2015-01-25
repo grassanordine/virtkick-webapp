@@ -4,23 +4,23 @@ define(function(require) {
   var css = require('css!./preloader.css');
 
   function link(scope, rocketContext, attrs) {
-    
+
     scope.size = attrs.size || 40;
 
     var rocket = rocketContext[0].getElementsByClassName('preloader-rocket-wrapper')[0];
 
-    var flyIn = function () {
-      setTimeout(function () {
+    var flyIn = function() {
+      setTimeout(function() {
         rocket.setAttribute('class', 'preloader-rocket-wrapper');
-        setTimeout(function () {
+        setTimeout(function() {
           rocket.setAttribute('class', 'preloader-rocket-wrapper animate');
         }, 450);
       }, 50);
     };
 
-    var flyOut = function (callback) {
+    var flyOut = function(callback) {
       rocket.setAttribute('class', 'preloader-rocket-wrapper flyover animate');
-      setTimeout(function () {
+      setTimeout(function() {
         rocket.setAttribute('class', 'preloader-rocket-wrapper flyover');
         if (callback) {
           callback();
@@ -31,9 +31,9 @@ define(function(require) {
 
     flyIn();
 
-    setTimeout(function () {
+    setTimeout(function() {
       //flyOut(function () {
-        //location.reload(true);
+      //location.reload(true);
       //});
     }, 5000);
   }
@@ -48,8 +48,7 @@ define(function(require) {
       link: link,
       restrict: 'E',
       controller: controller,
-      scope: {
-      },
+      scope: {},
       template: require('jade!./preloader')()
     }
   });

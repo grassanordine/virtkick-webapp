@@ -1,4 +1,4 @@
-class MachineCreateJob < BaseJob
+class MachineCreateJob < TrackableJob
   self.run_once
 
   def perform new_machine_id

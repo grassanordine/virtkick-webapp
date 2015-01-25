@@ -21,7 +21,6 @@ class MachinesController < ApplicationController
   end
 
   def create
-
     machine_params = NewMachine.check_params params
     @machine = current_user.new_machines.build machine_params
 
@@ -32,8 +31,7 @@ class MachinesController < ApplicationController
     end
 
     if @machine.save
-      MachineCreateJob.perform_later @machine.id
-      redirect_to machines_path
+      render_progress MachineCreateJob.perform_later current_user, @machine.id
       return
     end
 

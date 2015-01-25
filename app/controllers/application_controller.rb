@@ -34,6 +34,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_progress progress_id
+    raise 'Not an ID. Make sure Job returns a Numeric - or use TrackableJob.' unless progress_id.is_a? Numeric
     render json: {progress_id: progress_id}
   end
   include RequirejsHelper
