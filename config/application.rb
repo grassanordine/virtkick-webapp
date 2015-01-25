@@ -43,7 +43,8 @@ module VirtkickWebapp
     end
 
     config.after_initialize do
-      if File.basename($0) != 'rake'
+      bin_name = File.basename $0
+      unless %w(rake rspec).include? bin_name
         CountDeploymentJob.track CountDeploymentJob::APP_START_SUCCESS
       end
     end
