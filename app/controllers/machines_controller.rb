@@ -69,6 +69,7 @@ class MachinesController < ApplicationController
   end
 
   def destroy
+    @meta_machine.mark_deleted
     MachineDeleteJob.perform_later @meta_machine.id
     render json: nil
   end

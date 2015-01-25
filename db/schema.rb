@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141022184302) do
+ActiveRecord::Schema.define(version: 20150125001808) do
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -49,8 +49,10 @@ ActiveRecord::Schema.define(version: 20141022184302) do
     t.string   "libvirt_machine_name"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.boolean  "deleted",               default: false
   end
 
+  add_index "meta_machines", ["deleted"], name: "index_meta_machines_on_deleted"
   add_index "meta_machines", ["hostname"], name: "index_meta_machines_on_hostname", unique: true
   add_index "meta_machines", ["user_id"], name: "index_meta_machines_on_user_id"
 
