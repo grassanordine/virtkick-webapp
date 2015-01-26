@@ -10,7 +10,6 @@ class MachinesController < ApplicationController
 
   def index
     @machines = current_user.machines
-    @new_machines = current_user.new_machines
   end
 
   def new

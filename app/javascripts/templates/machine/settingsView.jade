@@ -4,7 +4,7 @@
   form
     label
       | Mount ISO: &nbsp;
-      distroselect(machine='machine')
+      distroselect(machine='machine', width='300px')
   h3 Danger Zone
   p
     a.btn.btn-danger(confirm='Are you sure? This cannot be undone.',title='Delete {{machine.hostname}}?',action="machine.deletePermanently()") Delete machine

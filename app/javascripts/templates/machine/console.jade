@@ -2,10 +2,23 @@
   .overlay
     .overlay-bg
     .state
-      .btn.btn-primary.symbol(ng-click="state.resume()")
-        .icon.fa.fa-play
-      .description
-        p
-          | Machine paused.
+      div(ng-if='state.status.attributes.id == "stopped"')
+        .btn.btn-primary.symbol(ng-click="state.start()",ng-disabled='state.requesting.start')
+          div(ng-if='!state.requesting.start')
+            .icon.fa.fa-play
+          div(ng-if='state.requesting.start')
+            preloader(started,size=70)
+        .description
+          p
+            | Machine is stopped.
+      div(ng-if='state.status.attributes.id == "suspended"')
+        .btn.btn-primary.symbol(ng-click="state.resume()")
+          div(ng-if='!state.requesting.resume')
+            .icon.fa.fa-play
+          div(ng-if='state.requesting.resume')
+            preloader(started,size=70)
+        .description
+          p
+            | Machine paused.
   canvas
 

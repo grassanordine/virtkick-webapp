@@ -3,16 +3,12 @@ define(function(require) {
   var $ = require('jquery');
   require('!domReady');
 
-  require('twitter/bootstrap/rails/confirm');
-
-  //require('./_console');
   require('ui-bootstrap');
   require('angular-sanitize');
   require('angular-messages');
 
   var angular = require('angular');
-
-  var handleProgres = require('handleProgress');
+  //var handleProgres = require('handleProgress');
   require('angular-route');
   require('ui-select');
 
@@ -22,15 +18,12 @@ define(function(require) {
   );
 
   app.controller('PowerCtrl', function($scope) {
-    console.log("Power");
   });
   app.controller('ConsoleCtrl', function($scope) {
-    console.log("Console");
   });
   app.controller('StorageCtrl', function($scope) {
   });
   app.controller('SettingsCtrl', function($scope) {
-    console.log("Settings", $scope.machine);
   });
 
 
@@ -53,7 +46,6 @@ define(function(require) {
   app.controller('ShowMachineCtrl', function($scope, $rootScope, $http, $location) {
 
     $scope.activate = function(tab) {
-      console.log($location.path());
       $location.path( "/" + tab);
     };
 
@@ -82,7 +74,6 @@ define(function(require) {
        $scope.diskPlans[type.id].push(plan.attributes);
       });
     });
-    console.log($scope.diskPlans);
 
     $scope.storage = {
       newDiskType: $scope.diskTypes[0],
@@ -143,7 +134,6 @@ define(function(require) {
           $scope.storage.creatingDisk = false;
         });
 
-        console.log(data);
       }, function(error) {
 
       });
@@ -203,6 +193,9 @@ define(function(require) {
     $scope.machine.pause = function(cb) {
       $scope.doAction('pause', cb);
     };
+    $scope.machine.start = function(cb) {
+      $scope.doAction('start', cb);
+    };
     $scope.machine.stop = function(cb) {
       $scope.doAction('stop', cb);
     };
@@ -255,7 +248,7 @@ define(function(require) {
 
         if($scope.machine.status.attributes.id === 'stopped') {
           $scope.canDo = {
-            start: !$scope.requesting.starting, pause: false, resume: false, stop: false, restart: false, force_restart: false, force_stop: false
+            start: !$scope.requesting.start, pause: false, resume: false, stop: false, restart: false, force_restart: false, force_stop: false
           };
         }
         else {
@@ -277,11 +270,16 @@ define(function(require) {
       var actionUrl = baseUrl + '/' + name;
 
       $scope.requesting[name]= true;
+
+      clearTimeout(timeoutHandler);
       $.post(actionUrl).then(function(data) {
         handleProgress(data.progress_id, function() {
-          $scope.requesting[name]= false;
-          $scope.machine.error = null;
-          if(cb) cb();
+
+          updateState(function(err) {
+            $scope.requesting[name]= false;
+            $scope.machine.error = err;
+            if(cb) cb(err);
+          });
         }, function(error) {
           $scope.requesting[name]= false;
           $scope.machine.error = error;
@@ -291,26 +289,39 @@ define(function(require) {
     };
 
     $scope.requesting = {};
+
+    $scope.machine.requesting = $scope.requesting;
+
     $scope.canDo = {};
 
     var timeoutHandler;
-    function updateState() {
+    function updateState(cb) {
       var skipIsoUpdate = !$scope.machine.mountingIso;
+      if(timeoutHandler) {
+        clearTimeout(timeoutHandler);
+      }
       $http.get(baseUrl + '.json').then(function(response) {
 
         $scope.machine = $.extend($scope.machine, response.data);
+
         // THIS is workaround for null value in rest endpoint
         $scope.machine.vnc_password = $('#vnc_password').val();
 
         $scope.console.paused = response.data.status.attributes.id === 'suspended';
-        
+
+        $scope.machine.stateDisconnected = false;
+
         // prevent live updates from changing this until the process ended
         if(!skipIsoUpdate && !$scope.machine.mountingIso) {
           updateSelectedIso();
         }
 
+        if(cb) cb();
+
         timeoutHandler = setTimeout(updateState, 1000);
-      }, function() {
+      }, function(err) {
+        if(cb) cb(err);
+
         $scope.machine.stateDisconnected = true;
         timeoutHandler = setTimeout(updateState, 5000);
       });

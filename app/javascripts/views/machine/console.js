@@ -9,15 +9,15 @@ define(function(require) {
       $scope.rfb.get_keyboard().ungrab();
       $scope.rfb.get_mouse().ungrab(); 
       $scope.focused = false;
-    }
+    };
     $scope.grab = function() {
      $scope.rfb.get_keyboard().grab(); 
      $scope.rfb.get_mouse().grab(); 
      $scope.focused = true;
-    }
+    };
     $scope.sendCtrlAltDel = function() {
       $scope.rfb.sendCtrlAltDel();
-    }
+    };
   }
 
   function link(scope, element, attrs) {
@@ -68,6 +68,8 @@ define(function(require) {
     };
 
     var connectTimeout;
+    scope.data = {};
+    scope.data.isConnecting = false;
 
     var destroying = false;
     scope.rfb = new RFB({
@@ -80,6 +82,12 @@ define(function(require) {
       'focused': false,
       'onUpdateState': function(rfb, state, oldstate, statusMsg) {
         scope.state.vncState = state;
+
+        if(state !== 'normal' && state !== 'disconnected') {
+          console.log("CONNECTING!!");
+          scope.data.isConnecting = true;
+        }
+
         if(state === 'failed' && !destroying) {
           console.log("Trying to connect!!");
           connectTimeout = setTimeout(connect, 1000);
@@ -128,7 +136,7 @@ define(function(require) {
     connect();
   }
 
-  angular.module(module.uri, []).directive('console', function() {
+  angular.module(module.uri, [require('directives/preloader/preloader')]).directive('console', function() {
     return {
       replace: true,
       restrict: 'E',

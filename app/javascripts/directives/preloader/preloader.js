@@ -45,7 +45,9 @@ define(function(require) {
       }
     });
 
-    //flyIn();
+    console.log("PRELOADER!!!", attrs);
+    if(attrs.started)
+      flyIn();
 
     setTimeout(function() {
       //flyOut(function () {

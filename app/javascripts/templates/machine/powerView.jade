@@ -40,30 +40,35 @@
   .controls
     .btn-group
       a.btn.btn-default(ng-click="doAction('start')" ng-class="{disabled: !canDo.start}")
-        span(ng-if="!requesting.start")
-          i.icon.fa.fa-play
-        span(ng-if="requesting.start")
-          i.icon.fa.fa-spinner.fa-spin
+        // TODO: move it to stylesheet (and other below as well)
+        div(style='width: 22px; display:inline-block;')
+          span(ng-if="!requesting.start")
+            i.icon.fa.fa-play
+          span(ng-if="requesting.start")
+            ajaxloader(size=16)
         span.status Start
       a.btn.btn-default(ng-click="doAction('pause')" ng-class="{disabled: !canDo.pause}")
-        span(ng-if="!requesting.pause")
-          i.icon.fa.fa-pause
-        span(ng-if="requesting.pause")
-          i.icon.fa.fa-spinner.fa-spin
+        div(style='width: 22px; display:inline-block;')
+          span(ng-if="!requesting.pause")
+            i.icon.fa.fa-pause
+          span(ng-if="requesting.pause")
+            ajaxloader(size=16)
         span.status Pause
       a.btn.btn-default(ng-click="doAction('resume')" ng-class="{disabled: !canDo.resume}")
-        span(ng-if="!requesting.resume")
-          i.icon.fa.fa-forward
-        span(ng-if="requesting.resume")
-          i.icon.fa.fa-spinner.fa-spin
+        div(style='width: 22px; display:inline-block;')
+          span(ng-if="!requesting.resume")
+            i.icon.fa.fa-forward
+          span(ng-if="requesting.resume")
+            ajaxloader(size=16)
         span.status Resume
       a.btn.btn-default(ng-click="doAction('stop')" ng-class="{disabled: !canDo.stop}")
-        span(ng-if="!requesting.stop")
-          i.icon.fa.fa-stop
-        span(ng-if="requesting.stop")
-          i.icon.fa.fa-spinner.fa-spin
+        div(style='width: 22px; display:inline-block;')
+          span(ng-if="!requesting.stop")
+            i.icon.fa.fa-stop
+          span(ng-if="requesting.stop")
+            ajaxloader(size=16)
         span.status Stop
-      .btn-group
+      .btn-group(dropdown)
         button.only-on.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', ng-class="{disabled: !canDo.force_stop}")
           i.fa.fa-caret-down
         ul.dropdown-menu
@@ -74,7 +79,7 @@
       a.btn.btn-default(ng-click="doAction('restart')", ng-class="{disabled: !canDo.restart}")
         i.icon.fa.fa-repeat
         span.status Restart
-      .btn-group
+      .btn-group(dropdown)
         button.only-on.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', ng-class="{disabled: !canDo.force_restart}")
           i.fa.fa-caret-down
         ul.dropdown-menu
