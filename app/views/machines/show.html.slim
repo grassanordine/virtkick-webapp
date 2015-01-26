@@ -10,8 +10,6 @@
   = requirejs_include_tag 'pages/machineShow'
 
 input(type='hidden' id='vnc_password' value=@machine.vnc_password)
-- puts @machine.to_s
-machine view
 #page-machine.ng-cloak ng-controller="ShowMachineCtrl as machine"
   - tabs = %w(power console storage settings)
 
