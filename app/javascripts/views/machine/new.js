@@ -10,6 +10,20 @@ define(function(require) {
 
   var app = angular.module('app', ['ui.bootstrap', 'ngMessages', require('directives/preloader/preloader')]);
 
+
+  var machineProgress =  function(progressId, onSuccess) {
+    var id = setInterval(function() {
+      return $.ajax('/machine_progress/' + progressId).success(function(data) {
+        if (!data.finished) {
+          return;
+        }
+        clearInterval(id);
+
+        onSuccess(data);
+      });
+    }, 500);
+  };
+
   app.controller('AppCtrl', function($scope) {
     $scope.data = {
       menuCollapse: false
@@ -66,6 +80,10 @@ define(function(require) {
     $scope.data = {};
 
 
+    $scope.gotoMachine = function() {
+      window.location.href = '/machines/' + $scope.data.createdMachineId;
+    };
+
     $scope.createMachine = function(cb) {
       $.ajax({
         url: '/machines',
@@ -83,11 +101,13 @@ define(function(require) {
           $scope.$apply(function() {
             $scope.data.creatingMachine = true;
           });
-          handleProgress(data.progress_id, function() {
-            console.log("Success");
+          machineProgress(data.data, function(data) {
+            console.log("Succeed", data);
+            $scope.$apply(function() {
+              $scope.data.createdMachineId = data.given_meta_machine_id;
+              $scope.data.creatingMachineFinished = true;
+            });
 
-          }, function(err) {
-            console.log("Epic fail", err);
           });
 
           if(cb) cb(null, data);

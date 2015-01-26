@@ -33,9 +33,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def render_progress progress_id
+  def render_progress progress_id, custom_data = nil
     raise 'Not an ID. Make sure Job returns a Numeric - or use TrackableJob.' unless progress_id.is_a? Numeric
-    render json: {progress_id: progress_id}
+    render json: {progress_id: progress_id, data: custom_data}
   end
   include RequirejsHelper
 end

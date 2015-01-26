@@ -28,8 +28,24 @@ define(function(require) {
       }, 1000);
     };
 
+    scope.$watch('loading', function(cur, prev) {
+      if(prev == cur) return;
+      if(cur === true) {
+        flyIn();
+      }
+    });
 
-    flyIn();
+    scope.$watch('finish', function(cur, prev) {
+      if(prev == cur) return;
+      if(cur === true) {
+        console.log("Call after finish");
+        flyOut(function() {
+          scope.afterFinish();
+        });
+      }
+    });
+
+    //flyIn();
 
     setTimeout(function() {
       //flyOut(function () {
@@ -48,7 +64,11 @@ define(function(require) {
       link: link,
       restrict: 'E',
       controller: controller,
-      scope: {},
+      scope: {
+        'loading': '=',
+        'finish': '=',
+        'afterFinish': '&'
+      },
       template: require('jade!./preloader')()
     }
   });

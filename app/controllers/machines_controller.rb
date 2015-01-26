@@ -31,7 +31,8 @@ class MachinesController < ApplicationController
     end
 
     if @machine.save
-      render_progress MachineCreateJob.perform_later current_user, @machine.id
+      progress_id = MachineCreateJob.perform_later current_user, @machine.id
+      render_progress progress_id, @machine.id
       return
     end
 
