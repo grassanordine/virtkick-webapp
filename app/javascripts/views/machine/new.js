@@ -1,12 +1,28 @@
 define(function(require) {
   require('appcommon');
   var $ = require('jquery');
-  
+
+  var handleProgress = require('handleProgress');
+
   var angular = require('angular');
   require('angular-messages'); // for ngMessages
   require('ui-bootstrap');
 
-  var app = angular.module('app', ['ui.bootstrap', 'ngMessages']);
+  var app = angular.module('app', ['ui.bootstrap', 'ngMessages', require('directives/preloader/preloader')]);
+
+
+  var machineProgress =  function(progressId, onSuccess) {
+    var id = setInterval(function() {
+      return $.ajax('/machine_progress/' + progressId).success(function(data) {
+        if (!data.finished) {
+          return;
+        }
+        clearInterval(id);
+
+        onSuccess(data);
+      });
+    }, 500);
+  };
 
   app.controller('AppCtrl', function($scope) {
     $scope.data = {
@@ -62,6 +78,45 @@ define(function(require) {
 
   app.controller('NewMachineCtrl', function($scope) {
     $scope.data = {};
+
+
+    $scope.gotoMachine = function() {
+      window.location.href = '/machines/' + $scope.data.createdMachineId;
+    };
+
+    $scope.createMachine = function(cb) {
+      $.ajax({
+        url: '/machines',
+        type: 'POST',
+        data: {
+          machine: {
+            hostname: $scope.data.hostname,
+            plan_id: $scope.data.planId,
+            image_type: $scope.data.imageType,
+            iso_distro_id: $scope.data.isoId
+          }
+        },
+        dataType: "json",
+        success: function(data) {
+          $scope.$apply(function() {
+            $scope.data.creatingMachine = true;
+          });
+          machineProgress(data.data, function(data) {
+            console.log("Succeed", data);
+            $scope.$apply(function() {
+              $scope.data.createdMachineId = data.given_meta_machine_id;
+              $scope.data.creatingMachineFinished = true;
+            });
+
+          });
+
+          if(cb) cb(null, data);
+        },
+        error: function(err) {
+          if(cb) cb(err);
+        }
+      });
+    };
 
   });
 

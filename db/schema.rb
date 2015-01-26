@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150125001808) do
+ActiveRecord::Schema.define(version: 20150125234459) do
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -47,8 +47,8 @@ ActiveRecord::Schema.define(version: 20150125001808) do
     t.integer  "user_id"
     t.integer  "libvirt_hypervisor_id"
     t.string   "libvirt_machine_name"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.boolean  "deleted",               default: false
   end
 
@@ -73,15 +73,8 @@ ActiveRecord::Schema.define(version: 20150125001808) do
     t.datetime "updated_at"
   end
 
-  create_table "progresses", force: :cascade do |t|
-    t.integer  "user_id",                    null: false
-    t.boolean  "finished",   default: false, null: false
-    t.string   "error"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-  end
-
-  add_index "progresses", ["user_id"], name: "index_progresses_on_user_id"
+# Could not dump table "progresses" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
 
   create_table "settings", force: :cascade do |t|
     t.string   "key",        null: false

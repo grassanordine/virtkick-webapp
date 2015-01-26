@@ -8,14 +8,8 @@
   = form_for @machine, as: :machine, url: machines_path(@machine), method: :post, :html => {:name => "form"}do |f|
     = render partial: '/flash', locals: {section: 'new_machine'}
 
-
     .form-group.details(ng-class="{ 'has-error' : form['machine[hostname]'].$invalid && !userForm.name.$pristine }")
-      - attrs = {placeholder: 'Machine Hostname', class: 'form-control'}
-      - attrs[:autofocus] = true if @machine.hostname.nil? or errors_for?(@machine, :hostname)
-      - attrs['required'] = true
-      - attrs['machine'] = 1
-      - attrs['ng-model'] = 'data.name'
-      = f.text_field :hostname, attrs
+      input.form-control(name='machine[hostname]' ng-model='data.hostname' machine required placeholder="Machine hostname"  ng-disabled='data.creatingMachine')
       .ng-cloak.help-block
         ng-messages for="form['machine[hostname]'].$error" ng-if="form.$dirty"
           ng-message when="required"
@@ -34,10 +28,10 @@
         | Choose a plan
       .text-center
         .plans.btn-group
-          = f.text_field :plan_id, ng_model: 'data.planId', required: true, class: 'hide'
+          input name='machine[plan_id]' ng-model='data.planId' required='true' class='hide'
           - for plan in @plans
             - active = @machine.plan == plan ? 'active' : ''
-            label class='btn btn-info plan #{active} fixed-width' ng-model='data.planId' btn-radio=plan.id
+            label class='btn btn-info plan #{active} fixed-width' ng-model='data.planId' btn-radio=plan.id ng-disabled='data.creatingMachine'
               span.title
                 = number_to_human_size(plan.memory.gigabytes)
                 |  RAM
@@ -57,12 +51,13 @@
 
       .form-group.text-center
         .image-types.btn-group
+          input name='machine[image_type]' ng-model='data.imageType' required='true' class='hide'
           = f.hidden_field :image_type, value: '{{data.imageType}}'
           - for type in [['Mount ISO', 'isos'], ['Appliance', 'appliances'], ['1-Click App', 'apps']]
             - name = type[0]
             - id = type[1]
             - active = @machine.image_type == id ? 'active' : ''
-            label class='btn btn-info image-type #{active}' ng-model='data.imageType' btn-radio="'#{id}'"
+            label class='btn btn-info image-type #{active}' ng-model='data.imageType' btn-radio="'#{id}'"  ng-disabled='data.creatingMachine'
               span.title = name
 
         div.ng-cloak
@@ -74,7 +69,7 @@
             = f.text_field :iso_distro_id, ng_model: 'data.isoId', ng_required: 'true', class: 'hide'
             - for iso in @isos
               - active = @machine.iso_distro == iso ? 'active' : ''
-              label class="btn btn-info distro #{active}" ng-model='data.isoId' btn-radio="'#{iso.id}'"
+              label class="btn btn-info distro #{active}" ng-model='data.isoId' btn-radio="'#{iso.id}'"  ng-disabled='data.creatingMachine'
                 .wrap: img src='/assets/distros/#{iso.code}.png'
                 span.name = iso.name
 
@@ -82,6 +77,8 @@
             p VirtKick will deliver a 1-click integration with Sandstorm.
             p It allows you to install many webapps with a single click. Coming soon!
 
-        .form-group.text-center
-          = f.submit 'Create a Machine', :'ng-disabled' => 'form.$invalid || data.imageType != "isos"', class: 'create btn btn-primary btn-lg'
-
+        .form-group.text-center.ng-cloak
+          a.btn.btn-primary.btn-lg.create(ng-disabled='form.$invalid || data.creatingMachine' ng-click='createMachine()')
+            preloader style='float: left;' loading='data.creatingMachine' finish='data.creatingMachineFinished' after-finish='gotoMachine()'
+            span(ng-if='!data.creatingMachine' style='line-height: 40px; padding-right: 30px;') Create a Machine
+            span(ng-if='data.creatingMachine' style='line-height: 40px;') Creating Machine ...
