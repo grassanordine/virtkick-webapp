@@ -5,7 +5,7 @@
   = requirejs_include_tag 'pages/machineNew'
 
 #page-new-machine ng-app=1 ng-controller='NewMachineCtrl'
-  form
+  form(name='form')
     .form-group.details(ng-class="{ 'has-error' : form['machine[hostname]'].$invalid && !userForm.name.$pristine }")
       input.form-control(name='machine[hostname]' ng-model='data.hostname' machine required placeholder="Machine hostname"  ng-disabled='data.creatingMachine')
       .ng-cloak.help-block
@@ -62,7 +62,7 @@
 
           - active = @machine.iso_distro ? 'active' : ''
           div.ng-cloak.image-type-group.isos.btn-group class="#{active}" ng-if='data.imageType == "isos"'
-            input(type='text' name='machine[iso_distro_id]' ng-model='data.isoId' ng-required='true' class='hide')
+            input name='machine[iso_distro_id]' ng-model='data.isoId' required='true' class='hide'
             - for iso in @isos
               - active = @machine.iso_distro == iso ? 'active' : ''
               label class="btn btn-info distro #{active}" ng-model='data.isoId' btn-radio="'#{iso.id}'"  ng-disabled='data.creatingMachine'
