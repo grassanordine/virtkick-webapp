@@ -5,9 +5,7 @@
   = requirejs_include_tag 'pages/machineNew'
 
 #page-new-machine ng-app=1 ng-controller='NewMachineCtrl'
-  = form_for @machine, as: :machine, url: machines_path(@machine), method: :post, :html => {:name => "form"}do |f|
-    = render partial: '/flash', locals: {section: 'new_machine'}
-
+  form
     .form-group.details(ng-class="{ 'has-error' : form['machine[hostname]'].$invalid && !userForm.name.$pristine }")
       input.form-control(name='machine[hostname]' ng-model='data.hostname' machine required placeholder="Machine hostname"  ng-disabled='data.creatingMachine')
       .ng-cloak.help-block
@@ -20,7 +18,6 @@
             | Hostname already taken.
           ng-message when="any"
             | Hostname is invalid.
-        = errors_for @machine, :hostname
 
     .form-group
       h2
@@ -52,7 +49,6 @@
       .form-group.text-center
         .image-types.btn-group
           input name='machine[image_type]' ng-model='data.imageType' required='true' class='hide'
-          = f.hidden_field :image_type, value: '{{data.imageType}}'
           - for type in [['Mount ISO', 'isos'], ['Appliance', 'appliances'], ['1-Click App', 'apps']]
             - name = type[0]
             - id = type[1]
@@ -66,7 +62,7 @@
 
           - active = @machine.iso_distro ? 'active' : ''
           div.ng-cloak.image-type-group.isos.btn-group class="#{active}" ng-if='data.imageType == "isos"'
-            = f.text_field :iso_distro_id, ng_model: 'data.isoId', ng_required: 'true', class: 'hide'
+            input(type='text' name='machine[iso_distro_id]' ng-model='data.isoId' ng-required='true' class='hide')
             - for iso in @isos
               - active = @machine.iso_distro == iso ? 'active' : ''
               label class="btn btn-info distro #{active}" ng-model='data.isoId' btn-radio="'#{iso.id}'"  ng-disabled='data.creatingMachine'
@@ -78,7 +74,5 @@
             p It allows you to install many webapps with a single click. Coming soon!
 
         .form-group.text-center.ng-cloak
-          a.btn.btn-primary.btn-lg.create(ng-disabled='form.$invalid || data.creatingMachine' ng-click='createMachine()')
-            preloader style='float: left;' loading='data.creatingMachine' finish='data.creatingMachineFinished' after-finish='gotoMachine()'
-            span(ng-if='!data.creatingMachine' style='line-height: 40px; padding-right: 30px;') Create a Machine
-            span(ng-if='data.creatingMachine' style='line-height: 40px;') Creating Machine ...
+          long-run-button.btn-primary.btn-lg.create(ng-disabled='form.$invalid' run='createMachine()' on-finish='gotoMachine()')
+            | Create a Machine

@@ -1,0 +1,7 @@
+.long-run-button .preloader-inner {
+    /*padding: 5%;*/
+}
+
+.long-run-button .loading-part {
+    transition: width 0.5s ease;
+}

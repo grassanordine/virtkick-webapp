@@ -1,0 +1,4 @@
+a.long-run-button.btn(ng-click='startRun()',ng-class="{disabled: longRunButton.loadingVisible}")
+    div.loading-part(style='display: inline-block; width: {{longRunButton.loading?20:0}}px;')
+        preloader(ng-if='longRunButton.loadingVisible',finish='longRunButton.loadingFinish',started,style='margin-left: -10px; margin-top: -10px; margin-bottom: -10px; margin-right: -10px;',after-finish='longRunButton.afterRocketFlyOut()',size='{{longRunButton.size}}')
+    div(ng-transclude,style='display: inline-block;')

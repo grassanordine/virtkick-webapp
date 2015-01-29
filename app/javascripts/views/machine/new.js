@@ -8,7 +8,7 @@ define(function(require) {
   require('angular-messages'); // for ngMessages
   require('ui-bootstrap');
 
-  var app = angular.module('app', ['ui.bootstrap', 'ngMessages', require('directives/preloader/preloader')]);
+  var app = angular.module('app', ['ui.bootstrap', 'ngMessages', require('directives/preloader/preloader'), require('directives/long-run-button/directive')]);
 
 
   var machineProgress =  function(progressId, onSuccess) {
@@ -76,7 +76,7 @@ define(function(require) {
     };
   });
 
-  app.controller('NewMachineCtrl', function($scope) {
+  app.controller('NewMachineCtrl', function($scope, $q) {
     $scope.data = {};
 
 
@@ -84,37 +84,33 @@ define(function(require) {
       window.location.href = '/machines/' + $scope.data.createdMachineId;
     };
 
-    $scope.createMachine = function(cb) {
-      $.ajax({
-        url: '/machines',
-        type: 'POST',
-        data: {
-          machine: {
-            hostname: $scope.data.hostname,
-            plan_id: $scope.data.planId,
-            image_type: $scope.data.imageType,
-            iso_distro_id: $scope.data.isoId
-          }
-        },
-        dataType: "json",
-        success: function(data) {
-          $scope.$apply(function() {
-            $scope.data.creatingMachine = true;
-          });
-          machineProgress(data.data, function(data) {
-            console.log("Succeed", data);
-            $scope.$apply(function() {
-              $scope.data.createdMachineId = data.given_meta_machine_id;
-              $scope.data.creatingMachineFinished = true;
+    $scope.createMachine = function() {
+      return $q(function(resolve, reject) {
+        $.ajax({
+          url: '/machines',
+          type: 'POST',
+          data: {
+            machine: {
+              hostname: $scope.data.hostname,
+              plan_id: $scope.data.planId,
+              image_type: $scope.data.imageType,
+              iso_distro_id: $scope.data.isoId
+            }
+          },
+          dataType: "json",
+          success: function(data) {
+            machineProgress(data.data, function(data) {
+              $scope.$apply(function() {
+                $scope.data.createdMachineId = data.given_meta_machine_id;
+              });
+              resolve();
+
             });
-
-          });
-
-          if(cb) cb(null, data);
-        },
-        error: function(err) {
-          if(cb) cb(err);
-        }
+          },
+          error: function(err) {
+            reject(err);
+          }
+        });
       });
     };
 
