@@ -3,7 +3,6 @@ define(function(require) {
   var angular = require('angular');
   require('css!./style.css');
 
-
   function controller($scope, $q) {
 
     var outTimeout;
@@ -13,39 +12,67 @@ define(function(require) {
       $scope.longRunButton.loading = true;
       $scope.longRunButton.loadingVisible = true;
       $scope.longRunButton.loadingFinish = false;
-      if($scope.running) {
-        $scope.running = true;
-      }
+
+      $scope.running = true;
+      $scope.runningAnimation = true;
+
+      var promise = $scope.run();
+
+      var estimated = (new Date()).getTime() + 500;
 
       $scope.longRunButton.afterRocketFlyOut = function() {
         setTimeout(function() {
           $scope.$apply(function() {
             $scope.longRunButton.loadingVisible = false;
+            $scope.runningAnimation = false;
+            $scope.onFinishAnimation();
           });
-        }, 10);
+        }, 5);
       };
 
-      var promise = $scope.run();
+      var promiseHandler = function(onFinish) {
+        var func = function(data) {
+          var currentTime = (new Date()).getTime();
+          if (currentTime < estimated) {
+            setTimeout(function() {
 
-      var promiseHandler = function(data) {
-        setTimeout(function() {
-          $scope.$apply(function() {
-            $scope.longRunButton.loadingFinish = true;
-          });
-        }, 10);
+              func(data);
+            }, estimated - currentTime);
+            return;
+          }
 
-        outTimeout = setTimeout(function() {
-          $scope.$apply(function() {
-            $scope.longRunButton.loading = false;
-            if($scope.running) {
-              $scope.running = false;
-            }
-          });
-        }, 150);
+          setTimeout(function() {
+            $scope.$apply(function() {
+              $scope.longRunButton.loadingFinish = true;
+            });
+          }, 10);
+
+          outTimeout = setTimeout(function() {
+            $scope.$apply(function() {
+              $scope.longRunButton.loading = false;
+              if ($scope.running) {
+                $scope.running = false;
+              }
+            });
+          }, 330);
+          onFinish(data);
+        };
+        return func;
+      }
+
+      $q.when(promise).then(promiseHandler(function(data) {
         $scope.onFinish(data);
-      };
-
-      $q.when(promise).then(promiseHandler);
+      }), function(data) {
+        $scope.longRunButton.loadingFinish = true;
+        $scope.longRunButton.loading = false;
+        $scope.longRunButton.loadingVisible = false;
+        $scope.runningAnimation = false;
+        $scope.running = false;
+        if($scope.$parent) {
+          $scope.$parent.$error = data;
+        }
+        $scope.onError(data);
+      });
     };
   }
 
@@ -64,8 +91,10 @@ define(function(require) {
           restrict: 'E',
           scope: {
             running: '=',
+            runningAnimation: '=',
             onError: '&',
             onFinish: '&',
+            onFinishAnimation: '&',
             run: '&'
           },
           controller: controller,
