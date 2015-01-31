@@ -10,7 +10,6 @@ define(function(require) {
   var angular = require('angular');
   //var handleProgres = require('handleProgress');
   require('angular-route');
-  require('ui-select');
 
   // ngSanitize is for ng-bind-html
   var app = angular.module('app',

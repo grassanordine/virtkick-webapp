@@ -84,7 +84,6 @@ define(function(require) {
         scope.state.vncState = state;
 
         if(state !== 'normal' && state !== 'disconnected') {
-          console.log("CONNECTING!!");
           scope.data.isConnecting = true;
         }
 
