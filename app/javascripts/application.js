@@ -13,17 +13,24 @@ define('application', function(require) {
   $('.newsletter form').ajaxChimp({
     callback: function(response, element) {
       resultElement = $('.newsletter .result');
+      wrapperElement = $('.newsletter .input-group');
+
+      resultElement.addClass('performed');
 
       if (response.result == 'error') {
-        if (response.msg.indexOf('is already subscribed') != -1) {
-          resultElement.text("Nothing to do. You're already subscribed!");
-        } else {
-          resultElement.text(response.msg);
-        }
+        wrapperElement.removeClass('has-success').addClass('has-error');
+        resultElement.html(response.msg);
       } else {
-        resultElement.text(resultElement.data('success'));
+        wrapperElement.removeClass('has-error').addClass('has-success');
+        resultElement.html(resultElement.data('success'));
         ga('send', 'event', 'newsletter_alpha', 'subscribe');
+        // hide form
+        wrapperElement.fadeOut(500);
       }
+    },
+    errorCallback: function($form) {
+      // Disconnect.me extension blocks any JSONP requests.
+      $form.unbind('submit').submit();
     }
   });
 });
