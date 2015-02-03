@@ -72,9 +72,9 @@
         button.only-on.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', ng-class="{disabled: !canDo.force_stop}")
           i.fa.fa-caret-down
         ul.dropdown-menu
-          li
-            a.btn.btn-default(ng-click="doAction('force_stop')")
-              span.fa.fa-power-off
+          li(role="presentation")
+            a(role="menuitem" ng-click="doAction('force_stop')")
+              span.icon.fa.fa-power-off
               span.status Hard stop
       a.btn.btn-default(ng-click="doAction('restart')", ng-class="{disabled: !canDo.restart}")
         i.icon.fa.fa-repeat
@@ -83,7 +83,7 @@
         button.only-on.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', ng-class="{disabled: !canDo.force_restart}")
           i.fa.fa-caret-down
         ul.dropdown-menu
-          li
-            a.btn.btn-default(ng-click="doAction('force_restart')")
+          li(role="presentation")
+            a(role="menuitem" ng-click="doAction('force_restart')")
               span.icon.fa.fa-power-off
               span.status Hard reset
