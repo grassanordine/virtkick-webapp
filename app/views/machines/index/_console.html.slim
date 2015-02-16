@@ -12,5 +12,5 @@
           a.btn.btn-default.ctrlaltdel
             | Reboot
           = link_to force_restart_machine_path(@machine), method: :post, remote: true, class: 'btn btn-default hardreset',
-              data: {confirm: 'Are you sure? This may cause data loss.', confirm_title: "Hard reset #{@machine.hostname}"}
+              data: {confirm: 'Are you sure? This may cause methods loss.', confirm_title: "Hard reset #{@machine.hostname}"}
             | Hard reset

@@ -1,4 +1,7 @@
 class MachineCreateJob < TrackableJob
+  include Hooks
+  define_hooks :post_create_machine
+
   self.run_once
 
   def perform new_machine_id
@@ -17,6 +20,9 @@ class MachineCreateJob < TrackableJob
           given_meta_machine_id: machine.id,
           finished: true,
           current_step: nil
+      run_hook :post_create_machine, machine.id
+      # @commited_credit.machine_id = machine.id
+      # @commited_credit.save
     end
 
     CountDeploymentJob.track CountDeploymentJob::FIRST_VM_CREATE_SUCCESS
@@ -25,6 +31,7 @@ class MachineCreateJob < TrackableJob
   private
   def job_initalize new_machine_id
     @new_machine = NewMachine.find new_machine_id
+    # @commited_credit = CommitedCredit.find commited_credit_id
   end
 
   def step step_name = nil

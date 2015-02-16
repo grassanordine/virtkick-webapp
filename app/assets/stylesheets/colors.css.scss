@@ -1,3 +1,18 @@
+$vk-text: #554F57;
+$vk-secondary: #8F6E84;
+$vk-primary: #EC4863;
+
+$grouping-bg: #F4F2E9;
+$grouping-active: #F7F0F1;
+$grouping-color: #9E8697;
+
+$white: #ffffff;
+$bg: $white;
+$dark: #5D2749;
+$light: $grouping-bg;
+
+$placeholder: #D1C7CF;
+
 // border and thin lines colors
 $border-pink-color: #F0DDEB;
 $border-pink-muted-color: #F7EEF5;
@@ -5,13 +20,22 @@ $border-pink-muted-color: #F7EEF5;
 // flat ui elements colors
 $red-color: #EC4863;
 $bright-violet-color: #9E8697;
+$dark-violet-color: #8E7687;
 $muted-violet-color: #CBBFC5;
+$muted-violet-light-color: #CEC2CB;
 $cream-color: #F4F2E9;
-$muted-cream-color: #F9F8F4;
+$cream-light-color: #F4F2F4;
 
 // vm states colors
 $running-color: #3fc380;
 $paused-color: #a2ded0;
 $restart-color: #F2784B;
-//$stopped-color: #f64747;
 $stopped-color: $red-color;
+
+// one use colors
+$active-pink: #E1DFD8;
+$inactive-grey: #EC4863;
+$dark-blue-bg: #28292E;
+$blue-text: #9CA3BA;
+$muted-cream-color: #F9F8F4;
+$bright-cream-color: #F0EDE3;

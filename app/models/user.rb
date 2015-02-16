@@ -1,9 +1,14 @@
 class User < ActiveRecord::Base
+  include Hooks
+  define_hook :post_create_user
+
   devise :database_authenticatable, :rememberable, :trackable
 
   has_many :meta_machines, dependent: :destroy
   has_many :new_machines, dependent: :destroy
   has_many :progresses, dependent: :destroy
+
+  auto_strip_attributes :email
 
   scope :guest, -> {
     where(guest: true)
@@ -17,20 +22,18 @@ class User < ActiveRecord::Base
 
   def self.create_guest!
     email = "guest_#{SecureRandom.uuid}@alpha.virtkick.io"
-    create_user! email, true
+    create_user! email, guest: true
   end
 
   def self.create_single_user!
     email = 'user@alpha.virtkick.io'
     user = User.where(email: email).first
     return user if user
-    create_user! email, false
+    create_user! email
   end
 
-  def self.create_user! email, guest
-    user = User.new email: email, guest: guest
-    user.save validate: false
-    user
+  def self.create_private_user! email, password
+    create_user! email, password: password, validate: true
   end
 
   def machines
@@ -43,5 +46,15 @@ class User < ActiveRecord::Base
 
   def to_s
     "User #{id}: #{email}"
+  end
+
+  private
+  def self.create_user! email, password: nil, guest: false, validate: false
+    user = User.new \
+        email: email,
+        password: password,
+        guest: guest
+    user.save validate: validate
+    user
   end
 end

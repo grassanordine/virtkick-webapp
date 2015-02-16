@@ -4,33 +4,25 @@
     = @machine.hostname
 
 - content_for :header do 
-  base href="/machines/#{@machine.id}/"
+  base href="/machines/"
 
 - content_for :scripts do
   = requirejs_include_tag 'pages/machineShow'
 
-input(type='hidden' id='vnc_password' value=@machine.vnc_password)
+= object_to_json_constant 'vncPassword', @machine.vnc_password
+= object_to_json_constant 'initialMachineData', @machine
+= object_to_json_constant 'isoImagesData', @iso_images
+= object_to_json_constant 'diskTypes', @disk_types
+= object_to_json_constant 'isoData', @isos
+= object_to_json_constant 'diskPlans', Defaults::DiskSizePlan.all
+
 #page-machine.ng-cloak ng-controller="ShowMachineCtrl as machine"
   - tabs = %w(power console storage settings)
-
-  script type="application/json" id="initialMachineData"
-    = @machine.to_json.html_safe
-
-  script type="application/json" id="isoImagesData"
-    = @iso_images.to_json.html_safe
-
-  script type="application/json" id="diskTypes"
-    = @disk_types.to_json.html_safe
-
-  script type="application/json" id="isoData"
-    = @isos.to_json.html_safe
-
-  script type="application/json" id="diskPlans"
-    = Defaults::DiskSizePlan.all.to_json.html_safe
 
   tabset justified=1 type='pills'
     - for tab in tabs
       tab heading=tab.capitalize active="data.active.#{tab}" select="activate('#{tab}')"
-  div.tab-content(ng-view ng-animate)
+  div.tab-content(ui-view)
+  div.tab-content(ui-view='console' ng-show='data.active.console')
 
 

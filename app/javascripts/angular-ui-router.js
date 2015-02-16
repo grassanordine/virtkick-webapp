@@ -2680,7 +2680,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
    *   Useful for when you'd like to modify $location.search() without triggering a reload.
    * <pre>reloadOnSearch: false</pre>
    *
-   * @param {object=} stateConfig.data
+   * @param {object=} stateConfig.methods
    * <a id='data'></a>
    *
    * Arbitrary data object, useful for custom configuration.  The parent state's `data` is

@@ -1,0 +1,33 @@
+.btn {
+  @include box-shadow(none !important);
+  @include transition(background-color, 0.15s, ease-in, 0);
+  
+  &:hover, &.active {
+    @include transition(background-color, 0.15s, ease-in, 0);
+  }
+  
+  .default {
+    color: $bright-violet-color;
+    background-color: $cream-color;
+  }
+
+  &.btn-primary {
+    border: 1px solid $red-color !important; 
+    &:hover {
+      border: darken($red-color, 10%);
+    }
+  }
+
+  &.btn-default {
+    border: 1px solid $cream-color !important; 
+  }
+
+  &.btn-default-focus {
+    color: $bright-violet-color;
+    background-color: $cream-color;
+  }
+}
+
+.btn.btn-lg {
+  @include button-size(20px, 35px, 17px, 17px, 4px);
+}

@@ -6,6 +6,8 @@ Bundler.require(*Rails.groups)
 
 module VirtkickWebapp
   class Application < Rails::Application
+    $LOAD_PATH.unshift Rails.root
+
     # config.time_zone = 'Pacific Time (US & Canada)'
     config.i18n.default_locale = :en
     config.i18n.fallbacks = true
@@ -34,13 +36,8 @@ module VirtkickWebapp
 
     config.active_job.queue_adapter = :delayed_job
 
-    config.x.demo = false
-    config.x.demo_timeout = false
-    if ENV['DEMO']
-      timeout = ENV['DEMO_TIMEOUT'] || 30
-      config.x.demo = true
-      config.x.demo_timeout = timeout.to_i
-    end
+    demo_timeout = ENV['VIRTKICK_DEMO_TIMEOUT'] || 30
+    config.x.demo_timeout = demo_timeout.to_i
 
     config.after_initialize do
       bin_name = File.basename $0

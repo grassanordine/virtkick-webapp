@@ -1,0 +1,69 @@
+.dashboard {
+  background-color: $cream-color;
+  padding: 40px 30px;
+  color: $dark-violet-color;
+  font-size: $text-normal;
+  border-radius: 4px;
+
+  @media (max-width: $screen-sm-max) {
+    .col-md-6 {
+      margin-top: 40px;
+
+      &:first-child {
+        margin-top: 0px;
+      }
+    }
+  }
+
+  &.setup {
+    background-color: transparent;
+    border: 1px solid $border-pink-color;
+
+    .setup-icon {
+      color: $cream-light-color;
+      text-align: center;
+
+      .fa {
+        font-size: 70px;
+      }
+    }
+  }
+
+  h5 {
+    font-size: $header-small;
+    margin-top: 0px;
+    margin-bottom: 30px;
+    font-weight: bold
+  }
+
+  .small-label {
+    font-size: $text-small;
+  }
+
+  .btn.btn-lg {
+    border: 0px solid transparent !important;
+    @include button-size(18px, 35px, $text-normal, $text-normal, 4px);
+  }
+
+  .value-field {
+    vertical-align: top;
+    display: inline-block;
+    background-color: $white;
+    padding: 10px; 
+    text-align: center;
+    font-weight: bold;
+    @include button-size(18px, 35px, $header-small, $text-normal, 4px);
+  }
+
+  a.link {
+    margin-left: 13px;
+    margin-right: 3px;
+    cursor: pointer;
+    text-decoration: none;
+
+    i {
+      font-size: $text-small;
+      margin-right: 3px;
+    }
+  }
+}

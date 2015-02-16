@@ -18,6 +18,7 @@ class MetaMachine < ActiveRecord::Base
   end
 
   def mark_deleted
+    CommitedCredit.release_use self.id
     update_attribute :deleted, true
   end
 

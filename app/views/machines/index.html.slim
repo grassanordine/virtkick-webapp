@@ -8,31 +8,41 @@
   - if user_signed_in?
     = link_to 'Create a new machine', new_machine_path, class: 'btn btn-primary btn-block'
 
-#page-index
+#page-index(ng-controller='MachineList')
   .items
     ul
       li
         p
           i.oi.oi-monitor
           | Machines
-        p.value = @machines.count
+        p.value.ng-cloak ng-if='!state.loading'
+          | {{machines.length}}
+        p.value ng-if='state.loading'
+          | &nbsp;
       li
         p
           i.oi.oi-puzzle-piece
           | Memory
-        p.value = number_to_human_size_with_unit @machines.sum(&:memory).megabytes, min_unit: 'MB'
+        p.value.ng-cloak ng-if='!state.loading'
+          | {{machines | map: 'memory' | sum | bytes: 'mb'}}
+        p.value ng-if='state.loading'
+          | &nbsp;
       li
         p
           i.fa.fa-database
           | Storage
-        p.value = number_to_human_size_with_unit @machines.deep_sum(:disks, :size), min_unit: 'GB'
+        p.value.ng-cloak ng-if='!state.loading'
+          | {{machines | map: 'disks' | flatten | map: 'size' | sum | bytes}}
+        p.value ng-if='state.loading'
+          | &nbsp;
       li
         p
           i.oi.oi-credit-card
           | Monthly
-        p.value free
+        p.value
+          | free
 
-  - if @machines.count > 0
+  span.ng-cloak(ng-if='machines.length')
     table.table.table-striped
       thead
         tr
@@ -40,13 +50,19 @@
           th.memory Memory
           th.storage Storage
       tbody
-        - @machines.each do |machine|
-          tr
-            td.name class=(machine.status.running? ? 'on' : 'off')
-              i class=machine.status.icon
-              a href=machine_path(machine) = machine.hostname
-            td.memory = number_to_human_size(machine.memory.megabytes)
-            td.storage = number_to_human_size(machine.disks.sum &:size)
-  - else
+        tr(ng-repeat='machine in machines')
+          td.name ng-class="{on : machine.status.running, off: !machine.status.running}"
+            i class='icon fa fa-{{machine.status.icon}}'
+            a href="/machines/{{machine.id}}"
+              | {{machine.hostname}}
+          td.memory
+            | {{machine.memory | bytes: 'mb'}}
+          td.storage
+            | {{machine.disks | map: 'size' | sum | bytes}}
+  span.ng-cloak(ng-if='!machines.length && !state.loading')
     p You don't have a machine yet. Kick things off and #{link_to 'create one!', new_machine_path}
+  span.ng-cloak(ng-if='state.loading')
+    p
+      ajaxloader(size=20 style='margin-right: 5px')
+      | Wait a sec while we load all of your machines ...
 

@@ -1,37 +1,15 @@
 define(function(require) {
   require('appcommon');
-  var $ = require('jquery');
-
-  var handleProgress = require('handleProgress');
 
   var angular = require('angular');
-  require('angular-messages'); // for ngMessages
-  require('ui-bootstrap');
 
-  var app = angular.module('app', ['ui.bootstrap', 'ngMessages', require('directives/preloader/preloader'), require('directives/long-run-button/directive')]);
+  require('!domReady');
 
-
-  var machineProgress =  function(progressId, onSuccess) {
-    var id = setInterval(function() {
-      return $.ajax('/machine_progress/' + progressId).success(function(data) {
-        if (!data.finished) {
-          return;
-        }
-        clearInterval(id);
-
-        onSuccess(data);
-      });
-    }, 500);
-  };
-
-  app.controller('AppCtrl', function($scope) {
-    $scope.data = {
-      menuCollapse: false
-    };
-  });
-
-  require('csrfSetup')(app);
-
+  var app = angular.module('app', [
+    require('modules/common'),
+    require('directives/preloader/preloader'),
+    require('directives/long-run-button/directive')
+  ]);
 
   // directive for checking validity of the form
   // this will be wrapped in something nicer in the future :)
@@ -44,11 +22,13 @@ define(function(require) {
             if(typeof modelValue == 'undefined') {
               return reject();
             }
-            $http.post('/machines',  {machine: {
+            $http.post('/machines',  {
+              validate: true,
+              machine: {
               hostname: modelValue
             }}).success(function(arg) {
               resolve();
-            }).error(function(arg) {
+
               // cache set errors
               ctrl.errors = ctrl.errors || {};
               Object.keys(ctrl.errors).forEach(function(error) {
@@ -76,44 +56,61 @@ define(function(require) {
     };
   });
 
-  app.controller('NewMachineCtrl', function($scope, $q) {
-    $scope.data = {};
+  app.controller('NewMachineCtrl', function($scope, $q, $http,
+                                            plansData,
+                                            isosData,
+                                            $timeout, $hook) {
+    console.log("NEW controller");
 
+    $scope.plans = plansData;
+    $scope.isos = isosData;
+
+    $scope.imageTypes =  [['Mount ISO', 'isos'], ['Appliance', 'appliances'], ['1-Click App', 'apps']].map(function(elem) {
+      return {
+        name: elem[0],
+        id: elem[1]
+      }
+    });
+
+    var machineProgress =  function(progressId) {
+      function doQuery() {
+        return $http.get('/machine_progress/' + progressId).then(function(res) {
+          if (!res.data.finished) {
+            return $timeout(doQuery, 250);
+          }
+          return res.data;
+        });
+      }
+      return $timeout(doQuery, 250);
+    };
+
+    $scope.data = {};
 
     $scope.gotoMachine = function() {
       window.location.href = '/machines/' + $scope.data.createdMachineId;
     };
 
     $scope.createMachine = function() {
-      return $q(function(resolve, reject) {
-        $.ajax({
-          url: '/machines',
-          type: 'POST',
-          data: {
-            machine: {
-              hostname: $scope.data.hostname,
-              plan_id: $scope.data.planId,
-              image_type: $scope.data.imageType,
-              iso_distro_id: $scope.data.isoId
-            }
-          },
-          dataType: "json",
-          success: function(data) {
-            machineProgress(data.data, function(data) {
-              $scope.$apply(function() {
-                $scope.data.createdMachineId = data.given_meta_machine_id;
-              });
-              resolve();
+      //if($scope.billingMethod.hasStripeSetup) {
+      //  return create;
+      //}
 
-            });
-          },
-          error: function(err) {
-            reject(err);
+      function create() {
+        return $http.post('/machines', {
+          machine: {
+            hostname: $scope.data.hostname,
+            plan_id: $scope.data.planId,
+            image_type: $scope.data.imageType,
+            iso_distro_id: $scope.data.isoId
           }
+        }).then(function(data) {
+          return machineProgress(data.data.data).then(function(data) {
+            $scope.data.createdMachineId = data.given_meta_machine_id;
+          });
         });
-      });
+      }
+      return $hook('createMachine').then(create);
     };
-
   });
 
   angular.element().ready(function() {

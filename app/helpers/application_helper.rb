@@ -1,4 +1,5 @@
 module ApplicationHelper
+
   def bootstrap_alert_class_for_flash type
     case type.to_sym
       when :success
@@ -29,5 +30,16 @@ module ApplicationHelper
     else
       number_to_human_size number, options
     end
+  end
+
+  def object_to_json_constant name, object
+    locals = {id: name.camelize(:lower), value: object.to_json}
+
+    render file: 'helpers/object_to_json_constant' , locals: locals
+  end
+
+  def setting_to_json_constant name
+    @val = Setting.get name
+    object_to_json_constant name.camelize(:lower), @val
   end
 end

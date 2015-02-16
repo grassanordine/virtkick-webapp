@@ -3,4 +3,12 @@ class Setting < ActiveRecord::Base
     val = Setting.where(key: key).first.try(:val)
     val.nil? ? default : val
   end
+
+  def self.get name
+    if Rails.env.development?
+      find_by_key(:val) || ENV['VIRTKICK_' + name.upcase]
+    else
+      find_by_key :val
+    end
+  end
 end

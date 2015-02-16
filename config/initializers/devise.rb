@@ -23,4 +23,8 @@ Devise.setup do |config|
   # config.email_regexp = /\A[^@]+@[^@]+\z/
   config.reset_password_within = 6.hours
   config.sign_out_via = :get # TODO: change to :delete before merging into master
+
+  config.warden do |manager|
+    manager.failure_app = DeviseDemoRedirector
+  end
 end

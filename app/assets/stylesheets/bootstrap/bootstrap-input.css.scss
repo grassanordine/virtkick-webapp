@@ -1,0 +1,80 @@
+input, .form-control input, select, .form-control select, .input-group input, textarea, .form-control textarea {
+  @include box-shadow(none !important);
+  border-color: $border-pink-color !important;
+  border-style: solid !important;
+  border-width: 1px !important;
+
+  &:focus, &:active {
+    border-color: darken($border-pink-color, 10%) !important;
+  }
+
+  &:focus, &:active {
+    @include box-shadow(0 0 8px rgba(236,72,99,0.6) !important);
+    @include box-shadow(none !important);
+  }  
+}
+
+input.wide {
+  height: 50px;
+  font-size: $text-normal;
+  line-height: 50px;
+}
+
+.input-group {
+  .input-group-addon {
+    border-color: $border-pink-color !important;
+    background-color: transparent;
+    color: $vk-primary;
+  }
+
+  input {
+    padding: 6px 12px !important;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+
+    &:focus {
+      outline-color: transparent;
+    }
+  }
+
+  .input-group-addon.dropdown-toggle {
+    background-color: $red-color !important;
+    border-color: $red-color !important;
+    cursor: pointer;
+
+    span {
+      color: white;
+    }
+  }
+}
+
+.form-group.has-error {
+  color: $vk-primary !important;
+
+  input.form-control, .input-group-addon {
+    border-color: lighten($vk-primary, 15%) !important;
+  }
+}
+
+.form-group.has-success {
+  color: $vk-text !important;
+
+  input.form-control, .input-group-addon {
+    border-color: lighten($vk-secondary, 15%) !important;
+  }
+}
+
+::-webkit-input-placeholder { 
+  color: $placeholder !important;
+}
+:-moz-placeholder { 
+  color: $placeholder !important;
+  opacity:  1;
+}
+::-moz-placeholder { 
+  color: $placeholder !important;
+  opacity:  1;
+}
+:-ms-input-placeholder { 
+  color: $placeholder !important;
+}

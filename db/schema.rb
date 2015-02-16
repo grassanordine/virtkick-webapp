@@ -11,7 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150125234459) do
+ActiveRecord::Schema.define(version: 20150209011024) do
+  create_table "commited_credits", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "amount"
+    t.integer  "plan_id"
+    t.datetime "date_from"
+    t.datetime "date_to"
+    t.integer  "machine_id"
+    t.text     "in_debt"
+  end
+
+  add_index "commited_credits", ["in_debt"], name: "index_commited_credits_on_in_debt"
+  add_index "commited_credits", ["machine_id"], name: "index_commited_credits_on_machine_id"
+  add_index "commited_credits", ["plan_id"], name: "index_commited_credits_on_plan_id"
+  add_index "commited_credits", ["user_id"], name: "index_commited_credits_on_user_id"
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -73,8 +87,16 @@ ActiveRecord::Schema.define(version: 20150125234459) do
     t.datetime "updated_at"
   end
 
-# Could not dump table "progresses" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
+  create_table "progresses", force: :cascade do |t|
+    t.integer  "user_id",                    null: false
+    t.boolean  "finished",   default: false, null: false
+    t.string   "error"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.text     "data"
+  end
+
+  add_index "progresses", ["user_id"], name: "index_progresses_on_user_id"
 
   create_table "settings", force: :cascade do |t|
     t.string   "key",        null: false

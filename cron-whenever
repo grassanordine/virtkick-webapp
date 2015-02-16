@@ -1,0 +1,6 @@
+#!/bin/bash
+cd "$(dirname "$0")"
+for file in config/schedule.rb engines/**/config/schedule.rb; do
+    whenever -f "$file" 
+done 
+#node cron-server.js

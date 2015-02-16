@@ -38,7 +38,6 @@ define(function(require) {
     scope.$watch('finish', function(cur, prev) {
       if(prev == cur) return;
       if(cur === true) {
-        console.log("Call after finish");
         flyOut(function() {
           scope.afterFinish();
         });
@@ -47,12 +46,6 @@ define(function(require) {
 
     if(attrs.started)
       flyIn();
-
-    setTimeout(function() {
-      //flyOut(function () {
-      //location.reload(true);
-      //});
-    }, 5000);
   }
 
   function controller($scope) {

@@ -1,33 +1,53 @@
-class MachinesController < ApplicationController
+class MachinesController < AfterSetupController
   before_action :authenticate_user!
-
+  
+  include Hooks
+  define_hooks :pre_create_machine
+  define_hooks :on_render_new
+  
   include FindMachine
   find_machine_before_action :id, except: [:index, :new, :create]
 
   respond_to :html
   respond_to :json
 
-
   def index
-    @machines = current_user.machines
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: {machines: current_user.machines}
+      }
+    end
   end
 
   def new
     @machine ||= NewMachine.new
     @plans ||= Defaults::MachinePlan.all
+
     @isos ||= Plans::IsoDistro.all
+
+    run_hook :on_render_new
+
     respond_with @machine
+  end
+
+  def validate
+    machine_params = NewMachine.check_params params
+    @machine = current_user.new_machines.build machine_params
+
+    valid = @machine.valid?
+    render json: {errors: valid ? [] : @machine.errors}
   end
 
   def create
     machine_params = NewMachine.check_params params
     @machine = current_user.new_machines.build machine_params
 
-    if params[:validate]
-      @machine.valid?
-      new
-      return
-    end
+    return validate if params[:validate]
+
+    @machine.valid?
+
+    run_hook :pre_create_machine
 
     if @machine.save
       progress_id = MachineCreateJob.perform_later current_user, @machine.id

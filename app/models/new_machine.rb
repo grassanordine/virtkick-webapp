@@ -10,7 +10,6 @@ class NewMachine < ActiveRecord::Base
   # Form only
   attr_accessor :image_type
 
-
   def plan
     Defaults::MachinePlan.find plan_id if plan_id
   end

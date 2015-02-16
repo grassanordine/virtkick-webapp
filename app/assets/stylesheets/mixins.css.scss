@@ -16,3 +16,28 @@
   background-color: $grouping-bg;
   border-radius: 4px;
 }
+
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-o-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+@include keyframes(fade-in) {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@include keyframes(fade-out) {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}

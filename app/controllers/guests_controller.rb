@@ -1,4 +1,4 @@
-class GuestsController < ApplicationController
+class GuestsController < AfterSetupController
   layout 'raw'
 
   before_action do
@@ -7,15 +7,20 @@ class GuestsController < ApplicationController
 
 
   def index
+    if Virtkick.mode.localhost?
+      sign_in User.create_single_user!
+      redirect_to machines_path
+    elsif Virtkick.mode.demo?
+      render action: 'index_demo'
+    else
+      redirect_to machines_path
+    end
   end
 
   def create
-    if @demo
-      sign_in User.create_guest!
-    else
-      sign_in User.create_single_user!
-    end
+    raise unless Virtkick.mode.demo?
 
+    sign_in User.create_guest!
     redirect_to machines_path
   end
 end

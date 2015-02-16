@@ -1,7 +1,12 @@
 @import 'colors';
+@import 'variables';
 @import 'mixins';
 @import 'bootstrap-customize';
 @import 'bootstrap';
+@import 'bootstrap/bootstrap-btn';
+@import 'bootstrap/bootstrap-input';
+@import 'bootstrap/bootstrap-modal';
+@import 'bootstrap/bootstrap-table';
 @import 'fonts';
 
 // utility to hide unloaded angular content
@@ -116,6 +121,9 @@ display: none !important;
     padding-top: 10px;
     color: #5C2848 !important;
 
+    .pix {
+      display: inline-block;
+    }
     .kick {
       color: $brand-primary !important;
     }
@@ -353,9 +361,11 @@ h3 {
 
 //@import 'pages/machine/storage.css.scss';
 
+@import 'components/all';
+
 @import 'pages/all';
+
 @import 'views/setup/index';
-//@import 'vendor/*.css.scss';
 
 @import 'ui-select';
 // ignore .less for now
@@ -371,7 +381,4 @@ h3 {
   cursor: pointer;
 }
 
-.modal-backdrop {
-  position: fixed;
-  bottom: 0;
-}
+<%= include_engines %>

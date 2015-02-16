@@ -1,0 +1,90 @@
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  .modal-dialog {
+    .modal-content {
+      @include box-shadow(none !important);
+
+      .modal-header {
+        padding-top: 25px;
+        padding-bottom: 20px;
+        background-color: $bright-cream-color;
+        color: $bright-violet-color;
+        font-weight: 700;
+
+        h3 {
+          text-align: center;
+        }
+      }
+
+      .modal-body {
+        padding: 15px $modal-inner-padding 15px $modal-inner-padding;
+      }
+
+      .modal-footer {
+        text-align: center;
+        padding: 15px $modal-inner-padding 45px $modal-inner-padding;
+
+        &.no-border-top {
+          border-top: 0;
+        }
+
+        .btn {
+          margin-top: 10px;
+        }
+
+        .btn-lg {  
+          @include button-size(18px, 45px, $text-normal, $text-normal, 4px);
+        }
+      }
+
+      @media (max-width: $screen-sm-min - 1) {
+        margin-top: 10%;
+        margin-left: 10%;
+        margin-bottom: 10%;
+        margin-right: -40px;
+
+        .modal-header, .modal-body, .modal-footer  {
+          padding-right: $modal-inner-padding + 40px;
+        }
+      }
+
+    }
+  }
+
+  // When fading in the modal, animate it to slide down
+  &.fade .modal-dialog {
+    @include translate(55%, 0);
+    @include transition-transform(0.7s ease);
+
+    @media (min-width: $screen-sm-min) {
+      @include translate(0, -55%);
+    }
+  }
+  &.in .modal-dialog { @include translate(0, 0) }
+}
+
+/* 
+ * Modal background
+ * 
+ * WA: need to manualy add closing backdrop class and change animation time 
+ * in ui-bootstrap.js (function checkRemoveBackdrop)
+ * issue is known, waiting for fix: https://github.com/angular-ui/bootstrap/pull/2724
+ */
+.modal-backdrop {
+  position: fixed;
+  bottom: 0;
+  
+  &.fade { 
+    @include opacity(0);
+  }
+  &.in {
+    @include transition(opacity, 0.7s, ease, 0s);
+    @include opacity(0.9);
+  }
+  @include transition(opacity, 0.7s, ease, 0s);
+}

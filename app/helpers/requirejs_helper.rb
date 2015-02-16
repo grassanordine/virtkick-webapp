@@ -1,34 +1,44 @@
 module RequirejsHelper
 
-  def requirejs_include_tag name = nil
+  def self.included base
+    require_config_file = YAML.load_file(Rails.root.join('config', 'requirejs.yml'))
 
-    requireConfigFile = YAML.load_file(Rails.root.join('config', 'requirejs.yml'))
+    Dir['engines/*/config/requirejs.yml'].each do |requirejs_file|
+      loaded_extension = YAML.load_file(requirejs_file)
+      require_config_file = require_config_file.deeper_merge(loaded_extension)
+    end
 
+    if Rails.env.production?
+      require_config = {baseUrl: '/javascripts'}
+    else
+      require_config = {baseUrl: '/assets'}
+    end
+
+    if require_config_file['shim'] or require_config_file['paths']
+      require_config = require_config.deeper_merge({
+           shim: require_config_file['shim'],
+           paths: require_config_file['paths']
+        }
+      )
+    end
+    @@require_config_json = require_config.to_json
+  end
+
+  def requirejs_include_tag *args
     html = ''
     html += '<script src="/require.js"></script>'
-
-    if Rails.env.production? 
-        requireConfig = {"baseUrl" => "/javascripts"}
-    else
-        requireConfig = {"baseUrl" => "/assets"}
-    end
-    
-    requireConfig = requireConfig.merge(
-      {"shim" => requireConfigFile["shim"]}
-    ) if requireConfigFile["shim"]
 
     html +=
 '''
 <script>
 require.config(
 '''
-    html += requireConfig.to_json
+    html += @@require_config_json
     html += 
 '''
 );
 '''
-
-    html += 'require(["' + name + '"]);'
+    html += 'require([' + args.map {|a| '"' + a + '"'}.join(',') + ']);'
     html +=
 '''
 </script>

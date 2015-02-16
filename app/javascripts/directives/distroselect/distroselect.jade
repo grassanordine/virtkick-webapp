@@ -1,11 +1,11 @@
 div.distroselect
   ui-select(ng-model="machine.selectedIso", theme="bootstrap", style="width: {{width}};" on-select="machine.changeIso($item.id)")
     ui-select-match(placeholder="None selected")
-      img.chosen-distro(ng-if="!machine.mountingIso", ng-src="/assets/distros/{{idToCode[$select.selected.iso_distro_id]}}.png")
+      img.chosen-distro(ng-if="!machine.mountingIso", ng-src="/assets/distros/{{idToCode[$select.selected.isoDistroId]}}.png")
       .ajaxloader-wrapper(ng-if="machine.mountingIso")
         ajaxloader(size=14)
       span.chosen-distro-name
-        | {{$select.selected.long_name}}
+        | {{$select.selected.longName}}
     ui-select-choices(repeat="isoImage in isoImages | filter: $select.search")
-      img.distro-icon(ng-src="/assets/distros/{{idToCode[isoImage.iso_distro_id]}}.png")
-      span(ng-bind-html="isoImage.long_name | highlight: $select.search")
+      img.distro-icon(ng-src="/assets/distros/{{idToCode[isoImage.isoDistroId]}}.png")
+      span(ng-bind-html="isoImage.longName | highlight: $select.search")

@@ -13,8 +13,13 @@ define(function(require) {
       $scope.longRunButton.loadingVisible = true;
       $scope.longRunButton.loadingFinish = false;
 
-      $scope.running = true;
-      $scope.runningAnimation = true;
+      if($scope.running) {
+        $scope.running = true;
+      }
+      if($scope.runningAnimation) {
+        console.log("START RUNNIGN ANIMTION");
+        $scope.runningAnimation = true;
+      }
 
       var promise = $scope.run();
 
@@ -24,7 +29,9 @@ define(function(require) {
         setTimeout(function() {
           $scope.$apply(function() {
             $scope.longRunButton.loadingVisible = false;
-            $scope.runningAnimation = false;
+            if($scope.runningAnimation) {
+              $scope.runningAnimation = false;
+            }
             $scope.onFinishAnimation();
           });
         }, 5);
@@ -66,8 +73,12 @@ define(function(require) {
         $scope.longRunButton.loadingFinish = true;
         $scope.longRunButton.loading = false;
         $scope.longRunButton.loadingVisible = false;
-        $scope.runningAnimation = false;
-        $scope.running = false;
+        if($scope.runningAnimation) {
+          $scope.runningAnimation = false;
+        }
+        if($scope.running) {
+          $scope.running = false;
+        }
         if($scope.$parent) {
           $scope.$parent.$error = data;
         }

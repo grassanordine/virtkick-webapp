@@ -2,7 +2,7 @@
   .console-window-wrapper
     .console-window(ng-class="{focused: consoleFocused, paused: console.paused, stopped: machine.status.attributes.id == 'stopped'}")
       .focus-indicator
-      console(password="{{machine.vnc_password}}",uuid="{{machine.uuid}}",focused="consoleFocused",state="machine",control='console')
+      console(password="{{machine.vncPassword}}",uuid="{{machine.uuid}}",focused="consoleFocused",state="machine",control='console')
       .vm-actions
         .iso
           distroselect(machine='machine')

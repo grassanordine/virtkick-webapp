@@ -11,7 +11,7 @@ shim:
     exports: 'RFB'
 modules:
   - name: 'appcommon'
-    include: ['jquery', 'jquery_ujs', 'angular']
+    include: ['jquery', 'angular', 'modules/common']
   - name: 'pages/machineIndex'
     include: ['views/machine/index']
     exclude: ['appcommon']
@@ -24,7 +24,6 @@ modules:
   - name: 'pages/guestsIndex'
     include: ['views/guests/index']
     exclude: ['appcommon']
-#uncomment to debug builds
 preserveLicenseComments: false
 generateSourceMaps: true
 optimize: uglify2

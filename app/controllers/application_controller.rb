@@ -1,12 +1,26 @@
 class ApplicationController < ActionController::Base
+  include RequirejsHelper
+
   protect_from_forgery with: :exception
+
+  @@ready ||= false
 
   ## Uncomment to debug requests
   # before_action do
   #   puts request.headers.inspect
   # end
 
-  include DemoSessionLimiter
+  before_action do
+    @navbar_links = []
+  end
+
+  before_action do
+    @@paths ||= Dir['engines/*/*.gemspec'].map { |e| File.dirname e}
+
+    @@paths.each do |engine_path|
+      prepend_view_path "#{engine_path}/app/views"
+    end
+  end
 
   rescue_from Exception do |e|
     if request.format == 'application/json'
@@ -14,6 +28,11 @@ class ApplicationController < ActionController::Base
         render json: {exception: e.class.name, message: e.message}, status: 500
       else
         render json: {exception: true}, status: 500
+      end
+
+      puts e.message
+      e.backtrace.each do |line|
+        puts line
       end
       Bugsnag.notify_or_ignore e
     else
@@ -37,5 +56,4 @@ class ApplicationController < ActionController::Base
     raise 'Not an ID. Make sure Job returns a Numeric - or use TrackableJob.' unless progress_id.is_a? Numeric
     render json: {progress_id: progress_id, data: custom_data}
   end
-  include RequirejsHelper
 end

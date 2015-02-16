@@ -10,7 +10,6 @@ class Infra::Machine < Infra::Base
   attr_accessor :networks
   attr_accessor :iso_dir, :iso_distro_id, :iso_image_id
 
-
   def self.all
     Wvm::Machine.all
   end
@@ -62,11 +61,11 @@ class Infra::Machine < Infra::Base
     # TODO: https://github.com/pluginaweek/state_machine
 
     self.data = [
-        {id: :running, name: 'Running', running: true, icon: 'fa fa-play'},
-        {id: :saved, name: 'Saved', running: false, icon: 'fa fa-stop'},
-        {id: :suspended, name: 'Paused', running: false, icon: 'fa fa-pause'},
-        {id: :stopped, name: 'Stopped', running: false, icon: 'fa fa-stop'},
-        {id: :unknown, name: 'Unknown', running: nil, icon: 'fa fa-question'}
+        {id: :running, name: 'Running', running: true, icon: 'play'},
+        {id: :saved, name: 'Saved', running: false, icon: 'stop'},
+        {id: :suspended, name: 'Paused', running: false, icon: 'pause'},
+        {id: :stopped, name: 'Stopped', running: false, icon: 'stop'},
+        {id: :unknown, name: 'Unknown', running: nil, icon: 'question'}
     ]
 
     def stopped?

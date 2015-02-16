@@ -1958,7 +1958,9 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.transition'])
           //remove backdrop if no longer needed
           if (backdropDomEl && backdropIndex() == -1) {
             var backdropScopeRef = backdropScope;
-            removeAfterAnimate(backdropDomEl, backdropScope, 150, function () {
+            // WA: start backdrop fade animation
+            backdropDomEl[0].className = "modal-backdrop fade";
+            removeAfterAnimate(backdropDomEl, backdropScope, 700, function () {
               backdropScopeRef.$destroy();
               backdropScopeRef = null;
             });

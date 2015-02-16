@@ -1,20 +1,24 @@
 define(function(require) {
   require('appcommon');
-  var $ = require('jquery');
   require('!domReady');
 
-  require('ui-bootstrap');
-  require('angular-sanitize');
-  require('angular-messages');
-
   var angular = require('angular');
-  //var handleProgres = require('handleProgress');
   require('angular-route');
 
-  // ngSanitize is for ng-bind-html
   var app = angular.module('app',
-    ['ui.bootstrap', require('directives/ng-confirm'), 'ngRoute', require('angular-ui-router'), 'ngMessages', require('./console'), require('directives/distroselect/distroselect'), require('directives/ajaxloader/ajaxloader')]
+    [
+      require('modules/handleProgress'),
+      require('modules/common'),
+      require('directives/ng-confirm'),
+      'ngRoute',
+      require('angular-ui-router'),
+      require('./console'),
+      require('directives/distroselect/distroselect'),
+      require('directives/ajaxloader/ajaxloader'),
+      require('directives/long-run-button/directive')
+    ]
   );
+
 
   app.controller('PowerCtrl', function($scope) {
   });
@@ -26,14 +30,51 @@ define(function(require) {
   });
 
 
-  app.config(function($routeProvider, $locationProvider) {
+  app.config(function($stateProvider, $locationProvider, $urlRouterProvider, initialMachineData) {
     $locationProvider.html5Mode(true);
-    $routeProvider.
-      when('/power', {template: require('jade!templates/machine/powerView'), controller: 'PowerCtrl' }).
-      when('/console', {template: require('jade!templates/machine/consoleView'), controller: 'ConsoleCtrl' }).
-      when('/storage', {template: require('jade!templates/machine/storageView'), controller: 'StorageCtrl' }).
-      when('/settings', {template: require('jade!templates/machine/settingsView'), controller: 'SettingsCtrl' }).
-      otherwise({redirectTo: '/power'});
+
+    console.log('initial machine data', initialMachineData);
+    $urlRouterProvider.otherwise(initialMachineData.id + '/power', {
+      machineId: initialMachineData.id
+    });
+
+    $stateProvider
+        .state('list', {
+          url: '/',
+          onEnter: function() {
+            window.location.href = '/machines';
+          }
+        })
+        .state('show', {
+          url: '/:machineId',
+          abstract: true,
+          template: '<ui-view/>'
+        })
+        .state('show.power', {
+          url: '/power',
+          template: require('jade!templates/machine/powerView'),
+          controller: 'PowerCtrl'
+        })
+        .state('show.console', {
+          url: '/console',
+          sticky: true,
+          views: {
+            'console@': {
+              template: require('jade!templates/machine/consoleView'),
+              controller: 'ConsoleCtrl'
+            }
+          }
+        })
+        .state('show.storage', {
+          url: '/storage',
+          template: require('jade!templates/machine/storageView'),
+          controller: 'StorageCtrl'
+        })
+        .state('show.settings', {
+          url: '/settings',
+          template: require('jade!templates/machine/settingsView'),
+          controller: 'SettingsCtrl'
+        });
   });
 
   app.controller('AppCtrl', function($scope) {
@@ -42,35 +83,53 @@ define(function(require) {
     };
   });
 
-  app.controller('ShowMachineCtrl', function($scope, $rootScope, $http, $location) {
+  app.controller('ShowMachineCtrl',
+      function($scope,
+               $rootScope,
+               $http,
+               $location,
+               initialMachineData,
+               isoData,
+               isoImagesData,
+               diskTypes,
+               diskPlans,
+               vncPassword,
+               $interval,
+               $timeout,
+               handleProgress,
+               $state,
+               $stateParams
+      ) {
+
+    $scope.$state = $state;
 
     $scope.activate = function(tab) {
-      $location.path( "/" + tab);
+      $state.go('show.'+tab, {
+        machineId: initialMachineData.id
+      });
     };
 
-    $scope.machine = JSON.parse($('#initialMachineData').html());
+    $scope.machine = initialMachineData;
       // THIS is workaround for null value in rest endpoint
 
-    $scope.machine.vnc_password = $('#vnc_password').val();
+    $scope.machine.vncPassword = vncPassword;
 
     $scope.idToCode = {};
-    JSON.parse($("#isoData").html()).forEach(function(image) {
-      $scope.idToCode[image.attributes.id] = image.attributes.code;
+    isoData.forEach(function(image) {
+      $scope.idToCode[image.id] = image.code;
     });
 
-    $scope.isoImages = JSON.parse($("#isoImagesData").html()).map(function(image) {
-      return image.attributes;
-    });
+    $scope.isoImages =  isoImagesData;
 
-    $scope.diskTypes = JSON.parse($('#diskTypes').html());
+    $scope.diskTypes = diskTypes;
 
     $scope.diskPlans = {};
-    JSON.parse($('#diskPlans').html()).forEach(function(plan) {
+    diskPlans.forEach(function(plan) {
 
       $scope.diskTypes.forEach(function(type) {
         if(!$scope.diskPlans[type.id])
          $scope.diskPlans[type.id] = [];
-       $scope.diskPlans[type.id].push(plan.attributes);
+       $scope.diskPlans[type.id].push(plan);
       });
     });
 
@@ -84,68 +143,58 @@ define(function(require) {
       active: {
       }
     };
+
     $scope.data.active[$location.path().substr(1)] = true;
 
     var updateSelectedIso = function() {
       $scope.machine.selectedIso = $scope.isoImages.filter(function(image) {
-        return image.id === $scope.machine.iso_image_id
+        console.log(image);
+        return image.id === $scope.machine.isoImageId;
       })[0]
     };
 
     updateSelectedIso();
 
     $scope.machine.deletePermanently = function() {
-      $.ajax({
-        url: '/machines/' + $scope.machine.id,
-        type: 'DELETE',
-        success: function(data) {
-          window.location.href = '/machines';
-        },
-        contentType: "application/json"
+      $http.delete('/machines/' + $scope.machine.id).then(function(res) {
+        window.location.href = '/machines';
       });
     };
 
     $scope.machine.deleteDisk = function(disk) {
-      $.ajax({
-        url: '/machines/' + $scope.machine.id + '/disks/' + disk,
-        type: 'DELETE',
-        success: function(data) {
-          
-        },
-        contentType: "application/json"
+      $http.delete('/machines/' + $scope.machine.id + '/disks/' + disk).then(function(res) {
+        console.log("deleted disk");
       });
     };
 
     $scope.machine.createDisk = function(a, b) {
-      $scope.storage.showDetails = false;
-      $scope.storage.creatingDisk = true;
-      $.post('/machines/' + $scope.machine.id + '/disks',  {
+      //$scope.storage.showDetails = false;
+      //$scope.storage.creatingDisk = true;
+      return $http.post('/machines/' + $scope.machine.id + '/disks',  {
         disk: {
-          // TODO changing type here to a.name does not yield error in progress
           type: a.id,
           size_plan: b.id
         }
-      }).then(function(data) {
-        handleProgress(data.progress_id, function() {
-          $scope.storage.creatingDisk = false;
-        }, function() {
-          // TODO: show error
-          $scope.storage.creatingDisk = false;
-        });
+      }).then(function(res) {
+        return handleProgress(res.data.progress_id);
+      }).then(function() {
+        console.log("FINISH!!");
 
-      }, function(error) {
-
+        //$scope.storage.creatingDisk = false;
+      }, function() {
+        // TODO: show error
+        //$scope.storage.creatingDisk = false;
       });
     };
 
     $scope.machine.changeIso = function(imageId) {
       $scope.machine.mountingIso = true;
-      $.post('/machines/' + $scope.machine.id + '/mount_iso', {
+      $http.post('/machines/' + $scope.machine.id + '/mount_iso', {
         machine: {
           iso_image_id: imageId
         }
       }).then(function(data) {
-        handleProgress(data.progress_id, function() {
+        handleProgress(data.progress_id).then(function() {
           $scope.machine.mountingIso = false;
         }, function() {
           $scope.machine.mountingIso = false;
@@ -158,32 +207,11 @@ define(function(require) {
 
     $scope.machine.restart = function(cb) {
       $scope.console.sendCtrlAltDel()
-//      $.ajax({
-//        url: '/machines/' + $scope.machine.id + '/restart',
-//        type: 'POST',
-//        success: function(data) {
-//          if(cb) cb(null, data);
-//        },
-//        error: function(err) {
-//          if(cb) cb(err);
-//        },
-//        contentType: "application/json"
-//      });
     };
 
 
     $scope.machine.forceRestart = function(cb) {
-      $.ajax({
-        url: '/machines/' + $scope.machine.id + '/force_restart',
-        type: 'POST',
-        success: function(data) {
-          if(cb) cb(null, data);
-        },
-        error: function(err) {
-          if(cb) cb(err);
-        },
-        contentType: "application/json"
-      });      
+      return $http.post('/machines/' + $scope.machine.id + '/force_restart');
     };
 
     $scope.machine.resume = function(cb) {
@@ -230,39 +258,27 @@ define(function(require) {
       return val + ' ' + unit;
     }
 
-    var handleProgress = function(progressId, onSuccess, onError) {
-        var id = setInterval(function() {
-          return $.ajax('/progress/' + progressId).success(function(data) {
-            if (!data.finished) {
-              return;
-            }
-            clearInterval(id);
 
-            data.error === null ? onSuccess() : onError(data.error);
-          });
-        }, 500);
-      };
+    $scope.$watch(function() {
 
-      $scope.$watch(function() {
+      if($scope.machine.status.id === 'stopped') {
+        $scope.canDo = {
+          start: !$scope.requesting.start, pause: false, resume: false, stop: false, restart: false, force_restart: false, force_stop: false
+        };
+      }
+      else {
+        $scope.canDo = {
+          start: false,
+          pause: $scope.machine.status.running,
+          resume: !$scope.machine.status.running,
+          stop: $scope.machine.status.running,
+          restart: $scope.machine.status.running && !$scope.requesting.restart,
+          force_restart:true,
+          force_stop: true
+        };
+      }
 
-        if($scope.machine.status.attributes.id === 'stopped') {
-          $scope.canDo = {
-            start: !$scope.requesting.start, pause: false, resume: false, stop: false, restart: false, force_restart: false, force_stop: false
-          };
-        }
-        else {
-          $scope.canDo = {
-            start: false,
-            pause: $scope.machine.status.attributes.running,
-            resume: !$scope.machine.status.attributes.running,
-            stop: $scope.machine.status.attributes.running,
-            restart: $scope.machine.status.attributes.running && !$scope.requesting.restart,
-            force_restart:true,
-            force_stop: true
-          };
-        }
-
-      });
+    });
 
     $scope.doAction = function(name, cb) {
 
@@ -270,9 +286,10 @@ define(function(require) {
 
       $scope.requesting[name]= true;
 
-      clearTimeout(timeoutHandler);
-      $.post(actionUrl).then(function(data) {
-        handleProgress(data.progress_id, function() {
+      $timeout.cancel(timeoutHandler);
+      $http.post(actionUrl).then(function(res) {
+        var data = res.data;
+        handleProgress(data.progress_id).then(function() {
 
           updateState(function(err) {
             $scope.requesting[name]= false;
@@ -297,16 +314,30 @@ define(function(require) {
     function updateState(cb) {
       var skipIsoUpdate = !$scope.machine.mountingIso;
       if(timeoutHandler) {
-        clearTimeout(timeoutHandler);
+        $timeout.cancel(timeoutHandler);
       }
       $http.get(baseUrl + '.json').then(function(response) {
 
-        $scope.machine = $.extend($scope.machine, response.data);
+        var prevTime = $scope.machine.processorUsage.timeMillis;
+        var prevCpuTime = $scope.machine.processorUsage.cpuTime;
+
+        var humps = require('humps');
+
+        $scope.machine = angular.extend($scope.machine, humps.camelizeKeys(response.data) );
+
+        var time = $scope.machine.processorUsage.timeMillis;
+        var cpuTime = $scope.machine.processorUsage.cpuTime;
+
+        var maxMilis = (time - prevTime);
+        var usedMilis = (cpuTime - prevCpuTime)/1000000;
+
+        $scope.machine.cpuUsage = Math.min(1.0, usedMilis / maxMilis);
+
 
         // THIS is workaround for null value in rest endpoint
-        $scope.machine.vnc_password = $('#vnc_password').val();
+        $scope.machine.vncPassword = vncPassword;
 
-        $scope.console.paused = response.data.status.attributes.id === 'suspended';
+        $scope.console.paused = response.data.status.id === 'suspended';
 
         $scope.machine.stateDisconnected = false;
 
@@ -317,18 +348,18 @@ define(function(require) {
 
         if(cb) cb();
 
-        timeoutHandler = setTimeout(updateState, 1000);
+        timeoutHandler = $timeout(updateState, 1000);
       }, function(err) {
         if(cb) cb(err);
 
         $scope.machine.stateDisconnected = true;
-        timeoutHandler = setTimeout(updateState, 5000);
+        timeoutHandler = $timeout(updateState, 5000);
       });
     }
-    timeoutHandler = setTimeout(updateState, 1000);
+    timeoutHandler = $timeout(updateState, 1000);
 
     $scope.$on('$destroy', function() {
-      clearTimeout(timeoutHandler);
+      $timeout.cancel(timeoutHandler);
     });
     
 

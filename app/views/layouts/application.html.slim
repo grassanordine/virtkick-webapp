@@ -52,27 +52,33 @@ html
                   = navbar_item machines_path do
                     span.oi.oi-monitor
                     | Machines
+                  - @navbar_links.each do |link|
+                    = navbar_item link[:path] do
+                      span.oi(class="#{link[:class]}")
+                      | #{link[:title]}
+                  - if Virtkick.mode.private_cloud? or Virtkick.mode.vps_provider?
+                    = navbar_item destroy_user_session_path, method: :delete do
+                      span.fa.fa-sign-in
+                      | Sign out
                 - else
                   = navbar_item new_user_session_path do
                     span.fa.fa-sign-in
                     | Sign in
-                = navbar_item 'https://www.virtkick.io', class: 'home' do
-                  span.fa.fa-rocket
-                  | VirtKick.io
+                - if Virtkick.mode.demo?
+                  = navbar_item 'https://www.virtkick.io', class: 'home' do
+                    span.fa.fa-rocket
+                    | VirtKick.io
           .dropdown
             button.btn.btn-primary
               span.caret
               
           .desktop-newsletter.hidden-xs.hidden-sm.text-center
             = render partial: 'layouts/newsletter'
-
-
         .col-md-9
           - if notice
             .alert.alert-info = notice
           - if alert
             .alert.alert-warning = alert
-
           = yield
 
 

@@ -62,9 +62,8 @@ define(function(require) {
       var password = attrs.password;
       var uuid = attrs.uuid;
 
-      var m = window.location.pathname.match(/\/machines\/(\d+)/);
 
-      scope.rfb.connect(host, port, password, 'machines/' + m[1]+ "/vnc");
+      scope.rfb.connect(host, port, password, 'machines/' + scope.state.id + "/vnc");
     };
 
     var connectTimeout;

@@ -3,7 +3,6 @@ define('application', function(require) {
   require('jquery_ujs');
   require('jquery.ajaxchimp')
   require('bootstrap');
-  require('twitter/bootstrap/rails/confirm');
   require('!domReady');
 
   var angular = require('angular');

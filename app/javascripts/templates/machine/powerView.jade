@@ -6,11 +6,11 @@
         | {{machine.memory}} MB
     .col-sm-3
       .key Processors:
-      .val(ng-class="{bigger: machine.status.attributes.stopped}")
+      .val(ng-class="{bigger: machine.status.stopped}")
         | {{machine.processors}}
         |  CPU
       .progress
-        .progress-bar(role='progressbar', style="width: {{machine.processor_usage}}; min-width: 1%")
+        .progress-bar(role='progressbar', style="width: {{(100*machine.cpuUsage).toFixed(2)}}%; min-width: 1%")
           span.sr-only
             | {{machine.processor_usage}}
             | % usage
@@ -29,9 +29,9 @@
       .key State:
       .val.power-state.bigger(data-running="{{machine.status.running}}")
         span
-          i(class="icon {{machine.status.attributes.icon}}")
+          i(class="icon fa fa-{{machine.status.icon}}")
           span.status 
-            | {{machine.status.attributes.name}}
+            | {{machine.status.name}}
 
   //- = render partial: '/flash', locals: {section: 'power'}
 
@@ -87,3 +87,7 @@
             a(role="menuitem" ng-click="doAction('force_restart')")
               span.icon.fa.fa-power-off
               span.status Hard reset
+
+  div(ng-if="machine.error" class="alert alert-danger fade in")
+    button.close(data-dismiss="alert") ×
+    | {{machine.error}}

@@ -16,7 +16,7 @@ namespace :import do
 
     `cp #{proto_dir}/source/_newsletter.html.slim app/views/layouts/_newsletter.html.slim`
 
-    css = 'app/assets/stylesheets/application.css.scss'
+    css = 'app/assets/stylesheets/application.css.scss.erb'
     `cp #{proto_dir}/source/css/virtkick.css.scss #{css}`
     replace "@import 'vendor/*';", "@import 'vendor/*.css.scss'; // ignore .less for now", css
 

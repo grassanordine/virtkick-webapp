@@ -1,11 +1,12 @@
 describe 'Demo sessions' do
   before do
-    Rails.configuration.x.demo = true
+    SetupController.class_variable_set :@@ready, true
     Rails.configuration.x.demo_timeout = 5
+    Mode.set 'demo'
   end
 
   after do
-    Rails.configuration.x.demo = false
+    SetupController.class_variable_set :@@ready, nil
   end
 
   it 'logs out after timeout' do
