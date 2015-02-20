@@ -47,10 +47,10 @@ class MachinesController < AfterSetupController
 
     @machine.valid?
 
-    run_hook :pre_create_machine
+    hook_results = run_hook :pre_create_machine
 
     if @machine.save
-      progress_id = MachineCreateJob.perform_later current_user, @machine.id
+      progress_id = MachineCreateJob.perform_later current_user, @machine.id, hook_results
       render_progress progress_id, @machine.id
       return
     end

@@ -20,7 +20,7 @@
       .text-center
         .plans.btn-group
           input name='machine[plan_id]' ng-model='data.planId' required='true' class='hide'
-            span ng-repeat='plan in plans' style='display: block; float: left; height: 130px;'
+            span ng-repeat='plan in plans' style='display: block; float: left; height: 130px; position: relative;'
               label class='btn btn-info plan fixed-width' ng-model='data.planId' btn-radio="{{plan.id}}" ng-disabled='data.creatingMachine'
                 span.title
                   | {{plan.memory | bytes: 'gb'}}

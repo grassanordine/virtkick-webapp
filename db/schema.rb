@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150209011024) do
+ActiveRecord::Schema.define(version: 20150215004645) do
+
   create_table "commited_credits", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "amount"

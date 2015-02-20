@@ -3,8 +3,6 @@ define(function(require) {
 
   var angular = require('angular');
 
-  require('!domReady');
-
   var app = angular.module('app', [
     require('modules/common'),
     require('directives/preloader/preloader'),
@@ -60,8 +58,6 @@ define(function(require) {
                                             plansData,
                                             isosData,
                                             $timeout, $hook) {
-    console.log("NEW controller");
-
     $scope.plans = plansData;
     $scope.isos = isosData;
 
@@ -91,10 +87,6 @@ define(function(require) {
     };
 
     $scope.createMachine = function() {
-      //if($scope.billingMethod.hasStripeSetup) {
-      //  return create;
-      //}
-
       function create() {
         return $http.post('/machines', {
           machine: {
@@ -113,7 +105,12 @@ define(function(require) {
     };
   });
 
-  angular.element().ready(function() {
-    angular.bootstrap(document, ['app']);
+
+  angular.element(document).ready(function() {
+      angular.bootstrap(document, ['app']);
+      try {
+        angular.bootstrap(document, ['app']);
+      } catch(err) {
+      }
   });
 });

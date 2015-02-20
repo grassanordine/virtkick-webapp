@@ -33,7 +33,6 @@ define(function(require) {
   app.config(function($stateProvider, $locationProvider, $urlRouterProvider, initialMachineData) {
     $locationProvider.html5Mode(true);
 
-    console.log('initial machine data', initialMachineData);
     $urlRouterProvider.otherwise(initialMachineData.id + '/power', {
       machineId: initialMachineData.id
     });
@@ -98,7 +97,8 @@ define(function(require) {
                $timeout,
                handleProgress,
                $state,
-               $stateParams
+               $stateParams,
+               $rootScope
       ) {
 
     $scope.$state = $state;
@@ -138,6 +138,18 @@ define(function(require) {
       newDiskPlan: $scope.diskPlans[$scope.diskTypes[0].id][0] 
     };
 
+    $scope.$on('$stateChangeSuccess', function(state, toState, toParams, fromState, fromParams) {
+      var m;
+      m = fromState.name.match(/.*\.(.+)/);
+      if(m) {
+        $scope.data.active[m[1]] = false;
+      }
+      m = toState.name.match(/.*\.(.+)/);
+      if(m) {
+        $scope.data.active[m[1]] = true;
+      }
+    });
+
 
     $scope.data = {
       active: {
@@ -148,7 +160,6 @@ define(function(require) {
 
     var updateSelectedIso = function() {
       $scope.machine.selectedIso = $scope.isoImages.filter(function(image) {
-        console.log(image);
         return image.id === $scope.machine.isoImageId;
       })[0]
     };
@@ -170,7 +181,8 @@ define(function(require) {
     $scope.machine.createDisk = function(a, b) {
       //$scope.storage.showDetails = false;
       //$scope.storage.creatingDisk = true;
-      return $http.post('/machines/' + $scope.machine.id + '/disks',  {
+      return $http.post('/machinma' +
+      'es/' + $scope.machine.id + '/disks',  {
         disk: {
           type: a.id,
           size_plan: b.id
