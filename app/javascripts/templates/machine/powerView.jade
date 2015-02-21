@@ -17,7 +17,7 @@
     .col-sm-3
       .key Storage:
       //- TODO: sum all disks
-      .val {{toHumanValue(machine.disks[0].size)}}
+      .val {{machine.disks[0].size | bytes}}
       .progress
         .progress-bar(role='progressbar', style="width: {{machine.disks.usage}}%; min-width: 1%")
           span.sr-only

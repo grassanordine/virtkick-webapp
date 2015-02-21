@@ -8,7 +8,6 @@ define(function(require) {
   require('angular-messages'); // for ngMessages
   require('ct-ui-router-extras');
 
-
   var deps = [
     require('./constants'),
     'ui.bootstrap',
@@ -16,6 +15,7 @@ define(function(require) {
     'angular.filter',
     require('modules/hook'),
     'ct.ui.router.extras.sticky',
+    'ct.ui.router.extras.future',
     require('angular-ui-router')
   ];
 
@@ -75,18 +75,23 @@ define(function(require) {
       if (amount >= 1024) {
         amount /= 1024;
         amountFormat = 'KB';
-        if (amount >= 1024) {
+        if (amount >= 1024*5) {
           amount /= 1024;
           amountFormat = 'MB';
-          if (amount >= 1024) {
+          if (amount >= 1024*5) {
             amount /= 1024;
             amountFormat = 'GB';
-            if (amount >= 1024) {
+            if (amount >= 1024*5) {
               amount /= 1024;
               amountFormat = 'TB';
             }
           }
         }
+      }
+
+      amount = amount.toFixed(2);
+      while(amount.slice(-1).match(/[\.0]/)) {
+        amount = amount.slice(0, -1);
       }
       return amount + ' ' + amountFormat;
     };

@@ -10,6 +10,20 @@ define(function(require) {
   function controller($scope) {
     $scope.isoImages = $scope.$parent.isoImages;
     $scope.idToCode = $scope.$parent.idToCode;
+
+    $scope.state = {
+      mountingIso: false
+    };
+
+    $scope.changeIso = function(imageId) {
+      $scope.state.mountingIso = true;
+      return $scope.machine.changeIso(imageId).then(function() {
+        $scope.state.mountingIso = false;
+      }, function() {
+        $scope.state.mountingIso = false;
+      });
+    };
+
   }
 
   function link(scope, element, attrs) {
