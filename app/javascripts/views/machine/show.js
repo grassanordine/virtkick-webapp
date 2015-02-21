@@ -103,8 +103,7 @@ define(function(require) {
                $state,
                $stateParams,
                machineService,
-               vncPassword,
-               $ocLazyLoad
+               vncPassword
       ) {
 
     $scope.$state = $state;
@@ -114,10 +113,6 @@ define(function(require) {
         machineId: initialMachineData.id
       });
     };
-
-    $timeout(function() {
-      $state.go('show.foo');
-    }, 500);
 
     $scope.machine = initialMachineData;
       // THIS is workaround for null value in rest endpoint
