@@ -2,16 +2,29 @@ define(function(require) {
   require('appcommon');
 
   var angular = require('angular');
+  var moduleUri = require('module').uri;
 
-  var app = angular.module('app', [
+  var app = angular.module(moduleUri, [
     require('modules/common'),
     require('directives/preloader/preloader'),
     require('directives/long-run-button/directive')
   ]);
 
+
+  app.config(function($stateProvider) {
+    $stateProvider
+        .state('new', {
+          url: '/new',
+          template: require('jade!templates/machine/new'),
+          controller: 'NewMachineCtrl'
+        });
+
+
+  });
+
   // directive for checking validity of the form
   // this will be wrapped in something nicer in the future :)
-  app.directive('machine', function($q, $http) {
+  app.directive('machineName', function($q, $http) {
     return {
       require: 'ngModel',
       link: function(scope, elm, attrs, ctrl) {
@@ -57,7 +70,8 @@ define(function(require) {
   app.controller('NewMachineCtrl', function($scope, $q, $http,
                                             plansData,
                                             isosData,
-                                            $timeout, $hook) {
+                                            $timeout,
+                                            $hook, $state) {
     $scope.plans = plansData;
     $scope.isos = isosData;
 
@@ -83,7 +97,10 @@ define(function(require) {
     $scope.data = {};
 
     $scope.gotoMachine = function() {
-      window.location.href = '/machines/' + $scope.data.createdMachineId;
+      console.log("GOTO MACHINE", $scope.data.createdMachineId);
+      $state.go('show', {
+        machineId: $scope.data.createdMachineId
+      });
     };
 
     $scope.createMachine = function() {
@@ -104,13 +121,5 @@ define(function(require) {
       return $hook('createMachine').then(create);
     };
   });
-
-
-  angular.element(document).ready(function() {
-      angular.bootstrap(document, ['app']);
-      try {
-        angular.bootstrap(document, ['app']);
-      } catch(err) {
-      }
-  });
+  return moduleUri;
 });

@@ -38,12 +38,6 @@
                   | {{plan.price | currency: 'usd'}} / {{plan.period | payPeriod}}
               span.val(style='display: block; position: absolute; top: 120px; left: 30px;' ng-if='plan.paidTo' title='Paid until {{plan.paidTo | date}}')
                 img src='/assets/paid.png' style='width: 100px;'
-    /br
-    /  span.val ng-if='plan.paidTo'
-    /  | {{plan.paidTo | date: 'MM/dd/yyyy'}}
-    /br
-    /  span.val ng-if='plan.paidTo'
-    /  | {{plan.paidTo | date: 'MM/dd/yyyy'}}
 
     .form-group.image
       h2

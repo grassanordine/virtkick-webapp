@@ -4,14 +4,16 @@ define(function(require) {
 
   var humps = require('humps');
 
-  mod.service('machineService', function($http, handleProgress, vncPassword) {
+  mod.service('machineService', function($http, handleProgress, $injector) {
     return {
+      index: function() {
+        return $http.get('/machines.json').then(function(res) {
+          return humps.camelizeKeys(res.data);
+        });
+      },
       get: function(machineId) {
         return $http.get('/machines/' + machineId).then(function(response) {
           var machineData = humps.camelizeKeys(response.data);
-
-          // THIS is workaround for null value in rest endpoint
-          machineData.vncPassword = vncPassword;
 
           return machineData;
         });

@@ -1,0 +1,9 @@
+- function capitalizeFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
+
+#page-machine.ng-cloak
+  - var tabs = ['power', 'console', 'storage', 'settings']
+  tabset(justified=1 type='pills')
+    for tab in tabs
+      tab(heading=capitalizeFirstLetter(tab) active="data.active.#{tab}" select="activate('#{tab}')")
+  div.tab-content(ui-view='tab')
+  div.tab-content(ui-view='console' ng-show='data.active.console')

@@ -7,12 +7,14 @@ define(function(require) {
   require('ui-bootstrap'); // for ui.bootstrap
   require('angular-messages'); // for ngMessages
   require('ct-ui-router-extras');
+  require('angular-animate');
 
   var deps = [
     require('./constants'),
     'ui.bootstrap',
     'ngMessages',
     'angular.filter',
+    'ngAnimate',
     require('modules/hook'),
     'ct.ui.router.extras.sticky',
     'ct.ui.router.extras.future',
@@ -58,6 +60,10 @@ define(function(require) {
 
   mod.filter('bytes', function() {
     return function(amount, amountFormat, precision) {
+      if(!amount) {
+        return "";
+      }
+
       precision = precision || 0;
 
       amountFormat = (amountFormat || 'b').toUpperCase();

@@ -74,11 +74,11 @@ html
               
           .desktop-newsletter.hidden-xs.hidden-sm.text-center
             = render partial: 'layouts/newsletter'
-        .col-md-9
-          - if notice
-            .alert.alert-info = notice
-          - if alert
-            .alert.alert-warning = alert
+        .col-md-9(style='position: relative; display: inline-block;')
+          /- if notice
+          /  .alert.alert-info = notice
+          /- if alert
+          /  .alert.alert-warning = alert
           = yield
 
 

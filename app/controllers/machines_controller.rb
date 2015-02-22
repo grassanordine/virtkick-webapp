@@ -12,8 +12,18 @@ class MachinesController < AfterSetupController
   respond_to :json
 
   def index
+    @disk_types = Infra::DiskType.all
+    @disk = Infra::Disk.new
+    @iso_images = Plans::IsoImage.all
+    @isos = Plans::IsoDistro.all
+    @plans ||= Defaults::MachinePlan.all
+
+    run_hook :on_render_new
+
     respond_to do |format|
-      format.html
+      format.html {
+        render :index
+      }
       format.json {
         render json: {machines: current_user.machines}
       }
@@ -21,14 +31,14 @@ class MachinesController < AfterSetupController
   end
 
   def new
-    @machine ||= NewMachine.new
-    @plans ||= Defaults::MachinePlan.all
-
-    @isos ||= Plans::IsoDistro.all
-
-    run_hook :on_render_new
-
-    respond_with @machine
+    index
+    # @machine ||= NewMachine.new
+    # @plans ||= Defaults::MachinePlan.all
+    #
+    # @isos ||= Plans::IsoDistro.all
+    # run_hook :on_render_new
+    #
+    # respond_with @machine
   end
 
   def validate
@@ -59,30 +69,27 @@ class MachinesController < AfterSetupController
   end
 
   def power
-    show
+    index
   end
 
   def console
-    show
+    index
   end
 
   def storage
-    show
+    index
   end
 
   def settings
-    show
+    index
   end
 
   def show
-    @disk_types = Infra::DiskType.all
-    @disk = Infra::Disk.new
-    @iso_images = Plans::IsoImage.all
-    @isos = Plans::IsoDistro.all
-
     respond_with @machine do |format|
-      format.html { render :show }
-      format.json { render @machine }
+      format.html { index }
+      format.json {
+        render json: @machine
+      }
     end
   end
 

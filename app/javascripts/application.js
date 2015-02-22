@@ -1,30 +1,29 @@
-define('application', function(require) {
-  var $ = require('jquery');
-  require('jquery_ujs');
-  require('jquery.ajaxchimp')
-  require('bootstrap');
-  require('!domReady');
-
+define(function(require) {
+  require('appcommon');
   var angular = require('angular');
 
-  var ga = require('snippets/analytics');
+  var app = angular.module('app',
+      [
+        require('views/machine/index'),
+        require('views/machine/show'),
+        require('views/machine/new')
 
-  $('.newsletter form').ajaxChimp({
-    callback: function(response, element) {
-      resultElement = $('.newsletter .result');
+      ]
+  );
 
-      if (response.result == 'error') {
-        if (response.msg.indexOf('is already subscribed') != -1) {
-          resultElement.text("Nothing to do. You're already subscribed!");
-        } else {
-          resultElement.text(response.msg);
-        }
-      } else {
-        resultElement.text(resultElement.data('success'));
-        ga('send', 'event', 'newsletter_alpha', 'subscribe');
-      }
-    }
+  app.config(function($locationProvider) {
+    $locationProvider.html5Mode(true);
+  });
+
+  app.controller('AppCtrl', function($scope) {
+    console.log("App controller");
+    $scope.data = {
+      menuCollapse: false
+    };
+  });
+
+
+  angular.element().ready(function() {
+    angular.bootstrap(document, ['app']);
   });
 });
-// defer bootstrap loading
-window.name = "NG_DEFER_BOOTSTRAP!";

@@ -1,27 +1,36 @@
 define(function(require) {
-  require('appcommon');
   var angular = require('angular');
+  var moduleUri = require('module').uri;
 
-  var app = angular.module('app',
+  var app = angular.module(moduleUri,
       [
         require('modules/common'),
-        require('directives/ajaxloader/ajaxloader')
+        require('directives/ajaxloader/ajaxloader'),
+        require('modules/machineService')
       ]
   );
 
-  app.controller('MachineList', function($http, $scope) {
+  app.config(function($stateProvider) {
+    $stateProvider
+        .state('index', {
+          url: '/',
+          template: require('jade!templates/machine/index'),
+          controller: 'MachineIndex'
+        });
+  });
+
+  app.controller('MachineIndex', function(machineService, $scope, $timeout, $state) {
     $scope.state = {
       loading: true
     };
-    $http.get('/machines.json').then(function(res) {
-      angular.extend($scope, res.data);
+
+    machineService.index().then(function(data) {
+      angular.extend($scope, data);
       $scope.state.loading = false;
     });
 
   });
 
-  angular.element().ready(function() {
-    angular.bootstrap(document, ['app']);
-  });
+  return moduleUri;
 
 });

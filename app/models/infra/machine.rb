@@ -5,7 +5,8 @@ class Infra::Machine < Infra::Base
   attr_accessor :hostname, :uuid, :memory
   attr_accessor :processors, :processor_usage
   attr_accessor :status
-  attr_accessor :vnc_password, :vnc_port, :vnc_listen_ip
+  attr_accessor :vnc_port, :vnc_listen_ip
+  attr_accessor :vnc_password
   attr_accessor :disks
   attr_accessor :networks
   attr_accessor :iso_dir, :iso_distro_id, :iso_image_id
@@ -56,6 +57,11 @@ class Infra::Machine < Infra::Base
     Wvm::Machine.delete self
   end
 
+  def as_json config
+
+    self.instance_values['vnc_password'] = 'ddd'
+    self.instance_values.as_json config
+  end
 
   class Status < ActiveHash::Base
     # TODO: https://github.com/pluginaweek/state_machine

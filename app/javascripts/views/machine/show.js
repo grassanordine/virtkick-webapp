@@ -5,7 +5,8 @@ define(function(require) {
   var angular = require('angular');
   require('angular-route');
 
-  var app = angular.module('app',
+  var moduleUri = require('module').uri;
+  var app = angular.module(moduleUri,
     [
       require('modules/handleProgress'),
       require('modules/machineService'),
@@ -31,40 +32,43 @@ define(function(require) {
   });
 
 
-  app.config(function($stateProvider,
-                      $locationProvider,
-                      $urlRouterProvider
-  ) {
-
-    $locationProvider.html5Mode(true);
+  app.config(function($stateProvider) {
 
 //    $urlRouterProvider.otherwise(initialMachineData.id + '/power', {
 //      machineId: initialMachineData.id
 //    });
 
     $stateProvider
-        .state('list', {
-          url: '/',
-          onEnter: function() {
-            window.location.href = '/machines';
-          }
-        })
         .state('show', {
-          url: '/:machineId',
-          abstract: true,
-          template: '<ui-view/>',
+          url: '/{machineId:[0-9]{1,8}}',
+          onEnter: function() {
+            console.log("SHOW");
+          },
+          resolve: {
+            initialMachineData: function($stateParams, machineService) {
+              return machineService.get($stateParams.machineId);
+            }
+          },
+          template: require('jade!templates/machine/show'),
           controller: 'ShowMachineCtrl'
         })
         .state('show.power', {
           url: '/power',
-          template: require('jade!templates/machine/powerView'),
-          controller: 'PowerCtrl'
+          onEnter: function() {
+            console.log("POWER");
+          },
+          views: {
+            'tab@show': {
+              template: require('jade!templates/machine/powerView'),
+              controller: 'PowerCtrl'
+            }
+          }
         })
         .state('show.console', {
           url: '/console',
           sticky: true,
           views: {
-            'console@': {
+            'console@show': {
               template: require('jade!templates/machine/consoleView'),
               controller: 'ConsoleCtrl'
             }
@@ -72,55 +76,62 @@ define(function(require) {
         })
         .state('show.storage', {
           url: '/storage',
-          template: require('jade!templates/machine/storageView'),
-          controller: 'StorageCtrl'
+          views: {
+            'tab@show': {
+              template: require('jade!templates/machine/storageView'),
+              controller: 'StorageCtrl'
+            }
+          }
         })
         .state('show.settings', {
           url: '/settings',
-          template: require('jade!templates/machine/settingsView'),
-          controller: 'SettingsCtrl'
+          views: {
+            'tab@show': {
+              template: require('jade!templates/machine/settingsView'),
+              controller: 'SettingsCtrl'
+            }
+          }
         });
   });
 
-  app.controller('AppCtrl', function($scope) {
-    $scope.data = {
-      menuCollapse: false
-    };
-  });
+
 
   app.controller('ShowMachineCtrl',
       function($scope,
                $rootScope,
                $location,
                initialMachineData,
-               isoData,
+               isosData,
                isoImagesData,
                diskTypes,
                diskPlans,
-               $interval,
                $timeout,
                handleProgress,
                $state,
                $stateParams,
-               machineService,
-               vncPassword
+               machineService
       ) {
 
     $scope.$state = $state;
 
+    console.log(initialMachineData);
+
     $scope.activate = function(tab) {
-      $state.go('show.'+tab, {
-        machineId: initialMachineData.id
-      });
+      console.log("ACTIVATE", tab);
+
+      if($state.includes('show')) {
+        $state.go('show.' + tab, {
+          machineId: initialMachineData.id
+        });
+      }
     };
 
     $scope.machine = initialMachineData;
       // THIS is workaround for null value in rest endpoint
 
-    $scope.machine.vncPassword = vncPassword;
-
     $scope.idToCode = {};
-    isoData.forEach(function(image) {
+
+    isosData.forEach(function(image) {
       $scope.idToCode[image.id] = image.code;
     });
 
@@ -129,6 +140,7 @@ define(function(require) {
     $scope.diskTypes = diskTypes;
 
     $scope.diskPlans = {};
+
     diskPlans.forEach(function(plan) {
 
       $scope.diskTypes.forEach(function(type) {
@@ -138,19 +150,23 @@ define(function(require) {
       });
     });
 
+
     $scope.storage = {
       newDiskType: $scope.diskTypes[0],
-      newDiskPlan: $scope.diskPlans[$scope.diskTypes[0].id][0] 
+      newDiskPlan: $scope.diskPlans[$scope.diskTypes[0].id][0]
     };
 
     $scope.$on('$stateChangeSuccess', function(state, toState, toParams, fromState, fromParams) {
+
       var m;
-      m = fromState.name.match(/.*\.(.+)/);
+      m = fromState.name.match(/show\.(.+)/);
       if(m) {
+        console.log("FROM ", m[1])
         $scope.data.active[m[1]] = false;
       }
-      m = toState.name.match(/.*\.(.+)/);
+      m = toState.name.match(/show\.(.+)/);
       if(m) {
+        console.log("TO ", m[1])
         $scope.data.active[m[1]] = true;
       }
     });
@@ -325,9 +341,7 @@ define(function(require) {
     });
   });
 
-  angular.element().ready(function() {
-    angular.bootstrap(document, ['app']);
-  });
+  return moduleUri;
 
 });
 

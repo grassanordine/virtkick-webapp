@@ -1,68 +1,19 @@
 - @header = 'Machines'
 - @icon = 'monitor'
 
+
+= object_to_json_constant 'isoImagesData', @iso_images
+= object_to_json_constant 'diskTypes', @disk_types
+= object_to_json_constant 'isosData', @isos
+= object_to_json_constant 'plansData', @plans
+= object_to_json_constant 'diskPlans', Defaults::DiskSizePlan.all
+
 - content_for :scripts do
-  = requirejs_include_tag 'pages/machineIndex'
+  = requirejs_include_tag 'application'
 
 - content_for :action do
   - if user_signed_in?
     = link_to 'Create a new machine', new_machine_path, class: 'btn btn-primary btn-block'
 
-#page-index(ng-controller='MachineList')
-  .items
-    ul
-      li
-        p
-          i.oi.oi-monitor
-          | Machines
-        p.value.ng-cloak ng-if='!state.loading'
-          | {{machines.length}}
-        p.value ng-if='state.loading'
-          | &nbsp;
-      li
-        p
-          i.oi.oi-puzzle-piece
-          | Memory
-        p.value.ng-cloak ng-if='!state.loading'
-          | {{machines | map: 'memory' | sum | bytes: 'mb'}}
-        p.value ng-if='state.loading'
-          | &nbsp;
-      li
-        p
-          i.fa.fa-database
-          | Storage
-        p.value.ng-cloak ng-if='!state.loading'
-          | {{machines | map: 'disks' | flatten | map: 'size' | sum | bytes}}
-        p.value ng-if='state.loading'
-          | &nbsp;
-      li
-        p
-          i.oi.oi-credit-card
-          | Monthly
-        p.value
-          | free
-
-  span.ng-cloak(ng-if='machines.length')
-    table.table.table-striped
-      thead
-        tr
-          th.name Name
-          th.memory Memory
-          th.storage Storage
-      tbody
-        tr(ng-repeat='machine in machines')
-          td.name ng-class="{on : machine.status.running, off: !machine.status.running}"
-            i class='icon fa fa-{{machine.status.icon}}'
-            a href="/machines/{{machine.id}}"
-              | {{machine.hostname}}
-          td.memory
-            | {{machine.memory | bytes: 'mb'}}
-          td.storage
-            | {{machine.disks | map: 'size' | sum | bytes}}
-  span.ng-cloak(ng-if='!machines.length && !state.loading')
-    p You don't have a machine yet. Kick things off and #{link_to 'create one!', new_machine_path}
-  span.ng-cloak(ng-if='state.loading')
-    p
-      ajaxloader(size=20 style='margin-right: 5px')
-      | Wait a sec while we load all of your machines ...
-
+base href="/machines/"
+div(ui-view)
