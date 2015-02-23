@@ -46,6 +46,10 @@ define(function(require) {
           },
           resolve: {
             initialMachineData: function($stateParams, machineService) {
+              console.log("GOT INITIAL MACHINE DATA", $stateParams);
+              if($stateParams.machine) {
+                return $stateParams.machine;
+              }
               return machineService.get($stateParams.machineId);
             }
           },
@@ -109,7 +113,8 @@ define(function(require) {
                handleProgress,
                $state,
                $stateParams,
-               machineService
+               machineService,
+               $q
       ) {
 
     $scope.$state = $state;
@@ -284,6 +289,7 @@ define(function(require) {
     var timeoutHandler;
 
     var lastPromise;
+    var aborter;
     function updateState() {
       var skipIsoUpdate = $scope.requesting.changeIso;
 
@@ -294,7 +300,9 @@ define(function(require) {
         return lastPromise;
       }
 
-      lastPromise = machineService.get($scope.machine.id).then(function(machineData) {
+      aborter = $q.defer();
+      console.log("Get machine!");
+      lastPromise = machineService.get($scope.machine.id, aborter).then(function(machineData) {
         var prevTime = $scope.machine.processorUsage.timeMillis;
         var prevCpuTime = $scope.machine.processorUsage.cpuTime;
 
@@ -321,18 +329,26 @@ define(function(require) {
 
         timeoutHandler = $timeout(updateState, 1000);
       }, function(err) {
+        if(err && err.status === 0) {
+          throw err;
+        }
         $scope.machine.stateDisconnected = true;
         timeoutHandler = $timeout(updateState, 5000);
         throw err;
       }).finally(function() {
         lastPromise = null;
       });
+
       return lastPromise;
     }
     timeoutHandler = $timeout(updateState, 1000);
 
     $scope.$on('$destroy', function() {
+      console.log("Destroying show scope");
       $timeout.cancel(timeoutHandler);
+      if(aborter) {
+        aborter.resolve('');
+      }
     });
     
 

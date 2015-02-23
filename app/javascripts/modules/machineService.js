@@ -4,17 +4,44 @@ define(function(require) {
 
   var humps = require('humps');
 
-  mod.service('machineService', function($http, handleProgress, $injector) {
+  mod.service('machineService', function($http, handleProgress, $injector, $q) {
+    var machinesCache;
+    var cacheTime;
+
+    function isCacheFresh() {
+      return cacheTime && new Date().getTime() - cacheTime < 10000
+    }
+
     return {
       index: function() {
+        if(isCacheFresh()) {
+          return $q.when(machinesCache);
+        }
+
         return $http.get('/machines.json').then(function(res) {
+          machinesCache = humps.camelizeKeys(res.data);
+          cacheTime = new Date().getTime();
+
           return humps.camelizeKeys(res.data);
         });
       },
-      get: function(machineId) {
-        return $http.get('/machines/' + machineId).then(function(response) {
-          var machineData = humps.camelizeKeys(response.data);
+      get: function(machineId, aborter) {
+        if(isCacheFresh()) {
+          console.log("Is cache fresh", machinesCache);
 
+          var machines = machinesCache.machines;
+          for(var i = 0;i < machines.length;++i) {
+            if(machines[i].id == machineId) {
+              console.log("RETURN", machines[i], machineId);
+              return $q.when(machines[i]);
+            }
+          }
+        }
+        console.log("GETTING MACHINE DATA");
+        return $http.get('/machines/' + machineId, {
+          timeout: aborter?(aborter.promise):undefined
+        }).then(function(response) {
+          var machineData = humps.camelizeKeys(response.data);
           return machineData;
         });
       },

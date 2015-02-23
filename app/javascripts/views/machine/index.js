@@ -26,6 +26,7 @@ define(function(require) {
 
     machineService.index().then(function(data) {
       angular.extend($scope, data);
+      console.log(data);
       $scope.state.loading = false;
     });
 
