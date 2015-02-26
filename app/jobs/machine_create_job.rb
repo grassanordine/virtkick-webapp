@@ -29,7 +29,6 @@ class MachineCreateJob < TrackableJob
   private
   def job_initalize new_machine_id
     @new_machine = NewMachine.find new_machine_id
-    # @commited_credit = CommitedCredit.find commited_credit_id
   end
 
   def step step_name = nil

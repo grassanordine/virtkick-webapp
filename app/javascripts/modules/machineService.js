@@ -14,6 +14,10 @@ define(function(require) {
       return cacheTime && new Date().getTime() - cacheTime < 10000
     }
 
+    function cleanCache() {
+      cacheTime = undefined;
+    }
+
     var machineProgress =  function(progressId) {
       function doQuery() {
         return $http.get('/api/machine_progress/' + progressId).then(function(res) {
@@ -49,9 +53,10 @@ define(function(require) {
           }
         }).then(function(data) {
           return machineProgress(data.data.data).then(function(data) {
+            cacheTime = undefined;
             return data.given_meta_machine_id;
           });
-        });
+        }).finally(cleanCache);
       },
       validateHostname: function(hostname) {
         return $http.post('/api/machines',  {
@@ -82,7 +87,8 @@ define(function(require) {
         });
       },
       deletePermanently: function(machineId) {
-        return $http.delete('/api/machines/' + machineId);
+        return $http.delete('/api/machines/' + machineId)
+            .finally(cleanCache);
       },
       deleteDisk: function(machineId, diskId) {
         return $http.delete('/api/machines/' + machineId + '/disks/' + diskId);
@@ -106,7 +112,7 @@ define(function(require) {
       doAction: function(machineId, action) {
         return $http.post('/api/machines/' + machineId + '/' + action).then(function(res) {
           return handleProgress(res.data.progress_id);
-        });
+        }).finally(cleanCache);
       },
       forceRestart: function(machineId) {
         return $http.post('/api/machines/' + machineId + '/force_restart');
