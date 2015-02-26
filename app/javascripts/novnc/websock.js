@@ -330,10 +330,10 @@ function open(uri, protocols) {
     if (test_mode) {
         websocket = {};
     } else {
-        websocket = new WebSocket(uri, protocols);
-        if (protocols.indexOf('binary') >= 0) {
-            websocket.binaryType = 'arraybuffer';
-        }
+      websocket = new WebSocket(uri, protocols);
+      if (protocols.indexOf('binary') >= 0) {
+        websocket.binaryType = 'arraybuffer';
+      }
     }
 
     websocket.onmessage = recv_message;

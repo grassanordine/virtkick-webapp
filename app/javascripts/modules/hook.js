@@ -10,7 +10,12 @@ define(function(require) {
       if(hooks[name]) {
         var args = Array.prototype.slice.call(arguments);
         args.shift();
-        value = hooks[name](args);
+        value = $injector.invoke(hooks[name],
+            null,
+            {
+              args: args
+            }
+        );
       }
       return $q.when(value);
     };

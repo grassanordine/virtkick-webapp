@@ -45,5 +45,6 @@ module VirtkickWebapp
         CountDeploymentJob.track CountDeploymentJob::APP_START_SUCCESS
       end
     end
+
   end
 end

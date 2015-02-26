@@ -1,7 +1,6 @@
 class MetaMachine < ActiveRecord::Base
   belongs_to :user
 
-
   scope :not_deleted, -> {
     where deleted: false
   }
@@ -18,7 +17,8 @@ class MetaMachine < ActiveRecord::Base
   end
 
   def mark_deleted
-    CommitedCredit.release_use self.id
+    run_hook :on_mark_deleted, self.id
+
     update_attribute :deleted, true
   end
 

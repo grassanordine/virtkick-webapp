@@ -87,7 +87,6 @@ define(function(require) {
         }
 
         if(state === 'failed' && !destroying) {
-          console.log("Trying to connect!!");
           connectTimeout = setTimeout(connect, 1000);
         }
         // force ungrab mouse if not focused

@@ -20,6 +20,13 @@ module RequirejsHelper
            paths: require_config_file['paths']
         }
       )
+      unless Rails.env.production?
+        require_config = require_config.deeper_merge({
+               shim: require_config_file['development_shim'],
+               paths: require_config_file['paths']
+           }
+        )
+      end
     end
     @@require_config_json = require_config.to_json
   end

@@ -34,19 +34,11 @@ define(function(require) {
 
   app.config(function($stateProvider) {
 
-//    $urlRouterProvider.otherwise(initialMachineData.id + '/power', {
-//      machineId: initialMachineData.id
-//    });
-
     $stateProvider
-        .state('show', {
+        .state('machines.show', {
           url: '/{machineId:[0-9]{1,8}}',
-          onEnter: function() {
-            console.log("SHOW");
-          },
           resolve: {
             initialMachineData: function($stateParams, machineService) {
-              console.log("GOT INITIAL MACHINE DATA", $stateParams);
               if($stateParams.machine) {
                 return $stateParams.machine;
               }
@@ -56,41 +48,38 @@ define(function(require) {
           template: require('jade!templates/machine/show'),
           controller: 'ShowMachineCtrl'
         })
-        .state('show.power', {
+        .state('machines.show.power', {
           url: '/power',
-          onEnter: function() {
-            console.log("POWER");
-          },
           views: {
-            'tab@show': {
+            'tab@machines.show': {
               template: require('jade!templates/machine/powerView'),
               controller: 'PowerCtrl'
             }
           }
         })
-        .state('show.console', {
+        .state('machines.show.console', {
           url: '/console',
           sticky: true,
           views: {
-            'console@show': {
+            'console@machines.show': {
               template: require('jade!templates/machine/consoleView'),
               controller: 'ConsoleCtrl'
             }
           }
         })
-        .state('show.storage', {
+        .state('machines.show.storage', {
           url: '/storage',
           views: {
-            'tab@show': {
+            'tab@machines.show': {
               template: require('jade!templates/machine/storageView'),
               controller: 'StorageCtrl'
             }
           }
         })
-        .state('show.settings', {
+        .state('machines.show.settings', {
           url: '/settings',
           views: {
-            'tab@show': {
+            'tab@machines.show': {
               template: require('jade!templates/machine/settingsView'),
               controller: 'SettingsCtrl'
             }
@@ -117,19 +106,17 @@ define(function(require) {
                $q
       ) {
 
-    $scope.$state = $state;
-
-    console.log(initialMachineData);
+    $scope.app.header.title = initialMachineData.hostname;
+    $scope.app.header.icon = 'monitor';
 
     $scope.activate = function(tab) {
-      console.log("ACTIVATE", tab);
-
-      if($state.includes('show')) {
-        $state.go('show.' + tab, {
+      if($state.includes('machines.show')) {
+        $state.go('machines.show.' + tab, {
           machineId: initialMachineData.id
         });
       }
     };
+
 
     $scope.machine = initialMachineData;
       // THIS is workaround for null value in rest endpoint
@@ -162,16 +149,13 @@ define(function(require) {
     };
 
     $scope.$on('$stateChangeSuccess', function(state, toState, toParams, fromState, fromParams) {
-
       var m;
       m = fromState.name.match(/show\.(.+)/);
       if(m) {
-        console.log("FROM ", m[1])
         $scope.data.active[m[1]] = false;
       }
       m = toState.name.match(/show\.(.+)/);
       if(m) {
-        console.log("TO ", m[1])
         $scope.data.active[m[1]] = true;
       }
     });
@@ -231,7 +215,7 @@ define(function(require) {
       return machineService.doAction($scope.machine.id, name)
           .then(updateState)
         .finally(function() {
-        $scope.requesting[name] = false;
+          $scope.requesting[name] = false;
       });
     };
 
@@ -301,7 +285,6 @@ define(function(require) {
       }
 
       aborter = $q.defer();
-      console.log("Get machine!");
       lastPromise = machineService.get($scope.machine.id, aborter).then(function(machineData) {
         var prevTime = $scope.machine.processorUsage.timeMillis;
         var prevCpuTime = $scope.machine.processorUsage.cpuTime;
@@ -344,7 +327,6 @@ define(function(require) {
     timeoutHandler = $timeout(updateState, 1000);
 
     $scope.$on('$destroy', function() {
-      console.log("Destroying show scope");
       $timeout.cancel(timeoutHandler);
       if(aborter) {
         aborter.resolve('');
@@ -353,7 +335,7 @@ define(function(require) {
     
 
     $scope.$watch('data.active.console', function(val) {
-      $scope.$parent.data.menuCollapse = $scope.data.active.console;
+      $scope.app.menuCollapse = $scope.data.active.console;
     });
   });
 

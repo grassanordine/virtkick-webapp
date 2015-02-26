@@ -10,31 +10,22 @@ html
     link rel='shortcut icon' href='/favicon.ico'
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
-  body(ng-app=1)
-    .mobile-newsletter.hidden-md.hidden-lg
-      .container
-        = render partial: 'layouts/newsletter'
-
+    = yield :header
+  body(ng-app=1 ng-strict-di)
     .container.main(ng-controller="AppCtrl")
       .row.header
         .menu.col-md-3.hidden-xs.hidden-sm
           = link_to machines_path do
             = image_tag 'logo/virtkick-logo-pixelart-64.png'
-
         .header.col-md-6
-          - if @header
+          div.ng-cloak ng-if='app.header'
             h1
-              - if @icon
-                span class="oi oi-#{@icon}"
-              = @header
-          - else
-            = yield :header
-
+              span ng-if='app.header.icon' class="oi oi-{{app.header.icon}}"
+              | {{app.header.title}}
         .action.col-md-3
           = yield :action
-
       .row
-        .col-md-3.side-menu-wrapper ng-class="{collapsed: data.menuCollapse}"
+        .col-md-3.side-menu-wrapper ng-class="{collapsed: app.menuCollapse}"
           nav.navbar.navbar-default.side-menu role="navigation"
             .navbar-header.hidden-md.hidden-lg
               button.navbar-toggle data-target="#navbar-collapsable" data-toggle="collapse" type="button"
@@ -49,16 +40,16 @@ html
             #navbar-collapsable.collapse.navbar-collapse
               ul.nav.navbar-nav
                 - if user_signed_in?
-                  = navbar_item machines_path do
+                  li: a href='/machines' ng-class='{active : primaryState==="machines"}'
                     span.oi.oi-monitor
                     | Machines
                   - @navbar_links.each do |link|
-                    = navbar_item link[:path] do
+                    li: a href=link[:path] ng-class='{active : primaryState==="#{link[:state]}"}'
                       span.oi(class="#{link[:class]}")
                       | #{link[:title]}
                   - if Virtkick.mode.private_cloud? or Virtkick.mode.vps_provider?
                     = navbar_item destroy_user_session_path, method: :delete do
-                      span.fa.fa-sign-in
+                      span.fa.fa-sign-out
                       | Sign out
                 - else
                   = navbar_item new_user_session_path do
@@ -72,8 +63,8 @@ html
             button.btn.btn-primary
               span.caret
               
-          .desktop-newsletter.hidden-xs.hidden-sm.text-center
-            = render partial: 'layouts/newsletter'
+          /.desktop-newsletter.hidden-xs.hidden-sm.text-center
+          /  = render partial: 'layouts/newsletter'
         .col-md-9(style='position: relative; display: inline-block;')
           /- if notice
           /  .alert.alert-info = notice

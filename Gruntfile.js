@@ -32,6 +32,8 @@ module.exports = function(grunt) {
       excludeJade: true
     }
   });
+
+//  console.log(JSON.stringify(options, null, 2));
   var files = [
     {
       cwd: './app/javascripts',
@@ -73,6 +75,7 @@ module.exports = function(grunt) {
     },
     requirejs: {
       options: {
+        logLevel: 1,
         optimize: grunt.option("debug") ? "none" : "uglify"
       },
       std: {

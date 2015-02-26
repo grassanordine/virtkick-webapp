@@ -1,10 +1,12 @@
 define(function(require) {
   var module = require('module');
 
-  require('angular').module(module.uri, []).factory('handleProgress', function($http, $timeout) {
+  var angular = require('angular');
+  var mod = angular.module(module.id, []);
+  mod.factory('handleProgress', function($http, $timeout) {
     return function(progressId) {
       function doQuery() {
-        return $http.get('/progress/' + progressId).then(function(res) {
+        return $http.get('/api/progress/' + progressId).then(function(res) {
           if(!res.data.finished) {
             return $timeout(doQuery, 250);
           }
@@ -18,5 +20,5 @@ define(function(require) {
     };
   });
 
-  return module.uri;
+  return module.id;
 });

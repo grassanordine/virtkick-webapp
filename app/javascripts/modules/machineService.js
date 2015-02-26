@@ -4,7 +4,9 @@ define(function(require) {
 
   var humps = require('humps');
 
-  mod.service('machineService', function($http, handleProgress, $injector, $q) {
+
+
+  mod.service('machineService', function($http, handleProgress, $injector, $q, $timeout) {
     var machinesCache;
     var cacheTime;
 
@@ -12,33 +14,67 @@ define(function(require) {
       return cacheTime && new Date().getTime() - cacheTime < 10000
     }
 
+    var machineProgress =  function(progressId) {
+      function doQuery() {
+        return $http.get('/api/machine_progress/' + progressId).then(function(res) {
+          if (!res.data.finished) {
+            return $timeout(doQuery, 250);
+          }
+          return res.data;
+        });
+      }
+      return $timeout(doQuery, 250);
+    };
+
     return {
       index: function() {
         if(isCacheFresh()) {
           return $q.when(machinesCache);
         }
 
-        return $http.get('/machines.json').then(function(res) {
+        return $http.get('/api/machines.json').then(function(res) {
           machinesCache = humps.camelizeKeys(res.data);
           cacheTime = new Date().getTime();
 
           return humps.camelizeKeys(res.data);
         });
       },
+      createMachine: function(data) {
+        return $http.post('/api/machines', {
+          machine: {
+            hostname: data.hostname,
+            plan_id: data.planId,
+            image_type: data.imageType,
+            iso_distro_id: data.isoId
+          }
+        }).then(function(data) {
+          return machineProgress(data.data.data).then(function(data) {
+            return data.given_meta_machine_id;
+          });
+        });
+      },
+      validateHostname: function(hostname) {
+        return $http.post('/api/machines',  {
+          validate: true,
+          machine: {
+            hostname: hostname
+        }}).then(function(response) {
+          var data = response.data;
+          if(data.errors && data.errors.hostname) {
+            throw data.errors.hostname;
+          }
+        });
+      },
       get: function(machineId, aborter) {
         if(isCacheFresh()) {
-          console.log("Is cache fresh", machinesCache);
-
           var machines = machinesCache.machines;
           for(var i = 0;i < machines.length;++i) {
             if(machines[i].id == machineId) {
-              console.log("RETURN", machines[i], machineId);
               return $q.when(machines[i]);
             }
           }
         }
-        console.log("GETTING MACHINE DATA");
-        return $http.get('/machines/' + machineId, {
+        return $http.get('/api/machines/' + machineId, {
           timeout: aborter?(aborter.promise):undefined
         }).then(function(response) {
           var machineData = humps.camelizeKeys(response.data);
@@ -46,20 +82,20 @@ define(function(require) {
         });
       },
       deletePermanently: function(machineId) {
-        return $http.delete('/machines/' + machineId);
+        return $http.delete('/api/machines/' + machineId);
       },
       deleteDisk: function(machineId, diskId) {
-        return $http.delete('/machines/' + machineId + '/disks/' + diskId);
+        return $http.delete('/api/machines/' + machineId + '/disks/' + diskId);
       },
       createDisk: function(machineId, diskType) {
-        return $http.post('/machines/' + machineId + '/disks', {
+        return $http.post('/api/machines/' + machineId + '/disks', {
           disk: humps.decamelizeKeys(diskType)
         }).then(function(res) {
           return handleProgress(res.data.progress_id);
         });
       },
       changeIso: function(machineId, imageId) {
-        return $http.post('/machines/' + machineId + '/mount_iso', {
+        return $http.post('/api/machines/' + machineId + '/mount_iso', {
           machine: {
             iso_image_id: imageId
           }
@@ -68,12 +104,12 @@ define(function(require) {
         });
       },
       doAction: function(machineId, action) {
-        return $http.post('/machines/' + machineId + '/' + action).then(function(res) {
+        return $http.post('/api/machines/' + machineId + '/' + action).then(function(res) {
           return handleProgress(res.data.progress_id);
         });
       },
       forceRestart: function(machineId) {
-        return $http.post('/machines/' + machineId + '/force_restart');
+        return $http.post('/api/machines/' + machineId + '/force_restart');
       }
     }
   });

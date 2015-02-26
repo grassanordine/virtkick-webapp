@@ -31,6 +31,11 @@ define(function(require) {
   var mod = angular.module(module.uri, deps);
   require('csrfSetup')(mod);
 
+  mod.config(function($urlMatcherFactoryProvider) {
+    $urlMatcherFactoryProvider.caseInsensitive(true);
+    $urlMatcherFactoryProvider.strictMode(false);
+  });
+
   mod.controller('AppCtrl', function($scope) {
     $scope.data = {
       menuCollapse: false
@@ -60,13 +65,14 @@ define(function(require) {
 
   mod.filter('bytes', function() {
     return function(amount, amountFormat, precision) {
-      if(!amount) {
-        return "";
-      }
 
       precision = precision || 0;
 
       amountFormat = (amountFormat || 'b').toUpperCase();
+
+      if(!amount) {
+        return "0" + ' ' + amountFormat;
+      }
 
       if (amountFormat === 'TB') {
         amount *= 1024 * 1024 * 1024 * 1024;

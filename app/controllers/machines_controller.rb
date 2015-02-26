@@ -4,6 +4,7 @@ class MachinesController < AfterSetupController
   include Hooks
   define_hooks :pre_create_machine
   define_hooks :on_render_new
+  define_hooks :on_destroy
   
   include FindMachine
   find_machine_before_action :id, except: [:index, :new, :create]
@@ -94,7 +95,8 @@ class MachinesController < AfterSetupController
   end
 
   def destroy
-    @meta_machine.mark_deleted
+    run_hook :on_destroy
+
     MachineDeleteJob.perform_later @meta_machine.id
     render json: nil
   end
