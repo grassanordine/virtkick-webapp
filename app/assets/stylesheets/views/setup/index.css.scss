@@ -126,10 +126,10 @@
     width: 4.5em;
     box-shadow: none !important;
     background-color: white;
-    color: #E6E0E5;
-    border-color: #F0DDEB;
+    color: $chooser-violet;
+    border-color: $border-pink-color;
     box-sizing: border-box;
-    border-bottom: solid 1px #F0DDEB;
+    border-bottom: solid 1px $border-pink-color;
     @include transition(all, 0.25s, ease-in, 0s);
 
     .fa {
