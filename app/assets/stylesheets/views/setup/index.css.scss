@@ -1,54 +1,144 @@
 #page-setup {
+  @media(max-width: $screen-sm-max) {
+    margin-top: -$navbar-height;
+  }
+
   .header {
-    width: 320px;
-    height: 120px;
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
-
-    img {
-      float: left;
-      margin-right: 25px;
-    }
-
+    margin-top: 1.64em;
     .logo {
-      font-family: 'Earthbound';
-      font-size: 48px;
       display: inline-block;
+      width: auto;
 
-      .virt {
-        color: $dark;
-      }
-      .kick {
-        color: $brand-primary;
+      .virt-name {
+        padding-left: 10px;
+        padding-top: 35px;
       }
     }
 
-    .beta {
-      position: relative;
-      top: -10px;
-      font-size: 20px;
+    @media(max-width: $screen-sm-max) {
+      margin-top: 0.64em;
+      text-align: center;
+      
+      .logo {
+        padding-right: 2.6em;
+      }
     }
   }
 
-  .setup-virtkick {
-    width: 100%;
-    height: 130px;
-    margin-top: 30px;
-    font-weight: lighter;
-    margin-bottom: 30px;
-
-    .title {
-      font-size: 48px;
+  .options {
+    margin-top: 5.6em;
+    @media(max-width: $screen-sm-max) {
+      margin-top: 0em;
     }
 
-    .disclaimer {
-      font-size: 18px;
+    h4 {
+      font-size: 1.1em;
+      color: $vk-secondary;
+      @media(max-width: $screen-sm-max) {
+        margin-top: 2em;
+        margin-bottom: 1em;
+        text-align: center;
+      }
+    }
+
+    .option {
+      text-align: left;
+      margin-top: 1.64em;
+      margin-bottom: 1.64em;
+
+      @media(max-width: $screen-sm-max) {
+        margin-top: 0.9em;
+        margin-bottom: 0.9em;
+      }
+
+
+      &.disabled {
+        .text-wrapper {
+          opacity: 0.5;
+        }
+      }
+
+      .button-wrapper {
+        display: inline-block;
+        vertical-align: top;
+        height: 4.2em;
+      }
+
+      .text-wrapper {
+        display: inline-block;
+        vertical-align: top;
+        padding-top: 1.6em;
+        margin-left: 1.95em;
+        
+        @media(max-width: $screen-sm-max) {
+          margin-left: 1.55em;
+        }
+
+        .title {
+          font-size: 1.1em;
+          font-weight: bold;
+        }
+
+        .disclaimer {
+          font-size: 0.9em;
+          color: $muted-violet-color;
+        }     
+      }
+
+      .form-wrapper {
+        margin-top: 1.8em;
+        color: $vk-secondary;
+
+        @media(max-width: $screen-sm-max) {
+          .form-control {
+            font-size: 0.9em;
+          }
+        }
+
+        .no-margin {
+          margin-bottom: 0px;
+        }
+      }
     }
   }
 
-  .newsletter {
-    margin-top: 50px;
+  .launch {
+    margin-top: 9.2em;
+    margin-bottom: 2em;
+    float: right;
+    text-align: center;
+    
+    @media(max-width: $screen-sm-max) {
+      margin-top: 3em;
+      float: none;
+    }
+
+    .btn {
+      padding-left: 3em;
+      padding-right: 3em;
+    }
+  }
+
+  .btn.chooser {
+    padding: 1.1em;
+    border-radius: 4px;
+    line-height: 1.5em;
+    width: 4.5em;
+    box-shadow: none !important;
+    background-color: white;
+    color: #E6E0E5;
+    border-color: #F0DDEB;
+    box-sizing: border-box;
+    border-bottom: solid 1px #F0DDEB;
+    @include transition(all, 0.25s, ease-in, 0s);
+
+    .fa {
+      font-size: 1.8em;
+    }
+
+    &:hover, &:active, &.active {
+      color: $brand-primary;
+      border-bottom: solid 5px $brand-primary;
+    }
   }
 }

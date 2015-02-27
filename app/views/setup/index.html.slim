@@ -1,65 +1,65 @@
 #page-setup
+  .container-fluid
+    .row
+      .col-md-offset-1.col-md-11
+        .header
+          .logo
+            a href="/"
+              = image_tag 'logo/virtkick-logo-pixelart-48.png', class: "pix"
+              = image_tag 'logo/virtkick-logo-name.png', class: "virt-name"
+
   .container
     .row
-      .col-md12
-        .header
-          = image_tag 'logo/virtkick-logo-pixelart-114.png'
-          .logo
-            span.virt virt
-            span.kick kick
-          .beta
-            | Take Cloud Back
+      .col-lg-12
+      .options.col-lg-offset-1.col-lg-5
+        h4 Choose installation type: 
+        - from_localhost = request.ip == '127.0.0.1'
+        - if from_localhost
+          div.option
+            .button-wrapper
+              = button_to perform_setup_path(:localhost), method: :post, class: 'btn chooser', rel: 'nofollow noindex' do
+                .fa.fa-home  
+            .text-wrapper
+              .title Localhost
+              .disclaimer.hidden-xs No passwords or anything. Just use.
+        div.option
+          .button-wrapper
+            button.btn.chooser
+              .fa.fa-cloud
+          .text-wrapper
+            .title Private Cloud
+            .disclaimer.hidden-xs Protect your machines with credentials.        
+            .form-wrapper
+              = form_tag perform_setup_path(:private_cloud), method: :post do
+                form.private-cloud-only method='post'
+                  .form-group
+                    label for="extra[email]" E-mail address
+                    input.form-control type='email' name='extra[email]' placeholder='E-mail'
+                  .form-group
+                    label for="extra[password]" Password
+                    input.form-control type='password' name='extra[password]' placeholder='Password'
+                  .form-group.no-margin
+                    input.form-control type='password' placeholder='Confirm Password'
+        div.option.disabled
+          .button-wrapper
+            = button_to perform_setup_path(:vps_provider), method: :post, class: 'btn chooser', rel: 'nofollow noindex', disabled: true do
+              .fa.fa-sitemap
+          .text-wrapper
+            .title VPS Provider
+            .disclaimer.hidden-xs Not implemented yet. Work in progress!
+        div.option.disabled
+          .button-wrapper
+            = button_to perform_setup_path(:demo), method: :post, class: 'btn chooser', rel: 'nofollow noindex', disabled: true do
+              .fa.fa-paper-plane
+          .text-wrapper
+            .title Demo
+            .disclaimer.hidden-xs Sessions limited to 30 minutes.
+      .launch.col-lg-5
+        - if @error
+          div.alert.alert-danger
+            = @error
 
-    .row.text-center
-      - from_localhost = request.ip == '127.0.0.1'
-      - col = from_localhost ? 'col-md-4' : 'col-md-6'
-      - if from_localhost
-        div class=col
-          = button_to perform_setup_path(:localhost), method: :post, class: 'btn btn-primary btn-lg setup-virtkick', rel: 'nofollow noindex' do
-            .title Localhost
-            .disclaimer No passwords or anything. Just use.
-      div class=col
-        button.btn.btn-primary.btn-lg.setup-virtkick
-          .title Private Cloud
-          .disclaimer Protect your machines with credentials.
-        br
-
-        = form_tag perform_setup_path(:private_cloud), method: :post do
-          form.private-cloud-only method='post'
-            p
-              input.form-control type='email' name='extra[email]' placeholder='E-mail'
-            p
-              input.form-control type='password' name='extra[password]' placeholder='Password'
-            p
-              input.form-control type='password' placeholder='Confirm Password'
-
-            button.btn.btn-primary.btn-lg
-              | Setup!
-
-      div class=col
-        = button_to perform_setup_path(:vps_provider), method: :post, class: 'btn btn-primary btn-lg setup-virtkick', rel: 'nofollow noindex', disabled: true do
-          .title VPS Provider
-          .disclaimer Not implemented yet. Work in progress!
-
-    .row.text-center
-      = button_to perform_setup_path(:demo), method: :post, class: 'btn btn-primary btn-lg setup-virtkick', rel: 'nofollow noindex' do
-        .title Demo
-        .disclaimer Sessions limited to 30 minutes.
-
-    - if @error
-      div.alert.alert-danger
-        = @error
-
-      .row
-        .col-md12.newsletter.text-center
-          h3 Sign up for updates. No spam.
-
-          form.form-inline action='https://virtkick.us8.list-manage.com/subscribe/post?u=b74a227fdbddc9f590a62114e&amp;id=08823d8a7b' method='post' role='form'
-
-            .input-group
-              input.newsletter-email.form-control.input name='EMAIL' placeholder='e-mail address' type='text'
-              span.input-group-btn
-                input.btn.btn-primary name='subscribe' type='submit' value='go!'
-
-          p.result data-success='Thanks! Please check your e-mail.'
-
+        button.btn.btn-lg.btn-primary
+          | Launch Virtkick
+      .col-lg-1
+      

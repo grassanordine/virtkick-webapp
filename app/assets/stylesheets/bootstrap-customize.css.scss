@@ -88,13 +88,13 @@ label {
 	.navbar-toggle, .navbar-toggle:hover, .navbar-toggle:focus {
 		border: 1px solid $cream-color !important;
 		background-color: transparent !important;
-  	@include transition(background-color, 0.25s, ease-in, 0);
+  	@include transition(background-color, 0.25s, ease-in, 0s);
 	  .icon-bar {
       background-color: $red-color !important;
     }
     &:hover {
       background-color: $red-color !important;
-      @include transition(background-color, 0.25s, ease-in, 0);
+      @include transition(background-color, 0.25s, ease-in, 0s);
       .icon-bar {
         background-color: white !important;
       }
