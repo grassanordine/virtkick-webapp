@@ -35,7 +35,7 @@
             .padding
               .stripe
 
-      .appliances.ng-cloak(ng-if='data.imageType == "appliances"')
+      .appliances.alert.alert-info.ng-cloak(ng-if='data.imageType == "appliances"')
         p Virtkick will deliver appliances with various Linux distributions. Coming soon!
 
       .isos.ng-cloak(ng-if='data.imageType == "isos"')
@@ -52,12 +52,12 @@
             .name
               | {{iso.name}}
 
-      .apps.ng-cloak(ng-if='data.imageType == "apps"')
+      .apps.alert.alert-info.ng-cloak(ng-if='data.imageType == "apps"')
         p Virtkick will deliver a 1-click integration with Sandstorm. It allows you to install many webapps with a single click. Coming soon!
 
     h4 Machine name
     .row
-      .col-xs-6
+      .col-xs-7
         .form-group.details(ng-class="{ 'has-error' : form['machine[hostname]'].$invalid && !userForm.name.$pristine }")
           input.form-control(name='machine[hostname]' ng-model='data.hostname' machine-name required placeholder="Machine hostname"  ng-disabled='data.creatingMachine')
           .ng-cloak.help-block
