@@ -16,7 +16,7 @@ html
       .row.header
         .menu.col-md-3.hidden-xs.hidden-sm
           = link_to machines_path do
-            = image_tag 'logo/virtkick-logo-pixelart-64.png'
+            = theme_image_tag 'logo/logo-64.png'
         .header.col-md-6
           div.ng-cloak ng-if='app.header'
             h1
@@ -34,7 +34,7 @@ html
                 span.icon-bar
                 span.icon-bar
               a.navbar-brand href='/'
-                = image_tag 'logo/virtkick-logo-pixelart-48.png', class: 'pix'
+                = theme_image_tag 'logo/logo-48.png', class: 'pix'
                 |  virt
                 span.kick kick
             #navbar-collapsable.collapse.navbar-collapse

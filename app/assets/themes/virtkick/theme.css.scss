@@ -1,0 +1,59 @@
+// ------ colors ------ // 
+
+$vk-text: #554F57 !default;
+$vk-secondary: #8F6E84 !default;
+$vk-primary: #EC4863 !default;
+
+$grouping-bg: #F4F2E9;
+$grouping-active: #F7F0F1 !default;
+$grouping-color: #9E8697 !default;
+
+$white: #ffffff !default;
+$bg: $white !default;
+$dark: #5D2749 !default;
+$light: $grouping-bg !default;
+
+$placeholder: #D1C7CF !default;
+
+// border and thin lines colors
+$border-pink-color: #F0DDEB !default;
+$border-pink-muted-color: #F7EEF5 !default;
+
+// flat ui elements colors
+$red-color: #EC4863 !default;
+$bright-violet-color: #9E8697 !default;
+$dark-violet-color: #8E7687 !default;
+$muted-violet-color: #CBBFC5 !default;
+$muted-violet-light-color: #CEC2CB !default;
+$cream-color: #F4F2E9 !default;
+$cream-light-color: #F4F2F4 !default;
+
+// vm states colors
+$running-color: #3fc380 !default;
+$paused-color: #a2ded0 !default;
+$restart-color: #F2784B !default;
+$stopped-color: $red-color !default;
+
+// one use colors
+$active-pink: #E1DFD8 !default;
+$inactive-grey: #EC4863 !default;
+$dark-blue-bg: #28292E !default;
+$blue-text: #9CA3BA !default;
+$muted-cream-color: #F9F8F4 !default;
+$bright-cream-color: #F0EDE3 !default;
+
+// ------ variables ------ // 
+
+// header sizes
+
+//$header-big: ;
+//$header-normal: ;
+$header-small: 19px !default;
+
+// text sizes
+
+$text-big: 17px !default;
+$text-normal: 16px !default;
+$text-small: 15.33px !default;
+$text-caption: 14.5px !default;
+
