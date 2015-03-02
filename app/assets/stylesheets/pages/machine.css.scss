@@ -1,34 +1,10 @@
 @import 'machine/*';
 
-.btn-state {
-  margin-top: -3px;
-  margin-left: 20px;
-  padding: 5px 10px;
-  font-size: 11px;
-  border: 1px solid $border-pink-muted-color !important;
-
-  .state {
-    padding: 3px;
-    &.fa-play {
-      color: $running-color;
-    }
-    &.fa-pause {
-      color: $paused-color;
-    }
-    &.fa-restart {
-      color: $restart-color;
-    }
-    &.fa-stop {
-      color: $stopped-color;
-    }
-  }
-}
-
 #page-machine {
   .nav {
-    background-color: $grouping-bg;
+    background-color: $vk-static-bg-color;
     li {
-      background-color: $grouping-bg;
+      background-color: $vk-static-bg-color;
 
       a {
         color: $navbar-default-color;
@@ -47,7 +23,7 @@
     }
 
     @media(min-width: $screen-md-min) {
-      border: 1px solid $cream-color;
+      border: 0px solid transparent;
       border-radius: 4px;
 
       li {

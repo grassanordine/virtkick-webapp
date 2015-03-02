@@ -4,6 +4,44 @@
     font-weight: bold;
   }
 
+  .btn-group {
+    .btn {
+      $padding: 10px;
+
+      padding-top: $padding;
+      padding-bottom: $padding;
+      &.fixed-width {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      margin: 0 20px;
+      border-radius: 4px;
+
+      input[type='radio'], input[type='checkbox'] {
+        position: absolute;
+        z-index: -1;
+        @include opacity(0);
+      }
+
+      &.btn-info.active, &.btn-info:hover {
+        box-shadow: none !important;
+        border-color: $table-border-color;
+        border-bottom: solid $active-border-px $brand-primary;
+        padding-bottom: $padding - $active-border-px;
+      }
+
+      span.title {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      span.val {
+        font-size: 16px;
+      }
+    }
+  }
+
   .radio-elem {
     vertical-align: top;
   }
@@ -35,6 +73,41 @@
 
         img {
           max-height: 40px;
+        }
+      }
+    }
+  }
+
+  .snapshots.btn-group {
+    display: block;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+
+    table {
+      margin: 0 auto;
+
+      .name {
+        width: 60%;
+      }
+      .storage, .date {
+        text-align: right;
+      }
+
+      tbody {
+        tr:hover {
+          border-left: solid $active-border-px $brand-primary;
+
+          td {
+            cursor: pointer;
+          }
+        }
+
+        tr.selected {
+          border-left: solid $active-border-px $brand-primary;
+
+          td {
+          }
         }
       }
     }

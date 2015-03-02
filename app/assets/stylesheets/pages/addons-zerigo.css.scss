@@ -9,8 +9,7 @@
     padding: 0;
 
     li.active {
-      background-color: $vk-primary;
-      color: $bg;
+      background-color: blue;
     }
 
     li {
@@ -24,8 +23,6 @@
 
     li:hover {
       cursor: pointer;
-      background-color: $light;
-      color: $text-color;
     }
   }
 

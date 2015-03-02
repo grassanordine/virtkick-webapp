@@ -7,7 +7,8 @@
 
     padding: 30px 0px 5px;
     margin: 0;
-    @include grouping;
+    background-color: $vk-dashboard-bg-color;
+    border-radius: 4px;
 
     ul {
       padding: 0;
@@ -27,7 +28,6 @@
       }
 
       padding: 10px 0;
-      background-color: $light;
       border-radius: 10px;
 
       span {
@@ -40,7 +40,7 @@
       }
 
       .value {
-        background-color: #FAF9F3;
+        background-color: $vk-dashboard-field-bg-color;
         font-size: 24px;
         padding: 5px 0;
       }

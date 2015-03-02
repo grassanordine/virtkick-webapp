@@ -7,9 +7,9 @@
   }
   .stats {
     margin: 0;
-    border: solid 1px $table-border-color;
+    border: solid 1px $vk-table-border-color;
     border-radius: 4px;
-    color: $navbar-default-color;
+    color: $vk-navbar-color;
 
     padding: 30px 20px;
 
@@ -18,7 +18,7 @@
     }
 
     .val {
-      background-color: $grouping-bg;
+      background-color: $vk-static-bg-color;
       border-radius: 4px;
       padding: 8px 0px;
       text-align: center;
@@ -28,21 +28,21 @@
       }
 
       &.power-state {
-        background-color: $grouping-bg;
+        background-color: $vk-static-bg-color;
 
         i {
           margin-right: 7px;
           &.fa-play {
-            color: $running-color;
+            color: $vk-action-run-color;
           }
           &.fa-pause {
-            color: $paused-color;
+            color: $vk-action-pause-color;
           }
           &.fa-repeat {
-            color: $restart-color;
+            color: $vk-action-restart-color;
           }
           &.fa-stop {
-            color: $stopped-color;
+            color: $vk-action-stop-color;
           }
         }
       }
@@ -82,7 +82,7 @@
       a.action.start {
         &.active {
           color: white;
-          background-color: $running-color;
+          background-color: $vk-action-run-color;
           i {
             color: white;
           }
@@ -91,7 +91,7 @@
       a.action.pause {
         &.active {
           color: white;
-          background-color: $paused-color;
+          background-color: $vk-action-pause-color;
           i {
             color: white;
           }
@@ -102,7 +102,7 @@
         padding-right: 15px;
         &.active {
           color: white;
-          background-color: $paused-color;
+          background-color: $vk-action-pause-color;
           i {
             color: white;
           }
@@ -111,7 +111,7 @@
       a.action.restart {
         &.active {
           color: white;
-          background-color: $restart-color;
+          background-color: $vk-action-restart-color;
           i {
             color: white;
           }
@@ -120,7 +120,7 @@
       a.action.stop {
         &.active {
           color: white;
-          background-color: $stopped-color;
+          background-color: $vk-action-stop-color;
           i {
             color: white;
           }
