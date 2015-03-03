@@ -58,6 +58,10 @@ define(function(require) {
                                             isosData,
                                             $timeout,
                                             $hook, $state, machineService) {
+
+    $scope.app.header.title = 'Create new machine';
+    $scope.app.header.icon = 'monitor';
+
     $scope.plans = plansData;
     $scope.isos = isosData;
 

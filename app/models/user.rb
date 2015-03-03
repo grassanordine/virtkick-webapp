@@ -37,7 +37,14 @@ class User < ActiveRecord::Base
   end
 
   def machines
-    meta_machines.not_deleted.map &:machine
+
+   meta_machines.not_deleted.map do |machine|
+     begin
+       machine.machine
+     rescue Exception => e
+       nil
+     end
+   end.compact
   end
 
   def remember_me

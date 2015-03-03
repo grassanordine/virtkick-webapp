@@ -1,6 +1,6 @@
 #page-new-machine.header-padding
   form.ng-cloak(name='form')
-    h4 Subscribtion plan
+    h4 Subscription plan
     .plans
       input(name='machine[plan_id]' ng-model='data.planId' required='true' class='hide')
       .radio-group
@@ -62,8 +62,8 @@
           input.form-control(name='machine[hostname]' ng-model='data.hostname' machine-name required placeholder="Machine hostname"  ng-disabled='data.creatingMachine')
           .ng-cloak.help-block
             ng-messages(for="form['machine[hostname]'].$error" ng-if="form.$dirty")
-              ng-message(when="required")
-                | This can't be blank.
+              //ng-message(when="required")
+              //  | This can't be blank.
               ng-message(when="already exists")
                 | Machine with such hostname already exists.
               ng-message(when="has already been taken")

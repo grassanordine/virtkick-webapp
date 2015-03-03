@@ -7,32 +7,10 @@ class ApplicationController < ActionController::Base
   helper_method :run_render_home_hook
 
   def run_render_home_hook
-    run_hook(:on_render_home).join("").html_safe
+    run_hook(:on_render_home).join('').html_safe
   end
 
   protect_from_forgery with: :exception
-
-
-  helper_method :object_to_json_constant
-  helper_method :setting_to_json_constant
-  helper_method :inject_module
-
-  def inject_module name
-    object_to_json_constant "inject_module_#{name}", name, 'inject-module'
-  end
-
-  def object_to_json_constant name, object, class_name = 'constant'
-    locals = {id: name.camelize(:lower), value: object.to_json, class_name: class_name}
-
-    str = render_to_string file: 'helpers/object_to_json_constant' , locals: locals, layout: nil
-    str
-  end
-
-  def setting_to_json_constant name
-    @val = Setting.get name
-    object_to_json_constant name.camelize(:lower), @val
-  end
-
 
   @@ready ||= false
 
@@ -72,16 +50,6 @@ class ApplicationController < ActionController::Base
   end
 
   before_bugsnag_notify :add_user_info_to_bugsnag
-
-  def home
-    authenticate_user!
-
-    @disk_types = Infra::DiskType.all 1
-    @disk = Infra::Disk.new
-    @iso_images = Plans::IsoImage.all
-    @isos = Plans::IsoDistro.all
-    @plans ||= Defaults::MachinePlan.all
-  end
 
   private
   def add_user_info_to_bugsnag notif

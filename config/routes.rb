@@ -46,5 +46,5 @@ Rails.application.routes.draw do
 
   end
 
-  get '*path', to: 'application#home',constraints: lambda { |request| not request.path.start_with? '/api/' }
+  get '*path', to: 'spa#home',constraints: lambda { |request| not request.path.start_with? '/api/' }
 end

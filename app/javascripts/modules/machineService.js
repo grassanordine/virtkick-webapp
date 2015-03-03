@@ -31,12 +31,14 @@ define(function(require) {
     };
 
     return {
-      index: function() {
+      index: function(aborter) {
         if(isCacheFresh()) {
           return $q.when(machinesCache);
         }
 
-        return $http.get('/api/machines.json').then(function(res) {
+        return $http.get('/api/machines.json', {
+          timeout: aborter?(aborter.promise):undefined
+        }).then(function(res) {
           machinesCache = humps.camelizeKeys(res.data);
           cacheTime = new Date().getTime();
 

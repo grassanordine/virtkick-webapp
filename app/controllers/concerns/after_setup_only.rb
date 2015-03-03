@@ -18,8 +18,10 @@ module AfterSetupOnly
         SetupController.check
         ApplicationController.class_variable_set :@@ready, true
       rescue Wvm::Setup::Error, ModeSetup::Error
+        puts "NOT SETUP"
         respond_to do |format|
           format.html {
+            puts "DD"
             redirect_to setup_url
           }
           format.json {

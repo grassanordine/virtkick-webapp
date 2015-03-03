@@ -24,7 +24,7 @@ define(function(require) {
         });
   });
 
-  app.controller('MachineIndex', function(machineService, $scope, $timeout, $state) {
+  app.controller('MachineIndex', function(machineService, $scope, $timeout, $state, $q) {
     $scope.app.header.title = 'Machines';
     $scope.app.header.icon = 'monitor';
 
@@ -34,7 +34,10 @@ define(function(require) {
     };
 
 
+    var aborter = $q.defer();
+
     $scope.$on('$stateChangeStart', function() {
+      aborter.resolve('');
       delete $scope.app.action;
     });
 
@@ -42,7 +45,7 @@ define(function(require) {
       loading: true
     };
 
-    machineService.index().then(function(data) {
+    machineService.index(aborter).then(function(data) {
       angular.extend($scope, data);
       $scope.state.loading = false;
     });

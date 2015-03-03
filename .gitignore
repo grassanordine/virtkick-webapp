@@ -10,3 +10,4 @@
 /node_modules
 vendor/cache
 bower_components
+db/schema.rb

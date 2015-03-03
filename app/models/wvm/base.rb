@@ -32,6 +32,9 @@ class Wvm::Base
 
   def self.hypervisor hypervisor_id
     hypervisor = Wvm::Hypervisor.find_by_id hypervisor_id
+    unless hypervisor
+      raise Exception.new('No hypervisor found')
+    end
     hypervisor.attributes.deep_symbolize_keys
   end
 
