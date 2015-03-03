@@ -11,10 +11,10 @@ describe 'Demo sessions' do
 
   it 'logs out after timeout' do
     post guests_path
-    expect(response).to redirect_to machines_path
+    expect(response).to redirect_to '/machines'
 
-    get machines_path
-    expect(response).to render_template :index
+    get '/machines'
+    expect(response).to render_template :home
 
     Timecop.travel 5.minutes
 
