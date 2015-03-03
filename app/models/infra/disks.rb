@@ -1,4 +1,4 @@
-class Infra::Disks < Infra::Elements
+class Infra::Disks < Array
   def usage
     return nil if size.zero?
     used / size

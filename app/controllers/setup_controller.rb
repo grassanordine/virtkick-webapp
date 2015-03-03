@@ -4,14 +4,14 @@ class SetupController < ApplicationController
 
   def index
     return redirect if @@ready
-    check
+    self.class.check
     redirect
   rescue Wvm::Setup::Error, ModeSetup::Error
     render action: :index
   end
 
   def perform
-    check
+    self.class.check
     render action: 'index'
   rescue Wvm::Setup::Error, ModeSetup::Error
     begin
@@ -34,14 +34,15 @@ class SetupController < ApplicationController
     index
   end
 
-  private
-  def check
+  def self.check
     ModeSetup.check
 
     Wvm::Hypervisor.all.each do |hypervisor|
       Wvm::Setup.check hypervisor
     end
   end
+
+  private
 
   def redirect
     @@ready = true

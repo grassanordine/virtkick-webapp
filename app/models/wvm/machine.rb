@@ -3,9 +3,7 @@ require 'ipaddress'
 class Wvm::Machine < Wvm::Base
   def self.all hypervisor_id
     response = call :get, "/#{hypervisor_id}/instances"
-    machines = build_all_instances response, hypervisor_id
-
-    Infra::Elements.new machines
+    build_all_instances response, hypervisor_id
   end
 
   def self.find id, hypervisor_id
