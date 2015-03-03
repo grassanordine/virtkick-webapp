@@ -13,6 +13,8 @@ modules:
   - name: 'application'
     include: ['application', 'views/machine/index', 'views/machine/show', 'views/machine/new']
     exclude: []
+  - name: 'setup'
+    include: ['setup']
 preserveLicenseComments: false
 generateSourceMaps: true
 optimize: uglify2

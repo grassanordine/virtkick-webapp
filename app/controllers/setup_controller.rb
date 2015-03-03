@@ -18,14 +18,12 @@ class SetupController < ApplicationController
       Wvm::Hypervisor.all.each do |hypervisor|
         Wvm::Setup.setup hypervisor
       end
-
-      user = ModeSetup.setup params[:mode], params[:extra]
+      puts params
+      user = ModeSetup.setup params
       sign_in user if user
-      flash[:success] = 'All configured - start VirtKicking now! :-)'
-      redirect
+      render json: {success: 'All configured - start VirtKicking now! :-)'}
     rescue Wvm::Setup::Error => e
-      @error = e.message
-      render action: :index
+      render json: {error: e.message}, status: 500
     end
   end
 

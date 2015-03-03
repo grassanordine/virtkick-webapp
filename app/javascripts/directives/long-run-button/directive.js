@@ -2,6 +2,7 @@ define(function(require) {
   var module = require('module');
   var angular = require('angular');
   require('css!./style.css');
+  require('ui-bootstrap');
 
   function controller($scope, $q) {
 
@@ -17,7 +18,6 @@ define(function(require) {
         $scope.running = true;
       }
       if($scope.runningAnimation) {
-        console.log("START RUNNIGN ANIMTION");
         $scope.runningAnimation = true;
       }
 

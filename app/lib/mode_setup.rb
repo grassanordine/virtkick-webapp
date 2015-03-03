@@ -6,15 +6,16 @@ class ModeSetup
     raise Error, 'Mode not set.' if Mode.none?
   end
 
-  def self.setup mode, extra = {}
+  def self.setup params
+    mode = params[:mode]
     if mode == 'localhost'
       setup_localhost
     elsif mode == 'demo'
       setup_demo
     elsif mode == 'private_cloud'
-      setup_private_cloud extra
+      setup_private_cloud params
     elsif mode == 'vps_provider'
-      setup_vps_provider extra
+      setup_vps_provider params
     else
       raise Error, 'Sorry - not a valid mode.'
     end

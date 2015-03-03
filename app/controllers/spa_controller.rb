@@ -1,4 +1,17 @@
 class SpaController < AfterSetupController
+  include Hooks
+  define_hook :on_render_home
+
+  helper_method :run_render_home_hook
+
+  def run_render_home_hook
+    run_hook(:on_render_home).join('').html_safe
+  end
+
+  before_action do
+    @navbar_links = []
+  end
+
   before_action :authenticate_user!
 
   helper_method :inject_module
@@ -23,9 +36,11 @@ class SpaController < AfterSetupController
 
   respond_to :html
 
-  def home
-    authenticate_user!
+  before_action do
+    @navbar_links = []
+  end
 
+  def home
     @disk_types = Infra::DiskType.all 1
     @disk = Infra::Disk.new
     @iso_images = Plans::IsoImage.all

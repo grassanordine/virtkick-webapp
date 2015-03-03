@@ -1,4 +1,7 @@
-#page-setup
+- content_for :scripts do
+  = requirejs_include_tag 'setup'
+
+#page-setup(ng-app=1 ng-controller='SetupCtrl')
   .container-fluid
     .row
       .col-md-offset-1.col-md-11
@@ -17,49 +20,56 @@
         - if from_localhost
           div.option
             .button-wrapper
-              = button_to perform_setup_path(:localhost), method: :post, class: 'btn chooser', rel: 'nofollow noindex' do
+              /= button_to perform_setup_path(:localhost), method: :post, class: 'btn chooser', rel: 'nofollow noindex' do= button_to perform_setup_path(:localhost), method: :post, class: 'btn chooser', rel: 'nofollow noindex' do
+              button.btn.chooser(ng-click="setup.mode = 'localhost'" ng-class="{active: setup.mode == 'localhost'}")
                 .fa.fa-home  
             .text-wrapper
               .title Localhost
               .disclaimer.hidden-xs No passwords or anything. Just use.
         div.option
           .button-wrapper
-            button.btn.chooser
+            button.btn.chooser(ng-click="setup.mode = 'privateCloud'" ng-class="{active: setup.mode == 'privateCloud'}")
               .fa.fa-cloud
           .text-wrapper
             .title Private Cloud
             .disclaimer.hidden-xs Protect your machines with credentials.        
-            .form-wrapper
-              = form_tag perform_setup_path(:private_cloud), method: :post do
-                form.private-cloud-only method='post'
-                  .form-group
-                    label for="extra[email]" E-mail address
-                    input.form-control type='email' name='extra[email]' placeholder='E-mail'
-                  .form-group
-                    label for="extra[password]" Password
-                    input.form-control type='password' name='extra[password]' placeholder='Password'
-                  .form-group.no-margin
-                    input.form-control type='password' placeholder='Confirm Password'
-        div.option.disabled
-          .button-wrapper
-            = button_to perform_setup_path(:vps_provider), method: :post, class: 'btn chooser', rel: 'nofollow noindex', disabled: true do
-              .fa.fa-sitemap
-          .text-wrapper
-            .title VPS Provider
-            .disclaimer.hidden-xs Not implemented yet. Work in progress!
-        div.option.disabled
-          .button-wrapper
-            = button_to perform_setup_path(:demo), method: :post, class: 'btn chooser', rel: 'nofollow noindex', disabled: true do
-              .fa.fa-paper-plane
-          .text-wrapper
-            .title Demo
-            .disclaimer.hidden-xs Sessions limited to 30 minutes.
+            .form-wrapper.ng-cloak.private-cloud-form(ng-show="setup.mode == 'privateCloud'")
+              form.private-cloud-only method='post' name='setupForm'
+                .form-group show-errors=1
+                  label for="extra[email]" E-mail address
+                  input.form-control type='email' ng-model='setup.email' name='email' placeholder='E-mail' required=1
+                .form-group show-errors=1
+                  label for="extra[password]" Password
+                  input.form-control type='password' ng-model='setup.password' name='password' placeholder='Password' required=1
+                .form-group.no-margin show-errors=1
+                  input.form-control type='password' ng-model='setup.passwordConfirm' name='passwordConfirm' match='setupForm.password' placeholder='Confirm Password'
+                  .help-block
+                    ng-messages for="setupForm.passwordConfirm.$error"
+                      ng-message(when='match')
+                        | Passwords do not match
+          div.option.disabled
+            .button-wrapper
+              = button_to perform_setup_path(:vps_provider), method: :post, class: 'btn chooser', rel: 'nofollow noindex', disabled: true do
+                .fa.fa-sitemap
+              /-button.btn.chooser(ng-click="setup.mode = 'vpsProvider'" ng-class="{active: setup.mode == 'vpsProvider'}" disabled)
+                .fa.fa-sitemap
+            .text-wrapper
+              .title VPS Provider
+              .disclaimer.hidden-xs Not implemented yet. Work in progress!
+          div.option.disabled
+            .button-wrapper
+              /= button_to perform_setup_path(:demo), method: :post, class: 'btn chooser', rel: 'nofollow noindex', disabled: true do
+              button.btn.chooser(ng-click="setup.mode = 'demo'" ng-class="{active: setup.mode == 'demo'}" disabled)
+                .fa.fa-paper-plane
+            .text-wrapper
+              .title Demo
+              .disclaimer.hidden-xs Sessions limited to 30 minutes.
       .launch.col-lg-5
-        - if @error
+        div.ng-cloak ng-if='setup.error'
           div.alert.alert-danger
-            = @error
+            | {{setup.error}}
 
-        button.btn.btn-lg.btn-primary
+        long-run-button.btn.btn-lg.btn-primary.ng-cloak(ng-show='setup.mode' run='submit()' on-finish-animation='reload()' ng-disabled="setup.mode == 'privateCloud' && setupForm.$invalid")
           | Launch Virtkick
       .col-lg-1
-      
+

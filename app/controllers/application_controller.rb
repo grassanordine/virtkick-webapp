@@ -1,15 +1,6 @@
 class ApplicationController < ActionController::Base
   include RequirejsHelper
 
-  include Hooks
-  define_hook :on_render_home
-
-  helper_method :run_render_home_hook
-
-  def run_render_home_hook
-    run_hook(:on_render_home).join('').html_safe
-  end
-
   protect_from_forgery with: :exception
 
   @@ready ||= false
@@ -18,10 +9,6 @@ class ApplicationController < ActionController::Base
   # before_action do
   #   puts request.headers.inspect
   # end
-
-  before_action do
-    @navbar_links = []
-  end
 
   before_action do
     @@paths ||= Dir['engines/*/*.gemspec'].map { |e| File.dirname e}

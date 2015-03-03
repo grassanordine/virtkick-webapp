@@ -14,6 +14,8 @@ html
   body
     = yield
 
+    = yield :scripts
+
     /[if lte IE 8]
       #old-browser
         javascript:
