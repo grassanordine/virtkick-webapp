@@ -1,5 +1,13 @@
 module ApplicationHelper
 
+  def theme_image_path path 
+    File.join(Rails.application.config.theme, 'images', path)
+  end
+
+  def theme_image_tag path, options={}
+    image_tag theme_image_path(path), options
+  end
+
   def bootstrap_alert_class_for_flash type
     case type.to_sym
       when :success

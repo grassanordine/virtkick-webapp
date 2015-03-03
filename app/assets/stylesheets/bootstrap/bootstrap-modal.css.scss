@@ -12,8 +12,8 @@
       .modal-header {
         padding-top: 25px;
         padding-bottom: 20px;
-        background-color: $bright-cream-color;
-        color: $bright-violet-color;
+        background-color: $vk-modal-header-bg-color;
+        color: $vk-modal-header-color;
         font-weight: 700;
 
         h3 {
@@ -22,6 +22,7 @@
       }
 
       .modal-body {
+        background-color: $vk-modal-body-bg-color;
         padding: 15px $modal-inner-padding 15px $modal-inner-padding;
       }
 

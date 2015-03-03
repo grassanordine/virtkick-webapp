@@ -1,11 +1,11 @@
 input, .form-control input, select, .form-control select, .input-group input, textarea, .form-control textarea {
   @include box-shadow(none !important);
-  border-color: $border-pink-color !important;
+  border-color: $vk-input-border-color !important;
   border-style: solid !important;
   border-width: 1px !important;
 
   &:focus, &:active {
-    border-color: darken($border-pink-color, 10%) !important;
+    border-color: darken($vk-input-border-color, 10%) !important;
   }
 
   &:focus, &:active {
@@ -22,9 +22,9 @@ input.wide {
 
 .input-group {
   .input-group-addon {
-    border-color: $border-pink-color !important;
+    border-color: $vk-input-border-color !important;
     background-color: transparent;
-    color: $vk-primary;
+    color: $vk-input-addon-color;
   }
 
   input {
@@ -36,45 +36,35 @@ input.wide {
       outline-color: transparent;
     }
   }
-
-  .input-group-addon.dropdown-toggle {
-    background-color: $red-color !important;
-    border-color: $red-color !important;
-    cursor: pointer;
-
-    span {
-      color: white;
-    }
-  }
 }
 
 .form-group.has-error {
-  color: $vk-primary !important;
+  color: $vk-input-error-color !important;
 
   input.form-control, .input-group-addon {
-    border-color: lighten($vk-primary, 15%) !important;
+    border-color: $vk-input-error-border-color !important;
   }
 }
 
 .form-group.has-success {
-  color: $vk-text !important;
+  color: $vk-input-success-color !important;
 
   input.form-control, .input-group-addon {
-    border-color: lighten($vk-secondary, 15%) !important;
+    border-color: $vk-input-success-border-color !important;
   }
 }
 
 ::-webkit-input-placeholder { 
-  color: $placeholder !important;
+  color: $vk-input-placeholder-color !important;
 }
 :-moz-placeholder { 
-  color: $placeholder !important;
+  color: $vk-input-placeholder-color !important;
   opacity:  1;
 }
 ::-moz-placeholder { 
-  color: $placeholder !important;
+  color: $vk-input-placeholder-color !important;
   opacity:  1;
 }
 :-ms-input-placeholder { 
-  color: $placeholder !important;
+  color: $vk-input-placeholder-color !important;
 }

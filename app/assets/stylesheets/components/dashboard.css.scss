@@ -1,7 +1,7 @@
 .dashboard {
-  background-color: $cream-color;
+  background-color: $vk-dashboard-bg-color;
   padding: 40px 30px;
-  color: $dark-violet-color;
+  color: $vk-dashboard-color;
   font-size: $text-normal;
   border-radius: 4px;
 
@@ -17,10 +17,10 @@
 
   &.setup {
     background-color: transparent;
-    border: 1px solid $border-pink-color;
+    border: 1px solid $vk-billing-setup-border-color;
 
     .setup-icon {
-      color: $cream-light-color;
+      opacity: 0.2;
       text-align: center;
 
       .fa {
@@ -48,7 +48,7 @@
   .value-field {
     vertical-align: top;
     display: inline-block;
-    background-color: $white;
+    background-color: $vk-dashboard-field-bg-color;
     padding: 10px; 
     text-align: center;
     font-weight: bold;

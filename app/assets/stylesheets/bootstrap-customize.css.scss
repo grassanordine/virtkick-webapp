@@ -1,77 +1,3 @@
-// Bootstrap overrides, lookup the names at http://getbootstrap.com/customize/
-$text-color: $vk-text;
-$brand-primary: $vk-primary;
-$brand-secondary: $vk-secondary;
-
-$body-bg: $bg;
-$grid-columns: 12;
-$grid-float-breakpoint: 992px;
-$font-family-sans-serif: 'Source Sans Pro', sans-serif;
-$font-size-base: 18px;
-$font-size-h1: 32px;
-$font-size-h2: 26px;
-$font-size-h3: $font-size-base;
-
-$input-border-focus: $vk-primary;
-$table-border-color: $border-pink-color;
-
-$brand-info: $grouping-bg;
-$btn-info-color: $text-color;
-$btn-default-bg: $grouping-bg;
-$btn-default-color: $brand-secondary;
-
-$modal-inner-padding: 55px !default;
-$modal-title-padding: 15px !default;
-$modal-content-bg: #fff !default;
-$modal-content-border-color: #F0DDEB !default;
-$modal-content-fallback-border-color: #999 !default;
-$modal-backdrop-bg: lighten(#F0EDE3, 3%) !default;
-$modal-backdrop-opacity: .75 !default;
-$modal-header-border-color: #e5e5e5 !default;
-$modal-footer-border-color: $modal-header-border-color !default;
-$modal-lg: 550px !default;
-$modal-md: 550px !default;
-$modal-sm: 300px !default;
-
-
-$navbar-margin-top: 0;
-$navbar-default-border: #A73E5C;
-$navbar-default-bg: $grouping-bg;
-$navbar-default-color: $grouping-color;
-
-$navbar-default-link-color: $navbar-default-color;
-$navbar-default-link-active-bg: $navbar-default-bg;
-$navbar-default-link-active-color: $brand-primary;
-$navbar-default-link-hover-bg: $light;
-$navbar-default-link-hover-color: $vk-primary;
-
-$navbar-padding-vertical: 7px;
-$navbar-height: 68px;
-
-$nav-link-hover-bg: $light;
-$nav-tabs-active-link-hover-color: $brand-primary;
-$nav-tabs-border-color: $vk-primary;
-$nav-tabs-active-link-hover-border-color: $nav-tabs-border-color;
-
-$progress-bg: $grouping-bg;
-
-$screen-xs:                  480px !default;
-$screen-xs-min:              $screen-xs !default;
-$screen-phone:               $screen-xs-min !default;
-$screen-sm:                  768px !default;
-$screen-sm-min:              $screen-sm !default;
-$screen-tablet:              $screen-sm-min !default;
-$screen-md:                  992px !default;
-$screen-md-min:              $screen-md !default;
-$screen-desktop:             $screen-md-min !default;
-$screen-lg:                  1200px !default;
-$screen-lg-min:              $screen-lg !default;
-$screen-lg-desktop:          $screen-lg-min !default;
-$screen-xs-max:              ($screen-sm-min - 1) !default;
-$screen-sm-max:              ($screen-md-min - 1) !default;
-$screen-md-max:              ($screen-lg-min - 1) !default;
-
-
 .progress {
   .progress-bar {
   	@include box-shadow(none);
@@ -86,14 +12,14 @@ label {
 
 .navbar-default {
 	.navbar-toggle, .navbar-toggle:hover, .navbar-toggle:focus {
-		border: 1px solid $cream-color !important;
+		border: 0 !important;
 		background-color: transparent !important;
   	@include transition(background-color, 0.25s, ease-in, 0s);
 	  .icon-bar {
-      background-color: $red-color !important;
+      background-color: $vk-navbar-icon-color !important;
     }
     &:hover {
-      background-color: $red-color !important;
+      background-color: $vk-navbar-icon-hover-bg-color !important;
       @include transition(background-color, 0.25s, ease-in, 0s);
       .icon-bar {
         background-color: white !important;
@@ -112,13 +38,13 @@ label {
 
     & > a {
       color: $brand-secondary !important;
-      background-color: $cream-color;
+      background-color: $vk-dropdown-bg-color;
       padding: 10px 25px !important;
       cursor: pointer;
 
       @include transition(background-color, 0.3s, ease, 0.0s);
       &:hover, &:active {
-        background-color: darken($cream-color, 10%) !important;
+        background-color: darken($vk-dropdown-bg-color, 10%) !important;
         @include transition(background-color, 0.3s, ease, 0.0s);
       }
     }

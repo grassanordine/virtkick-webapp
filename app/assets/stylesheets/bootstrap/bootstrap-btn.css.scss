@@ -6,25 +6,12 @@
     @include transition(background-color, 0.15s, ease-in, 0s);
   }
   
-  .default {
-    color: $bright-violet-color;
-    background-color: $cream-color;
-  }
-
   &.btn-primary {
-    border: 1px solid $red-color !important; 
-    &:hover {
-      border: darken($red-color, 10%);
-    }
+    border: 0 !important; 
   }
 
   &.btn-default {
-    border: 1px solid $cream-color !important; 
-  }
-
-  &.btn-default-focus {
-    color: $bright-violet-color;
-    background-color: $cream-color;
+    border: 0 !important; 
   }
 }
 

@@ -1,0 +1,169 @@
+// ------ sizes ------ // 
+
+$header-small: 19px !default;
+
+$text-big: 17px !default;
+$text-normal: 16px !default;
+$text-small: 15.33px !default;
+$text-caption: 14.5px !default;
+
+// ------ colors ------ // 
+
+$vk-brand-primary-color: #EC4863 !default; // pinkish 
+$vk-brand-secondary-color: #8F6E84 !default; // dirty violet
+
+$vk-contrary-color: #28292E !default; // dark almost black blue
+$vk-contrary-front-color: #9CA3BA !default; // light blue
+
+$vk-body-bg-color: #FFFFFF !default; // white
+$vk-text-color: #554F57 !default; // almost black violet
+$vk-text-mild-color: #9E8697 !default; // normal readable light violet
+$vk-border-color: #F0DDEB !default; // light pink/violet
+
+$vk-static-color: #8E7687 !default; // light violet for cream bg
+$vk-static-light-color: #CBBFC5 !default; // muted light violet for cream bg
+$vk-static-bg-color: #F4F2E9 !default; // creamy 
+$vk-static-bg-light-color: #F0EDE3 !default; // lighter creamy
+$vk-static-bg-mild-color: #F9F8F4 !default; // almost not visible creamy 
+$vk-static-field-bg-color: #FFFFFF !default; // white
+
+$vk-action-run-color: #3FC380 !default; // green
+$vk-action-pause-color: #A2DED0 !default; // light blue
+$vk-action-restart-color: #F2784B !default; // orange
+$vk-action-stop-color: #EC4863 !default; // pinkish
+
+$vk-muted-color: #D1C7CF !default; // violet muted on white
+$vk-dead-color: #000000 !default; // black
+$vk-element-on-color: #EC4863 !default; // pink (duplicated primary)
+$vk-element-off-color: #E1DFD8 !default; // a little creamy gray
+
+// TODO:
+// 2. track all written (i.e. white)
+// 3. track all hardcorded with regexp #...
+// 4. check for all inproper bootstrap vars use
+// 5. refactor size vars names
+// 6. additional variables - border radius, shading?
+
+// ------ vk components ------ // 
+
+$vk-logo-bg-color: $vk-static-bg-color !default;
+
+$vk-navbar-color: $vk-text-mild-color !default;
+$vk-navbar-bg-color: $vk-static-bg-color !default;
+$vk-navbar-icon-color: $vk-brand-primary-color !default;
+$vk-navbar-icon-hover-bg-color: $vk-brand-primary-color !default;
+
+$vk-button-primary-bg-color: $vk-brand-primary-color !default;
+
+$vk-dropdown-bg-color: $vk-static-bg-color !default;
+
+$vk-input-border-color: $vk-border-color !default;
+$vk-input-error-color: $vk-brand-primary-color !default;
+$vk-input-error-border-color: lighten($vk-brand-primary-color, 15%) !default;
+$vk-input-success-color: $vk-text-color !default;
+$vk-input-success-border-color: lighten($vk-brand-secondary-color, 15%) !default;
+$vk-input-addon-color: $vk-brand-primary-color !default;
+$vk-input-placeholder-color: $vk-muted-color !default;
+
+$vk-radio-border-color: $vk-border-color !default;
+$vk-radio-active-bg-color: $vk-static-bg-light-color !default;
+$vk-radio-stripe-bg-color: $vk-brand-primary-color !default;
+
+$vk-table-color: $vk-text-mild-color !default;
+$vk-table-header-icon-color: $vk-static-light-color !default;
+$vk-table-border-color: $vk-border-color !default;
+$vk-table-button-color: $vk-static-light-color !default;
+$vk-table-stripe-bg-color: $vk-static-bg-mild-color !default;
+$vk-table-total-color: $vk-static-color !default;
+$vk-table-more-color: $vk-text-mild-color !default;
+$vk-table-more-hover-color: $vk-brand-primary-color !default;
+$vk-table-more-icon-color: $vk-brand-primary-color !default;
+
+$vk-modal-header-color: $vk-text-mild-color !default;
+$vk-modal-header-bg-color: $vk-static-bg-light-color !default;
+$vk-modal-body-bg-color: $vk-body-bg-color !default;
+
+$vk-dashboard-color: $vk-static-color !default;
+$vk-dashboard-bg-color: $vk-static-bg-color !default;
+$vk-dashboard-field-bg-color: $vk-static-field-bg-color !default;
+
+$vk-console-bg-color: $vk-static-bg-color !default;
+$vk-console-button-color: $vk-text-mild-color !default;
+$vk-console-button-border-color: $vk-static-light-color !default;
+$vk-console-overlay-color: $vk-contrary-front-color !default;
+$vk-console-overlay-bg-color: $vk-contrary-color !default;
+$vk-console-diode-on-bg-color: $vk-element-on-color !default;
+$vk-console-diode-off-bg-color: $vk-element-off-color !default;
+
+$vk-newsletter-header-color: $vk-brand-primary-color !default;
+$vk-newsletter-result-color: $vk-brand-primary-color !default;
+$vk-newsletter-bg-color: lighten($vk-static-bg-color, 3%) !default;
+
+$vk-setup-color: $vk-text-mild-color !default;
+$vk-setup-button-color: $vk-muted-color !default;
+$vk-setup-button-active-color: $vk-brand-primary-color !default;
+$vk-setup-button-border-color: $vk-border-color !default;
+$vk-setup-button-active-border-color: $vk-brand-primary-color !default;
+
+$vk-billing-link-color: $vk-text-mild-color !default;
+$vk-billing-link-hover-color: $vk-brand-primary-color !default;
+$vk-billing-link-icon-color: $vk-brand-primary-color !default;
+$vk-billing-setup-border-color: $vk-border-color !default;
+$vk-billing-payment-card-color: $vk-text-mild-color !default;
+$vk-billing-payment-card-bg-color: $vk-static-bg-color !default;
+$vk-billing-tour-page-color: $vk-text-mild-color !default;
+$vk-billing-tour-summary-color: $vk-text-mild-color !default;
+$vk-billing-tour-skip-button-color: $vk-text-mild-color !default;
+
+// ------ bootstrap overrides ------ // 
+
+$text-color: $vk-text-color;
+$brand-primary: $vk-brand-primary-color;
+$brand-secondary: $vk-brand-secondary-color;
+
+$body-bg: $vk-body-bg-color;
+$grid-float-breakpoint: 992px;
+$font-family-sans-serif: 'Source Sans Pro', sans-serif;
+$font-size-base: 18px;
+$font-size-h1: 32px;
+$font-size-h2: 26px;
+$font-size-h3: $font-size-base;
+
+$input-border-focus: $vk-brand-primary-color;
+$table-border-color: $vk-border-color;
+
+$brand-info: $vk-static-bg-color;
+$btn-info-color: $text-color;
+$btn-default-bg: $vk-static-bg-color;
+$btn-default-color: $brand-secondary;
+
+$modal-inner-padding: 55px !default;
+$modal-content-border-color: $vk-border-color !default;
+$modal-backdrop-bg: lighten($vk-modal-header-bg-color, 3%) !default;
+$modal-backdrop-opacity: .75 !default;
+$modal-header-border-color: $vk-border-color !default;
+$modal-footer-border-color: $modal-header-border-color !default;
+$modal-lg: 550px !default;
+$modal-md: 550px !default;
+$modal-sm: 300px !default;
+
+$navbar-margin-top: 0;
+$navbar-default-border: transparent;
+$navbar-default-bg: $vk-static-bg-color;
+$navbar-default-color: $vk-navbar-color;
+
+$navbar-default-link-color: $navbar-default-color;
+$navbar-default-link-active-bg: $navbar-default-bg;
+$navbar-default-link-active-color: $brand-primary;
+$navbar-default-link-hover-bg: $vk-static-bg-color;
+$navbar-default-link-hover-color: $vk-brand-primary-color;
+
+$navbar-padding-vertical: 7px;
+$navbar-height: 68px;
+
+$nav-link-hover-bg: $vk-static-bg-color;
+$nav-tabs-active-link-hover-color: $brand-primary;
+$nav-tabs-border-color: $vk-brand-primary-color;
+$nav-tabs-active-link-hover-border-color: $nav-tabs-border-color;
+
+$progress-bg: $vk-static-bg-color;

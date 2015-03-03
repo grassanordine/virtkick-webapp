@@ -1,5 +1,5 @@
-@import 'colors';
-@import 'variables';
+@import './../themes/virtkick/theme';
+@import './../themes/<%= Rails.application.config.theme %>/theme';
 @import 'mixins';
 @import 'bootstrap-customize';
 @import 'bootstrap';
@@ -7,16 +7,12 @@
 @import 'bootstrap/bootstrap-btn';
 @import 'bootstrap/bootstrap-input';
 @import 'bootstrap/bootstrap-modal';
-@import 'bootstrap/bootstrap-table';
+@import 'bootstrap/bootstrap-table'; 
 @import 'fonts';
 
 // utility to hide unloaded angular content
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
 display: none !important;
-}
-
-.bright-violet {
-  color: $bright-violet-color;
 }
 
 .header-padding {
@@ -56,7 +52,8 @@ display: none !important;
       width: $header-height;
       height: $header-height;
       box-sizing: content-box;
-      @include grouping;
+      background-color: $vk-logo-bg-color;
+      border-radius: 4px;
     }
 
     p {
@@ -121,23 +118,19 @@ display: none !important;
   }
 
   .navbar-brand {
-    font-family: Earthbound;
-    font-size: 32px;
     padding-top: 10px;
-    color: #5C2848 !important;
-
     .pix {
+      max-width: 48px;
+      max-height: 48px;
       display: inline-block;
-    }
-    .kick {
-      color: $brand-primary !important;
     }
   }
 }
 
 nav.navbar {
   border: 0 !important;
-  @include grouping;
+  background-color: $vk-navbar-bg-color;
+  border-radius: 4px;
 
   @media(min-width: $screen-md) {
     padding-top: 26px;
@@ -188,7 +181,7 @@ h3 {
 .mobile-newsletter {
   padding-top: 20px;
   padding-bottom: 10px;
-  background-color: lighten($light, 3%);
+  background-color: $vk-newsletter-bg-color;
 }
 
 .newsletter {
@@ -197,7 +190,7 @@ h3 {
   }
 
   p.result {
-    color: $red-color;
+    color: $vk-newsletter-result-color;
     margin-top: 5px;
     font-size: 14px;
   }
@@ -207,7 +200,7 @@ h3 {
   }
 
   h3 {
-    color: $brand-primary;
+    color: $vk-newsletter-header-color;
   }
 }
 

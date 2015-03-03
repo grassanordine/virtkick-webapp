@@ -1,6 +1,6 @@
 .table-header {
   .fa {
-    color: $muted-violet-light-color;
+    color: $vk-table-header-icon-color;
     margin-right: 15px;
   }
 }
@@ -14,27 +14,13 @@ h4.table-header {
 
 table.table {
   margin: 0 auto;
-  border: 1px solid $border-pink-color;
+  border: 1px solid $vk-table-border-color;
   border-radius: 4px;
   border-collapse: initial;
 
   .btn {
     font-size: 1em !important;
   }
-
-  .expand {
-    cursor: pointer;
-    color: $white;
-    font-size: 0.5em;
-    border-radius: 2px;
-    padding: 4px;
-    background-color: $red-color;
-
-    &:hover {
-      text-decoration: none;
-    }
-  }
-
 
   thead tr th {
     border: 0px;
@@ -51,7 +37,7 @@ table.table {
   tbody {
     tr {
       td {
-        color: $bright-violet-color;
+        color: $vk-table-color;
         border: 0px;
         background-color: transparent !important;
         padding-top: 12px;
@@ -79,12 +65,12 @@ table.table {
             a.btn {
               margin: 0px;
               padding: 6px;
-              color: $muted-violet-color;
+              color: $vk-table-button-color;
               @include transition(color, 0.1s, ease-in, 0s);
               display: inline-block;
 
               &:hover, &:focus, &:active {
-                color: darken($muted-violet-color, 10%);
+                color: darken($vk-table-button-color, 10%);
                 @include transition(opacity, 0.1s, ease-in, 0s);
               }
 
@@ -117,7 +103,7 @@ table.table {
     tbody {
       tr:nth-child(odd) {
         td, th {
-          background-color: $muted-cream-color !important;
+          background-color: $vk-table-stripe-bg-color !important;
         }
       } 
     }
@@ -139,7 +125,7 @@ table.table {
   padding-top: 12px;
   padding-bottom: 12px;
   font-weight: bold;
-  color: $dark-violet-color;
+  color: $vk-table-total-color;
 
   .total {
     padding-left: 21px;
@@ -164,18 +150,18 @@ table.table {
   a {
     margin: 0 auto;
     text-decoration: none;
-    color: $bright-violet-color;
+    color: $vk-table-more-color;
     font-size: $text-small;
     cursor: pointer;
 
     .fa {
       padding-right: 10px;
-      color: $vk-primary;
+      color: $vk-table-more-icon-color;
     }
 
     @include transition(color 0.2s ease);
     &:hover, &:active {
-      color: $vk-primary;
+      color: $vk-table-more-hover-color;
       @include transition(color 0.2s ease);
     }
   }

@@ -14,6 +14,13 @@ module EngineCssLoader
   end
 end
 
+Rails.application.configure do
+  if ENV['VIRTKICK_THEME'] 
+    config.theme = ENV['VIRTKICK_THEME']
+  else
+    config.theme = 'virtkick'
+  end
+end
 
 Rails.application.assets.context_class.instance_eval do
   include EngineCssLoader
