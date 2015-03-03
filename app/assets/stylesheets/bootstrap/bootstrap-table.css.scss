@@ -80,12 +80,12 @@ table.table {
               margin: 0px;
               padding: 6px;
               color: $muted-violet-color;
-              @include transition(color, 0.1s, ease-in, 0);
+              @include transition(color, 0.1s, ease-in, 0s);
               display: inline-block;
 
               &:hover, &:focus, &:active {
                 color: darken($muted-violet-color, 10%);
-                @include transition(opacity, 0.1s, ease-in, 0);
+                @include transition(opacity, 0.1s, ease-in, 0s);
               }
 
               span.action {
@@ -108,7 +108,7 @@ table.table {
     tr:hover {
       td.actions .buttons {
         opacity: 1;
-        @include transition(opacity, 0.2s, ease-in, 0);
+        @include transition(opacity, 0.2s, ease-in, 0s);
       }
     }
   }

@@ -1,9 +1,9 @@
 .btn {
   @include box-shadow(none !important);
-  @include transition(background-color, 0.15s, ease-in, 0);
+  @include transition(background-color, 0.15s, ease-in, 0s);
   
   &:hover, &.active {
-    @include transition(background-color, 0.15s, ease-in, 0);
+    @include transition(background-color, 0.15s, ease-in, 0s);
   }
   
   .default {
