@@ -33,7 +33,7 @@
 
     h4 {
       font-size: 1.1em;
-      color: $vk-secondary;
+      color: $vk-setup-color;
       @media(max-width: $screen-sm-max) {
         margin-top: 2em;
         margin-bottom: 1em;
@@ -81,13 +81,13 @@
 
         .disclaimer {
           font-size: 0.9em;
-          color: $muted-violet-color;
+          color: $vk-setup-color;
         }     
       }
 
       .form-wrapper {
         margin-top: 1.8em;
-        color: $vk-secondary;
+        color: $vk-setup-color;
 
         @media(max-width: $screen-sm-max) {
           .form-control {
@@ -141,10 +141,10 @@
     width: 4.5em;
     box-shadow: none !important;
     background-color: white;
-    color: $chooser-violet;
-    border-color: $border-pink-color;
+    color: $vk-setup-button-color;
+    border-color: $vk-setup-button-border-color;
     box-sizing: border-box;
-    border-bottom: solid 1px $border-pink-color;
+    border-bottom: solid 1px $vk-setup-button-border-color;
     @include transition(all, 0.25s, ease-in, 0s);
 
 
@@ -153,8 +153,8 @@
     }
 
     &:hover, &:active, &.active {
-      color: $brand-primary;
-      border-bottom: solid 5px $brand-primary;
+      color: $vk-setup-button-active-color;
+      border-bottom: solid 5px $vk-setup-button-active-border-color;
     }
   }
   .private-cloud-form {

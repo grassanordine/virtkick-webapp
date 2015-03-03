@@ -65,6 +65,10 @@ $vk-input-success-border-color: lighten($vk-brand-secondary-color, 15%) !default
 $vk-input-addon-color: $vk-brand-primary-color !default;
 $vk-input-placeholder-color: $vk-muted-color !default;
 
+$vk-radio-border-color: $vk-border-color !default;
+$vk-radio-active-bg-color: $vk-static-bg-light-color !default;
+$vk-radio-stripe-bg-color: $vk-brand-primary-color !default;
+
 $vk-table-color: $vk-text-mild-color !default;
 $vk-table-header-icon-color: $vk-static-light-color !default;
 $vk-table-border-color: $vk-border-color !default;
@@ -94,6 +98,12 @@ $vk-console-diode-off-bg-color: $vk-element-off-color !default;
 $vk-newsletter-header-color: $vk-brand-primary-color !default;
 $vk-newsletter-result-color: $vk-brand-primary-color !default;
 $vk-newsletter-bg-color: lighten($vk-static-bg-color, 3%) !default;
+
+$vk-setup-color: $vk-text-mild-color !default;
+$vk-setup-button-color: $vk-muted-color !default;
+$vk-setup-button-active-color: $vk-brand-primary-color !default;
+$vk-setup-button-border-color: $vk-border-color !default;
+$vk-setup-button-active-border-color: $vk-brand-primary-color !default;
 
 $vk-billing-link-color: $vk-text-mild-color !default;
 $vk-billing-link-hover-color: $vk-brand-primary-color !default;
