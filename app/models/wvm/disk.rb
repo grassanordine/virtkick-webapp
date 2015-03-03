@@ -1,8 +1,8 @@
 class Wvm::Disk < Wvm::Base
-  def self.array_of disks
+  def self.array_of disks, hypervisor_id
     disks ||= []
     array = disks.map do |disk|
-      local_pool = Wvm::StoragePool.to_local disk.storage
+      local_pool = Wvm::StoragePool.to_local disk.storage, hypervisor_id
       local_pool_name = local_pool ? local_pool[:name] : nil
       # TODO: This introduces a security hole. We should allow to get a disk from a custom storage pool, but we
       # shouln't accept it when creating. Storage pool validation should occur on Controller level, not Infra level.
@@ -21,27 +21,27 @@ class Wvm::Disk < Wvm::Base
     Infra::Disks.new array
   end
 
-  def self.create disk, uuid
+  def self.create disk, uuid, hypervisor_id
     raise unless disk.pool =~ /\A[a-zA-Z-]+\Z/
 
-    add_missing_fields disk, uuid
+    add_missing_fields disk, uuid, hypervisor_id
 
     gigabytes = disk.size / 1.gigabytes
     meta_prealloc = disk.format == 'qcow2'
 
-    call :post, "/1/storage/#{disk.pool}", add_volume: '',
+    call :post, "/#{hypervisor_id}/storage/#{disk.pool}", add_volume: '',
         name: disk.name, size: gigabytes, format: disk.format, meta_prealloc: meta_prealloc
   end
 
-  def self.delete disk
-    call :post, "/1/storage/#{disk.pool}", del_volume: '',
+  def self.delete disk, hypervisor_id
+    call :post, "/#{hypervisor_id}/storage/#{disk.pool}", del_volume: '',
         volname: disk.name
   end
 
-  def self.add_missing_fields disk, uuid
+  def self.add_missing_fields disk, uuid, hypervisor_id
     disk.format ||= 'qcow2'
     disk.name = uuid + '_' + disk.device + '.' + disk.format # TODO: introduce subdirectory per VM
-    pool = Wvm::StoragePool.find disk.pool
+    pool = Wvm::StoragePool.find disk.pool, hypervisor_id
     disk.path = pool.path + '/' + disk.name
   end
 end

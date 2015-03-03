@@ -15,7 +15,10 @@ class SetupController < ApplicationController
     render action: 'index'
   rescue Wvm::Setup::Error, ModeSetup::Error
     begin
-      Wvm::Setup.setup
+      Wvm::Hypervisor.all.each do |hypervisor|
+        Wvm::Setup.setup hypervisor
+      end
+
       user = ModeSetup.setup params[:mode], params[:extra]
       sign_in user if user
       flash[:success] = 'All configured - start VirtKicking now! :-)'
@@ -34,7 +37,10 @@ class SetupController < ApplicationController
   private
   def check
     ModeSetup.check
-    Wvm::Setup.check
+
+    Wvm::Hypervisor.all.each do |hypervisor|
+      Wvm::Setup.check hypervisor
+    end
   end
 
   def redirect

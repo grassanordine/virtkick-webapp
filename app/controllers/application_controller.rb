@@ -76,7 +76,7 @@ class ApplicationController < ActionController::Base
   def home
     authenticate_user!
 
-    @disk_types = Infra::DiskType.all
+    @disk_types = Infra::DiskType.all 1
     @disk = Infra::Disk.new
     @iso_images = Plans::IsoImage.all
     @isos = Plans::IsoDistro.all

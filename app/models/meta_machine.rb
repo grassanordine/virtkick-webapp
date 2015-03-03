@@ -6,14 +6,18 @@ class MetaMachine < ActiveRecord::Base
   }
 
   after_destroy do
-    machine.force_stop rescue nil
-    machine.delete
+    force_stop rescue nil
+    machine.delete libvirt_hypervisor_id
   end
 
   def machine
-    machine = Infra::Machine.find libvirt_machine_name
+    machine = Infra::Machine.find libvirt_machine_name, libvirt_hypervisor_id
     machine.id = self.id
     machine
+  end
+
+  def create_disk disk
+    Wvm::Machine.add_disk disk, self.machine, libvirt_hypervisor_id
   end
 
   def mark_deleted
@@ -30,5 +34,11 @@ class MetaMachine < ActiveRecord::Base
         libvirt_machine_name: libvirt_machine_name
     machine.save!
     machine
+  end
+
+  %w(start pause resume stop force_stop restart force_restart).each do |operation|
+    define_method operation do
+      Wvm::Machine.send operation, hostname, libvirt_hypervisor_id
+    end
   end
 end

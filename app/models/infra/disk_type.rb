@@ -7,11 +7,11 @@ class Infra::DiskType < Infra::Base
   attr_accessor :enabled
 
 
-  def self.all
-    Wvm::StoragePool.all
+  def self.all hypervisor_id
+    Wvm::StoragePool.all hypervisor_id
   end
 
-  def self.find id
-    Wvm::StoragePool.find id
+  def self.find id, hypervisor_id
+    Wvm::StoragePool.find id, hypervisor_id
   end
 end

@@ -10,17 +10,18 @@ class Infra::Machine < Infra::Base
   attr_accessor :disks
   attr_accessor :networks
   attr_accessor :iso_dir, :iso_distro_id, :iso_image_id
+  attr_accessor :hypervisor_id
 
-  def self.all
-    Wvm::Machine.all
+  def self.all hypervisor_id
+    Wvm::Machine.all hypervisor_id
   end
 
-  def self.find hostname
-    Wvm::Machine.find hostname
+  def self.find hostname, hypervisor_id
+    Wvm::Machine.find hostname, hypervisor_id
   end
 
-  def self.create new_machine
-    Wvm::Machine.create new_machine
+  def self.create new_machine, hypervisor_id
+    Wvm::Machine.create new_machine, hypervisor_id
   end
 
   def id
@@ -28,21 +29,21 @@ class Infra::Machine < Infra::Base
   end
 
   %w(start pause resume stop force_stop restart force_restart).each do |operation|
-    define_method operation do
-      Wvm::Machine.send operation, hostname
+    define_method operation do |hypervisor_id|
+      Wvm::Machine.send operation, hostname, hypervisor_id
     end
   end
 
   def create_disk disk
-    Wvm::Machine.add_disk disk, self
+    Wvm::Machine.add_disk disk, self, hypervisor_id
   end
 
   def delete_disk disk
-    Wvm::Machine.delete_disk disk, self
+    Wvm::Machine.delete_disk disk, self, hypervisor_id
   end
 
   def mount_iso iso_image
-    Wvm::Machine.mount_iso self, iso_image
+    Wvm::Machine.mount_iso self, iso_image, hypervisor_id
   end
 
   def iso_distro
@@ -53,8 +54,8 @@ class Infra::Machine < Infra::Base
     Plans::IsoImage.find @iso_image_id if @iso_image_id
   end
 
-  def delete
-    Wvm::Machine.delete self
+  def delete hypervisor_id
+    Wvm::Machine.delete self, hypervisor_id
   end
 
   def as_json config

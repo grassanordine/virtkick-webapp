@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
   end
 
   def machines
-    Infra::Elements.new self.meta_machines.not_deleted.map &:machine
+    meta_machines.not_deleted.map &:machine
   end
 
   def remember_me

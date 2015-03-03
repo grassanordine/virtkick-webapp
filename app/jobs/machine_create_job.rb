@@ -7,17 +7,20 @@ class MachineCreateJob < TrackableJob
   def perform new_machine_id, hook_results
     job_initalize new_machine_id
 
+    hypervisor = Wvm::Hypervisor.find_best_hypervisor @new_machine.plan
+
     step :create_machine do
-      Infra::Machine.create @new_machine
+      Infra::Machine.create @new_machine, hypervisor.id
       # TODO: extract disk create to a new step
     end
 
     step do
       machine = MetaMachine.create_machine! \
-          @new_machine.hostname, @new_machine.user_id, 1, @new_machine.hostname # TODO: support multiple hypervisors
+          @new_machine.hostname, @new_machine.user_id, hypervisor.id, @new_machine.hostname # TODO: support multiple hypervisors
 
       @new_machine.update_attributes! \
           given_meta_machine_id: machine.id,
+          given_libvirt_hypervisor_id: hypervisor.id,
           finished: true,
           current_step: nil
       run_hook :post_create_machine, machine.id, hook_results

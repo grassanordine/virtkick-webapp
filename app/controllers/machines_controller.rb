@@ -1,6 +1,6 @@
 class MachinesController < AfterSetupController
   before_action :authenticate_user!
-  
+
   include Hooks
   define_hooks :pre_create_machine
   define_hooks :on_render_new
@@ -13,7 +13,8 @@ class MachinesController < AfterSetupController
   respond_to :json
 
   def index
-    @disk_types = Infra::DiskType.all
+    # TODO: handle multiple hypervisors here
+    @disk_types = Infra::DiskType.all 1
     @disk = Infra::Disk.new
     @iso_images = Plans::IsoImage.all
     @isos = Plans::IsoDistro.all
@@ -33,13 +34,6 @@ class MachinesController < AfterSetupController
 
   def new
     index
-    # @machine ||= NewMachine.new
-    # @plans ||= Defaults::MachinePlan.all
-    #
-    # @isos ||= Plans::IsoDistro.all
-    # run_hook :on_render_new
-    #
-    # respond_with @machine
   end
 
   def validate
@@ -86,16 +80,20 @@ class MachinesController < AfterSetupController
   end
 
   def show
-    respond_with @machine do |format|
+    machine = @meta_machine.machine
+    respond_with machine do |format|
       format.html { index }
       format.json {
-        render json: @machine
+        render json: machine
       }
     end
   end
 
   def destroy
     run_hook :on_destroy
+
+    @meta_machine.deleted = true
+    @meta_machine.save
 
     MachineDeleteJob.perform_later @meta_machine.id
     render json: nil
@@ -117,8 +115,9 @@ class MachinesController < AfterSetupController
   end
 
   def vnc
-    if @machine.vnc_port
-      render json: {port: @machine.vnc_port, host: @machine.vnc_listen_ip}
+    machine = @meta_machine.machine
+    if machine.vnc_port
+      render json: {port: machine.vnc_port, host: machine.vnc_listen_ip}
     else
       render json: {}, status: :precondition_failed
     end

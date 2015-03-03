@@ -4,23 +4,26 @@ class Wvm::Setup < Wvm::Base
   class Error < Exception
   end
 
-  def self.setup
+  def self.setup hypervisor
     handle_exceptions do
-      id = create_connection_if_needed
+      id = create_connection_if_needed hypervisor
+      hypervisor.id = id
+      hypervisor.save
+
       create_network_if_needed id
-      all_storages.each do |storage|
+      all_storages(id).each do |storage|
         create_storage_if_needed id, storage
       end
+      id
     end
-
-    # TODO: save response.id for future use
+    # TODO: save response.hypervisor_id for future use
   end
 
-  def self.check
+  def self.check hypervisor
     handle_exceptions do
-      id = find_connection
+      id = find_connection hypervisor
       find_network id
-      all_storages.each do |storage|
+      all_storages(id).each do |storage|
         find_storage id, storage[:id]
       end
     end
@@ -42,21 +45,21 @@ class Wvm::Setup < Wvm::Base
 
   # Connection
 
-  def self.create_connection_if_needed
+  def self.create_connection_if_needed hypervisor
     begin
-      find_connection
+      find_connection hypervisor
     rescue Exception
-      create_connection
+      create_connection hypervisor
     end
   end
 
-  def self.find_connection
+  def self.find_connection hypervisor
     response = Timeout.timeout 1.second do
       call :get, '/servers'
     end
 
     host_info = response.hosts_info.find do |host_info|
-      host_info.hostname == hypervisor[:host]
+      host_info.hostname == hypervisor.host
     end
 
     if host_info.nil?
@@ -68,12 +71,13 @@ class Wvm::Setup < Wvm::Base
     end
   end
 
-  def self.create_connection
+  def self.create_connection hypervisor
+
     Timeout.timeout 1.second do
       response = call :post, '/servers', host_ssh_add: '',
-          name: hypervisor[:name],
-          hostname: hypervisor[:host],
-          login: hypervisor[:login]
+          name: hypervisor.name,
+          hostname: hypervisor.host,
+          login: hypervisor.login
 
       response.id
     end
@@ -81,16 +85,18 @@ class Wvm::Setup < Wvm::Base
 
   # Network
 
-  def self.create_network_if_needed id
+  def self.create_network_if_needed hypervisor_id
     begin
-      find_network id
+      find_network hypervisor_id
     rescue Exception
-      create_network id
+      create_network hypervisor_id
     end
   end
 
-  def self.find_network id
-    network = call :get, "/#{id}/network/#{hypervisor[:network][:id]}"
+  def self.find_network hypervisor_id
+    hypervisor_data = hypervisor hypervisor_id
+
+    network = call :get, "/#{hypervisor_id}/network/#{hypervisor_data[:network][:id]}"
     if network.state != 1
       raise Errors, ['Network not active']
     end
@@ -98,14 +104,15 @@ class Wvm::Setup < Wvm::Base
     raise Error, 'Network not configured.'
   end
 
-  def self.create_network id
-    network = hypervisor[:network]
+  def self.create_network hypervisor_id
+    hypervisor_data = hypervisor hypervisor_id
+    network = hypervisor_data[:network]
 
     begin
-      network_url = "/#{id}/network/#{hypervisor[:network][:id]}"
+      network_url = "/#{hypervisor_id}/network/#{hypervisor_data[:network][:id]}"
       libvirt_network = call :get, network_url
     rescue Errors
-      call :post, "/#{id}/networks", create: '',
+      call :post, "/#{hypervisor_id}/networks", create: '',
           name: network[:id],
           subnet: network[:address],
           dhcp: network[:dhcp],
@@ -126,28 +133,29 @@ class Wvm::Setup < Wvm::Base
 
   # Storage
 
-  def self.create_storage_if_needed id, storage
+  def self.create_storage_if_needed hypervisor_id, storage
     begin
-      find_storage id, storage[:id]
+      find_storage hypervisor_id, storage[:id]
     rescue Exception
-      create_storage id, storage[:id], storage[:path]
+      create_storage hypervisor_id, storage[:id], storage[:path]
     end
   end
 
-  def self.find_storage id, storage_id
-    call :get, "/#{id}/storage/#{storage_id}"
+  def self.find_storage hypervisor_id, storage_id
+    call :get, "/#{hypervisor_id}/storage/#{storage_id}"
   rescue Errors
     raise Error, 'Storage pools not configured'
   end
 
-  def self.create_storage id, storage_id, storage_path
-    call :post, "/#{id}/storages", create: '',
+  def self.create_storage hypervisor_id, storage_id, storage_path
+    call :post, "/#{hypervisor_id}/storages", create: '',
         stg_type: 'dir',
         name: storage_id,
         target: storage_path
   end
 
-  def self.all_storages
-    hypervisor[:storages] + [hypervisor[:iso]]
+  def self.all_storages hypervisor_id
+    hypervisor_data = hypervisor hypervisor_id
+    hypervisor_data[:storages] + [hypervisor_data[:iso]]
   end
 end
