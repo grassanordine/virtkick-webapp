@@ -23,9 +23,6 @@ class MachinesController < AfterSetupController
     run_hook :on_render_new
 
     respond_to do |format|
-      format.html {
-        render :index
-      }
       format.json {
         render json: {machines: current_user.machines}
       }
