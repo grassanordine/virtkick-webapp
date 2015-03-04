@@ -12,7 +12,7 @@
   base href="/"
 
 - content_for :action do
-  span.top-action-button ng-show='app.action'
+  div.top-action-button.fade-ng-show ng-show='app.action.show'
     a.ng-cloak href='{{app.action.url}}' class='btn btn-primary btn-block' {{app.action.title}}
 
 div(ui-view)

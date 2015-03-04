@@ -30,7 +30,8 @@ define(function(require) {
 
     $scope.app.action = {
       url: '/machines/new',
-      title: 'Create a new machine'
+      title: 'Create a new machine',
+      show: true
     };
 
 
@@ -38,7 +39,7 @@ define(function(require) {
 
     $scope.$on('$stateChangeStart', function() {
       aborter.resolve('');
-      delete $scope.app.action;
+      $scope.app.action.show = false;
     });
 
     $scope.state = {

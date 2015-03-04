@@ -330,6 +330,7 @@ define(function(require) {
       if(aborter) {
         aborter.resolve('');
       }
+      $scope.app.menuCollapse = false;
     });
     
 

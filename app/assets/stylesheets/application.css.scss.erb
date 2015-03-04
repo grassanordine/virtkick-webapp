@@ -379,7 +379,7 @@ h3 {
   cursor: pointer;
 }
 
-[ui-view], [ui-view] {
+[ui-view] {
   position: absolute;
   left: 0;
   right: 0;
@@ -389,14 +389,10 @@ h3 {
   position: absolute;
   left: 0;
   right: 0;
-  -webkit-transition:all .5s ease-in-out;
-  -moz-transition:all .5s ease-in-out;
-  -o-transition:all .5s ease-in-out;
-  transition:all .5s ease-in-out;
+  @include transition(all .5s ease-in-out);
 }
 
-
-[ui-view], .top-action-button {
+[ui-view] {
   &.ng-enter {
     opacity: 0;
   }
@@ -410,6 +406,18 @@ h3 {
     opacity: 0;
   }
 }
+
+[ui-view='console'], .fade-ng-show {
+  opacity: 1;
+  &.ng-hide-add,
+  &.ng-hide-remove {
+    @include transition(all .5s ease-in-out);
+  }
+  &.ng-hide {
+    opacity: 0;
+  }
+}
+
 html, body {
   height: 100%;
 }
