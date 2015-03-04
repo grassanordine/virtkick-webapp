@@ -140,11 +140,11 @@ class Wvm::Machine < Wvm::Base
   end
 
   def self.build_all_instances response, hypervisor_id
-    machines = response.instances.map do |machine|
+    machines = response[:instances].map do |machine|
       Infra::Machine.new \
           hostname: machine[:name],
           memory: machine[:memory],
-          disks: Wvm::Disk.array_of(machine.storage, hypervisor_id),
+          disks: Wvm::Disk.array_of(machine[:storage], hypervisor_id),
           status: determine_status(machine),
           hypervisor_id: hypervisor_id
     end
