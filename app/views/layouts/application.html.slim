@@ -16,7 +16,7 @@ html
       .row.header
         .menu.col-md-3.hidden-xs.hidden-sm
           = link_to '/' do
-            = theme_image_tag 'logo/logo-64.png'
+            = image_tag 'logo/logo-64.png'
 
         .header.col-md-6
           div.ng-cloak ng-if='app.header'
@@ -35,7 +35,7 @@ html
                 span.icon-bar
                 span.icon-bar
               a.navbar-brand href='/'
-                = theme_image_tag 'logo/logo-48.png', class: 'pix'
+                = image_tag 'logo/logo-48.png', class: 'pix'
             #navbar-collapsable.collapse.navbar-collapse
               ul.nav.navbar-nav
                 - if user_signed_in?

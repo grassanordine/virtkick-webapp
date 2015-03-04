@@ -1,13 +1,13 @@
 #page-console.text-center(ng-class="{focused: consoleFocused}")
   .console-window-wrapper
-    .console-window(ng-class="{focused: consoleFocused, paused: console.paused, stopped: machine.status.attributes.id == 'stopped'}")
+    .console-window(ng-class="{focused: consoleFocused, paused: console.paused, stopped: machine.status.id == 'stopped'}")
       .focus-indicator
       console(password="{{machine.vncPassword}}",uuid="{{machine.uuid}}",focused="consoleFocused",state="machine",control='console')
       .vm-actions
         .iso
           distroselect(machine='machine')
         .rocket-menu
-          img(src='/assets/logo/virtkick-logo-pixelart-gray-24.png')
+          img(src='/assets/logo/logo-gray-24.png')
         .restart
           a.btn.btn-default.ctrlaltdel(ng-click="machine.restart()")
             | Reboot

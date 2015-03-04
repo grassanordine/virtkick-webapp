@@ -2,23 +2,17 @@ assets = Rails.application.config.assets
 assets.precompile += %w(pages/*.js)
 Rack::Mime::MIME_TYPES.merge!({'.map' => 'text/plain'})
 
+assets.precompile += %w(*.svg *.eot *.woff *.ttf *.gif *.png *.ico)
+
+
 module EngineCssLoader
   def include_engines
-    out = ""
+    out = ''
     Dir['engines/*/*.gemspec'].each do |gemspec_file|
-      puts gemspec_file
       dir_name = File.dirname(gemspec_file)
       out += "@import '#{dir_name}';"
     end
     out
-  end
-end
-
-Rails.application.configure do
-  if ENV['VIRTKICK_THEME'] 
-    config.theme = ENV['VIRTKICK_THEME']
-  else
-    config.theme = 'virtkick'
   end
 end
 
