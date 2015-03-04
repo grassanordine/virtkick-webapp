@@ -79,7 +79,7 @@ class Wvm::Setup < Wvm::Base
           hostname: hypervisor.host,
           login: hypervisor.login
 
-      response.id
+      response[:id]
     end
   end
 
