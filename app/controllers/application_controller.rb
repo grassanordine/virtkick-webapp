@@ -20,10 +20,14 @@ class ApplicationController < ActionController::Base
 
   rescue_from Exception do |e|
     if request.format == 'application/json'
+      status = 500
+
+      status = 440 if e.is_a? ActionController::InvalidAuthenticityToken
+
       if Rails.configuration.consider_all_requests_local
-        render json: {exception: e.class.name, message: e.message}, status: 500
+        render json: {exception: e.class.name, message: e.message}, status: status
       else
-        render json: {exception: true}, status: 500
+        render json: {exception: true}, status: status
       end
 
       puts e.message
