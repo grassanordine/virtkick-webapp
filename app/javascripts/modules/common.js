@@ -102,8 +102,8 @@ define(function(require) {
       }
 
       amount = amount.toFixed(2);
-      while(amount.slice(-1).match(/[\.0]/)) {
-        amount = amount.slice(0, -1);
+      if(amount.match(/\..*[0]+$/)) {
+        amount = amount.replace(/\.?0+$/, '');
       }
       return amount + ' ' + amountFormat;
     };

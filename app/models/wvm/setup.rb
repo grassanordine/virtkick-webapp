@@ -58,16 +58,16 @@ class Wvm::Setup < Wvm::Base
       call :get, '/servers'
     end
 
-    host_info = response.hosts_info.find do |host_info|
-      host_info.hostname == hypervisor.host
+    host_info = response[:hosts_info].find do |host_info|
+      host_info[:hostname] == hypervisor[:host]
     end
 
     if host_info.nil?
       raise Error, 'Libvirt connection not configured.' unless host_info
-    elsif host_info.status != 1
+    elsif host_info[:status] != 1
       raise Timeout::Error
     else
-      host_info.id
+      host_info[:id]
     end
   end
 
@@ -97,7 +97,7 @@ class Wvm::Setup < Wvm::Base
     hypervisor_data = hypervisor hypervisor_id
 
     network = call :get, "/#{hypervisor_id}/network/#{hypervisor_data[:network][:id]}"
-    if network.state != 1
+    if network[:state] != 1
       raise Errors, ['Network not active']
     end
   rescue Errors

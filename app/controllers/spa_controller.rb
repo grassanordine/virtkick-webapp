@@ -4,6 +4,8 @@ class SpaController < AfterSetupController
 
   helper_method :run_render_home_hook
 
+  respond_to :html
+
   def run_render_home_hook
     run_hook(:on_render_home).join('').html_safe
   end

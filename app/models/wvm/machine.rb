@@ -6,6 +6,20 @@ class Wvm::Machine < Wvm::Base
     build_all_instances response, hypervisor_id
   end
 
+  def self.status id, hypervisor_id
+    response = call :get, "/#{hypervisor_id}/status/#{id}"
+
+    response[:machines].map do |machine|
+      {
+          status: determine_status(machine),
+          hostname: machine[:hostname],
+          memory: machine[:cur_memory],
+          processors: machine[:vcpu],
+          disks: Wvm::Disk.array_of(machine[:disks], hypervisor_id)
+      }
+    end
+  end
+
   def self.find id, hypervisor_id
     response = call :get, "/#{hypervisor_id}/instance/#{id}"
 
@@ -21,13 +35,13 @@ class Wvm::Machine < Wvm::Base
       vnc_port: response[:vnc_port],
       vnc_listen_ip: hypervisor_data[:vnc_listen_ip],
       vnc_password: response[:vnc_password],
-      disks: Wvm::Disk.array_of(response.disks, hypervisor_id),
+      disks: Wvm::Disk.array_of(response[:disks], hypervisor_id),
       iso_dir: hypervisor_data[:iso][:path],
       hypervisor_id: hypervisor_id
     }
 
-    if response.media and not response.media.empty?
-      file = response.media.first.image
+    if response[:media] and not response[:media].empty?
+      file = response[:media].first[:image]
       iso_image = Plans::IsoImage.by_file(file).first
 
       if iso_image

@@ -1,6 +1,8 @@
 class GuestsController < AfterSetupController
   layout 'raw'
 
+  respond_to :html
+
   before_action do
     redirect_to '/machines' if user_signed_in?
   end

@@ -73,14 +73,14 @@ define(function(require) {
         });
       },
       get: function(machineId, aborter) {
-        if(isCacheFresh()) {
-          var machines = machinesCache.machines;
-          for(var i = 0;i < machines.length;++i) {
-            if(machines[i].id == machineId) {
-              return $q.when(machines[i]);
-            }
-          }
-        }
+        //if(isCacheFresh()) {
+        //  var machines = machinesCache.machines;
+        //  for(var i = 0;i < machines.length;++i) {
+        //    if(machines[i].id == machineId) {
+        //      return $q.when(machines[i]);
+        //    }
+        //  }
+        //}
         return $http.get('/api/machines/' + machineId, {
           timeout: aborter?(aborter.promise):undefined
         }).then(function(response) {

@@ -2,6 +2,10 @@ require 'httparty'
 require 'recursive_open_struct'
 
 class Wvm::Base
+
+  class BadRequest < StandardError
+  end
+
   include ActiveModel::Model
   include ActiveModel::Validations
 
@@ -21,13 +25,17 @@ class Wvm::Base
       raise Errors, ['Backend responded with 500 Internal Server Error']
     end
 
+    unless response.parsed_response['errors'] or response.parsed_response['response']
+      raise BadRequest.new('response does not have "errors" or "response"')
+    end
+
     errors = response.parsed_response['errors']
     if errors and errors.size > 0
       raise Errors, errors
     end
 
     response = response.parsed_response['response'] || {}
-    RecursiveOpenStruct.new(response.to_hash, recurse_over_arrays: true)
+    HashWithIndifferentAccess.new(response.to_hash)
   end
 
   def self.hypervisor hypervisor_id

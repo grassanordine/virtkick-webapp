@@ -1,4 +1,4 @@
-class MachinesController < AfterSetupController
+class MachinesController < ApiController
   before_action :authenticate_user!
 
   include Hooks
@@ -8,9 +8,6 @@ class MachinesController < AfterSetupController
   
   include FindMachine
   find_machine_before_action :id, except: [:index, :new, :create]
-
-  respond_to :html
-  respond_to :json
 
   def index
     # TODO: handle multiple hypervisors here

@@ -1,4 +1,4 @@
-class DisksController < AfterSetupController
+class DisksController < ApiController
   include FindMachine
   find_machine_before_action :machine_id
 

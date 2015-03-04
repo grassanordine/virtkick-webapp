@@ -27,6 +27,11 @@ define(function(require) {
   app.controller('ConsoleCtrl', function($scope) {
   });
   app.controller('StorageCtrl', function($scope) {
+    console.log("Disk types", $scope.diskPlans);
+    $scope.storage = {
+      newDiskType: $scope.diskTypes[0],
+      newDiskPlan: $scope.diskPlans[$scope.diskTypes[0].id][0]
+    };
   });
   app.controller('SettingsCtrl', function($scope) {
   });
@@ -141,12 +146,6 @@ define(function(require) {
        $scope.diskPlans[type.id].push(plan);
       });
     });
-
-
-    $scope.storage = {
-      newDiskType: $scope.diskTypes[0],
-      newDiskPlan: $scope.diskPlans[$scope.diskTypes[0].id][0]
-    };
 
     $scope.$on('$stateChangeSuccess', function(state, toState, toParams, fromState, fromParams) {
       var m;

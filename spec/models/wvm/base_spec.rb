@@ -8,9 +8,18 @@ describe Wvm::Base do
       # when
       response = Wvm::Base.call :post, '/'
       # then
-      expect(response.to_hash).to eq({key: :val})
+      expect(response.to_hash).to eq({'key' => :val})
       expect(Wvm::Base).to have_received(:post).twice
     end
+  end
+
+  it 'reports error when no response or errors in json is present' do
+
+    stub_request(:post, 'http://0.0.0.0:8000/').
+        with(:headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
+        to_return(:status => 200, :body => '{}', :headers => {})
+
+    expect { Wvm::Base.call :post, '/'}.to raise_error Wvm::Base::BadRequest
   end
 
   def raise_error_on_first_call error
@@ -27,4 +36,5 @@ describe Wvm::Base do
       end
     end
   end
+
 end

@@ -1,4 +1,4 @@
-class ProgressController < AfterSetupController
+class ProgressController < ApiController
   before_action :authenticate_user!
 
   def progress
