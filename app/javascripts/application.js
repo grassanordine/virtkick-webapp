@@ -20,8 +20,10 @@ define(function(require) {
         ].concat(moduleAngularDeps)
     );
 
-    app.config(function($urlMatcherFactoryProvider, $locationProvider, $stateProvider) {
+    app.config(function($urlMatcherFactoryProvider, $locationProvider, $stateProvider, $urlRouterProvider) {
       $locationProvider.html5Mode(true);
+
+      $urlRouterProvider.otherwise("/machines");
 
       $stateProvider
           .state('logout', {

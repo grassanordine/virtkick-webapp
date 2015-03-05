@@ -39,15 +39,15 @@ html
             #navbar-collapsable.collapse.navbar-collapse
               ul.nav.navbar-nav
                 - if user_signed_in?
-                  li: a href='/machines' ng-class='{active : primaryState==="machines"}'
+                  li: a ui-sref="machines.index" ui-sref-active='active'
                     span.oi.oi-monitor
                     | Machines
                   - @navbar_links.each do |link|
-                    li: a href=link[:path] ng-class='{active : primaryState==="#{link[:state]}"}'
+                    li: a ui-sref=link[:state] ui-sref-active='active'
                       span.oi(class="#{link[:class]}")
                       | #{link[:title]}
                   - if Virtkick.mode.private_cloud? or Virtkick.mode.vps_provider?
-                    = navbar_item destroy_user_session_path, method: :delete do
+                    li: a ui-sref='logout' ui-sref-active='active'
                       span.fa.fa-sign-out
                       | Sign out
                 - else

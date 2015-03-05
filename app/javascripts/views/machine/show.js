@@ -27,7 +27,6 @@ define(function(require) {
   app.controller('ConsoleCtrl', function($scope) {
   });
   app.controller('StorageCtrl', function($scope) {
-    console.log("Disk types", $scope.diskPlans);
     $scope.storage = {
       newDiskType: $scope.diskTypes[0],
       newDiskPlan: $scope.diskPlans[$scope.diskTypes[0].id][0],
@@ -52,10 +51,11 @@ define(function(require) {
             }
           },
           template: require('jade!templates/machine/show'),
-          controller: 'ShowMachineCtrl'
+          controller: 'ShowMachineCtrl',
+
         })
         .state('machines.show.power', {
-          url: '/power',
+          url: '',
           views: {
             'tab@machines.show': {
               template: require('jade!templates/machine/powerView'),
@@ -157,6 +157,9 @@ define(function(require) {
       m = toState.name.match(/show\.(.+)/);
       if(m) {
         $scope.data.active[m[1]] = true;
+      }
+      if(toState.name.match(/show$/)) {
+        $scope.data.active.power = true;
       }
     });
 
