@@ -387,14 +387,13 @@ h3 {
   right: 0;
 }
 
-[ui-view].ng-enter, [ui-view].ng-leave {
-  position: absolute;
-  left: 0;
-  right: 0;
-  @include transition(all .5s ease-in-out);
-}
-
-[ui-view] {
+[ui-view], .fade-ng-switch {
+  &.ng-enter, &.ng-leave {
+    position: absolute;
+    left: 0;
+    right: 0;
+    @include transition(all .5s ease-in-out);
+  }
   &.ng-enter {
     opacity: 0;
   }
@@ -434,6 +433,13 @@ html {
 
 .form-group.has-error .help-block {
   display: block;
+}
+
+.no-transition {
+  -moz-transition: none !important;
+  -webkit-transition: none !important;
+  -o-transition: color 0 ease-in !important;
+  transition: none !important;
 }
 
 <%= include_engines %>

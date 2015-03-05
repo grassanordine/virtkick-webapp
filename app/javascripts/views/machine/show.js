@@ -30,7 +30,8 @@ define(function(require) {
     console.log("Disk types", $scope.diskPlans);
     $scope.storage = {
       newDiskType: $scope.diskTypes[0],
-      newDiskPlan: $scope.diskPlans[$scope.diskTypes[0].id][0]
+      newDiskPlan: $scope.diskPlans[$scope.diskTypes[0].id][0],
+      showDetails: false
     };
   });
   app.controller('SettingsCtrl', function($scope) {

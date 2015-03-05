@@ -2,26 +2,27 @@
 
   form#new_disk
     .create.text-right
-      a.btn.btn-primary.create-button(ng-show="!storage.showDetails",ng-click="storage.showDetails = true",ng-disabled="storage.creatingDisk")
-        div(ng-if='!storage.creatingDisk') Create new disk
-        div(ng-if='storage.creatingDisk')
-          | Creating...
-      div.new(ng-show="storage.showDetails")
-        div.name {{machine.disks.nextDeviceName}}
-        div.type
-          ui-select(ng-model='storage.newDiskType',theme="bootstrap",style="width: 200px;")
-            ui-select-match(placeholder="Select disk plan") 
-              | {{$select.selected.name}}
-            ui-select-choices(repeat="type in diskTypes | filter: $select.search",value="{{$select.selected.value}}")
-              span(ng-bind-html="type.name | highlight: $select.search")
-        div.size
-          ui-select(ng-model='storage.newDiskPlan',theme="bootstrap",style="width: 200px;")
-            ui-select-match(placeholder="Select disk size") 
-              | {{$select.selected.size | bytes}}
-            ui-select-choices(repeat="type in diskPlans[storage.newDiskType.id] | filter: $select.search", value="{{$select.selected.value}}")
-              span(ng-bind-html="type.size | bytes | highlight: $select.search")
-        long-run-button.btn.btn-primary.save-button(run="machine.createDisk(storage.newDiskType, storage.newDiskPlan)",
-            on-finish-animation='storage.showDetails = false') Create
+      div(ng-switch='storage.showDetails')
+        a.btn.btn-primary.create-button.no-transition(ng-switch-when="false" ng-click="storage.showDetails = true" ng-disabled="storage.creatingDisk")
+          div(ng-if='!storage.creatingDisk') Create new disk
+          div(ng-if='storage.creatingDisk')
+            | Creating...
+        div.new.no-transition(ng-switch-when='true')
+          div.name {{machine.disks.nextDeviceName}}
+          div.type
+            ui-select(ng-model='storage.newDiskType' theme="bootstrap" style="width: 200px;")
+              ui-select-match(placeholder="Select disk plan")
+                | {{$select.selected.name}}
+              ui-select-choices(repeat="type in diskTypes | filter: $select.search" value="{{$select.selected.value}}")
+                span(ng-bind-html="type.name | highlight: $select.search")
+          div.size
+            ui-select(ng-model='storage.newDiskPlan' theme="bootstrap" style="width: 200px;")
+              ui-select-match(placeholder="Select disk size")
+                | {{$select.selected.size | bytes}}
+              ui-select-choices(repeat="type in diskPlans[storage.newDiskType.id] | filter: $select.search"  value="{{$select.selected.value}}")
+                span(ng-bind-html="type.size | bytes | highlight: $select.search")
+          long-run-button.btn.btn-primary.save-button(run="machine.createDisk(storage.newDiskType, storage.newDiskPlan)",
+              on-finish-animation='storage.showDetails = false') Create
 
   table.table.table-striped.text-left
     thead
