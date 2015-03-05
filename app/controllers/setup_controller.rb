@@ -18,7 +18,6 @@ class SetupController < ApplicationController
       Wvm::Hypervisor.all.each do |hypervisor|
         Wvm::Setup.setup hypervisor
       end
-      puts params
       user = ModeSetup.setup params
       sign_in user if user
       render json: {success: 'All configured - start VirtKicking now! :-)'}
