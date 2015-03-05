@@ -40,6 +40,26 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  helper_method :inject_module
+  helper_method :object_to_json_constant
+  helper_method :setting_to_json_constant
+
+  def object_to_json_constant name, object, class_name = 'constant'
+    locals = {id: name.camelize(:lower), value: object.to_json, class_name: class_name}
+
+    render_to_string file: 'helpers/object_to_json_constant' , locals: locals, layout: nil
+  end
+
+  def setting_to_json_constant name
+    @val = Setting.get name
+    object_to_json_constant name.camelize(:lower), @val
+  end
+
+  def inject_module name
+    object_to_json_constant "inject_module_#{name}", name, 'inject-module'
+  end
+
+
   before_bugsnag_notify :add_user_info_to_bugsnag
 
   private

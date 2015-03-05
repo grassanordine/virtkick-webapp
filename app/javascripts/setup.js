@@ -10,15 +10,18 @@ define(function(require) {
     require('directives/long-run-button/directive'),
     require('angular-bootstrap-show-errors'),
     require('angular-input-match'),
-    require('modules/helpers')
+    require('modules/helpers'),
+    require('modules/constants')
   ]);
 
   require('csrfSetup')(app);
 
   var humps = require('humps');
 
-  app.controller('SetupCtrl', function($scope, $http, $location, $q) {
-    $scope.setup = {};
+  app.controller('SetupCtrl', function($scope, $http, $location, $q, allowVpsProvider) {
+    $scope.setup = {
+      allowVpsProvider: allowVpsProvider
+    };
 
     $scope.submit = function(data) {
       return $http.post('/setup/perform/' + humps.decamelize($scope.setup.mode), $scope.setup)
@@ -31,8 +34,6 @@ define(function(require) {
     $scope.reload = function() {
       window.location.pathname = '/';
     };
-
-    console.log("DD");
   });
 
   angular.element().ready(function() {
