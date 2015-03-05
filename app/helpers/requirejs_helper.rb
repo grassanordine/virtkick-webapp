@@ -28,6 +28,9 @@ module RequirejsHelper
         )
       end
     end
+    if Rails.env.production?
+      require_config['urlArgs'] = 'v=' + Rails.configuration.version
+    end
     @@require_config_json = require_config.to_json
   end
 

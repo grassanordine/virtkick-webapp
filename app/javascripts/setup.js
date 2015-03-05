@@ -4,7 +4,14 @@ define(function(require) {
   var angular = require('angular');
   require('angular-messages'); // for ngMessages
   require('angular-animate');
-  var app = angular.module('app', ['ngAnimate', 'ngMessages', require('directives/long-run-button/directive'), require('angular-bootstrap-show-errors'), require('angular-input-match')]);
+  var app = angular.module('app', [
+    'ngAnimate',
+    'ngMessages',
+    require('directives/long-run-button/directive'),
+    require('angular-bootstrap-show-errors'),
+    require('angular-input-match'),
+    require('modules/helpers')
+  ]);
 
   require('csrfSetup')(app);
 

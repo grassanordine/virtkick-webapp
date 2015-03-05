@@ -6,6 +6,7 @@
 = object_to_json_constant 'isosData', @isos
 = object_to_json_constant 'plansData', @plans
 = object_to_json_constant 'diskPlans', Defaults::DiskSizePlan.all
+= object_to_json_constant 'version', Rails.configuration.version
 
 - content_for :header do
   = run_render_home_hook

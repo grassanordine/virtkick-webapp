@@ -18,3 +18,24 @@
   iso:
     id: virtkick-iso
     path: '/home/virtkick/iso'
+- id: 2
+  name: virtkick-do
+  host: '104.236.53.88:22'
+  login: virtkick
+  vnc_listen_ip: '104.236.53.88'
+  network:
+    id: virtkick-nat
+    type: nat
+    address: 192.168.123.0/24
+    dhcp: true
+    dns:
+    - 8.8.8.8
+    - 8.8.4.4
+  storages:
+    - name: HDD
+      id: virtkick-hdd
+      path: '/home/virtkick/hdd'
+  iso:
+    id: virtkick-iso
+    path: '/home/virtkick/iso'
+

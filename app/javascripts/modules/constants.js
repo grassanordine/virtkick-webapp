@@ -3,13 +3,11 @@ define(function(require) {
   var angular = require('angular');
   var humps = require('humps');
 
-
-  var mod = angular.module(module.uri, []);
+  var mod = angular.module(module.id, []);
   angular.element('script.constant').each(function() {
     mod.constant(this.id,
         humps.camelizeKeys(JSON.parse(this.innerHTML))
     );
   });
-
-  return module.uri;
+  return module.id;
 });

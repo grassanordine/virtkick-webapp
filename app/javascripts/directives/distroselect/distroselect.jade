@@ -7,5 +7,5 @@ div.distroselect
       span.chosen-distro-name
         | {{$select.selected.longName}}
     ui-select-choices(repeat="isoImage in isoImages | filter: $select.search")
-      img.distro-icon(ng-src="/assets/distros/{{idToCode[isoImage.isoDistroId]}}.png")
+      img.distro-icon(ng-src="/assets/distros/{{idToCode[isoImage.isoDistroId]}}.png" versioned)
       span(ng-bind-html="isoImage.longName | highlight: $select.search")

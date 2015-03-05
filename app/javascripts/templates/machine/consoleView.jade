@@ -7,7 +7,7 @@
         .iso
           distroselect(machine='machine')
         .rocket-menu
-          img(src='/assets/logo/logo-gray-24.png')
+          img(ng-src='/assets/logo/logo-gray-24.png' versioned)
         .restart
           a.btn.btn-default.ctrlaltdel(ng-click="machine.restart()")
             | Reboot
