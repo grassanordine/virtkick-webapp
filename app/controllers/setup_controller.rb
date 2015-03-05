@@ -6,8 +6,17 @@ class SetupController < ApplicationController
     return redirect if @@ready
     self.class.check
     redirect
-  rescue Wvm::Setup::Error, ModeSetup::Error
+  rescue Wvm::Setup::Error
+    self.class.setup_hypervisors
+    redirect
+  rescue ModeSetup::Error
     render action: :index
+  end
+
+  def self.setup_hypervisors
+    Wvm::Hypervisor.all.each do |hypervisor|
+      Wvm::Setup.setup hypervisor
+    end
   end
 
   def perform
@@ -15,9 +24,7 @@ class SetupController < ApplicationController
     render action: 'index'
   rescue Wvm::Setup::Error, ModeSetup::Error
     begin
-      Wvm::Hypervisor.all.each do |hypervisor|
-        Wvm::Setup.setup hypervisor
-      end
+      self.class.setup_hypervisors
       user = ModeSetup.setup params
       sign_in user if user
       render json: {success: 'All configured - start VirtKicking now! :-)'}

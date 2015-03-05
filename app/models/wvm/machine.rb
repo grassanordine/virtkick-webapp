@@ -6,8 +6,8 @@ class Wvm::Machine < Wvm::Base
     build_all_instances response, hypervisor_id
   end
 
-  def self.status id, hypervisor_id
-    response = call :get, "/#{hypervisor_id}/status/#{id}"
+  def self.status payload
+    response = call :post, "/status", json: payload
 
     response[:machines].map do |machine|
       {
@@ -15,7 +15,7 @@ class Wvm::Machine < Wvm::Base
           hostname: machine[:hostname],
           memory: machine[:cur_memory],
           processors: machine[:vcpu],
-          disks: Wvm::Disk.array_of(machine[:disks], hypervisor_id)
+          disks: Wvm::Disk.array_of(machine[:disks], machine[:hypervisor_id])
       }
     end
   end

@@ -38,29 +38,20 @@ class User < ActiveRecord::Base
 
   def machines
     per_hypervisor_machines = {}
+    id_to_machine = {}
     meta_machines.not_deleted.each do |machine|
+
+      id_to_machine[machine.hostname] = machine.id
       per_hypervisor_machines[machine.libvirt_hypervisor_id] ||= []
-      per_hypervisor_machines[machine.libvirt_hypervisor_id].push machine
+      per_hypervisor_machines[machine.libvirt_hypervisor_id].push machine.hostname
     end
 
-    results = []
-    per_hypervisor_machines.each do |hypervisor_id, array|
-      machines = per_hypervisor_machines[hypervisor_id]
 
-      hostname_to_id = {}
-      id_request = machines.map { |machine|
-        hostname_to_id[machine.hostname] = machine.id
-        machine.hostname
-      }.join(',')
-
-      temporary_results = Wvm::Machine.status id_request, hypervisor_id
-      temporary_results.each do |result|
-        result[:id] = hostname_to_id[result[:hostname]]
-      end
-
-      results.concat temporary_results
+    temporary_results = Wvm::Machine.status per_hypervisor_machines
+    temporary_results.each do |result|
+      result[:id] = id_to_machine[result[:hostname]]
     end
-    results
+    temporary_results
   end
 
   def remember_me

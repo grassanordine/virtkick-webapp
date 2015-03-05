@@ -16,8 +16,14 @@ class Wvm::Base
   def self.call method, url, **body
     params = {headers: {'Accept' => 'application/json'}}
     if method == :post
-      params[:headers]['Content-Type'] = 'application/x-www-form-urlencoded'
-      params[:body] = body
+      if body[:json]
+        params[:headers]['Content-Type'] = 'application/json'
+        params[:body] = body[:json].to_json
+      else
+        params[:headers]['Content-Type'] = 'application/x-www-form-urlencoded'
+        params[:body] = body
+      end
+
     end
 
     response = try_twice { send method, url, params }

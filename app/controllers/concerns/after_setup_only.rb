@@ -17,6 +17,11 @@ module AfterSetupOnly
       begin
         SetupController.check
         ApplicationController.class_variable_set :@@ready, true
+
+        if Virtkick.mode
+          return
+        end
+
       rescue Wvm::Setup::Error, ModeSetup::Error
         respond_to do |format|
           format.html {
