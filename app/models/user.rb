@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   include Hooks
   define_hook :post_create_user
 
-  devise :database_authenticatable, :rememberable, :trackable
+  devise :database_authenticatable, :rememberable, :trackable, :registerable
 
   has_many :meta_machines, dependent: :destroy
   has_many :new_machines, dependent: :destroy

@@ -28,3 +28,18 @@ Devise.setup do |config|
     manager.failure_app = DeviseDemoRedirector
   end
 end
+
+Rails.application.config.to_prepare do
+  Devise::SessionsController.layout 'raw'
+  Devise::RegistrationsController.layout proc { |controller| user_signed_in? ? 'application' : 'raw' }
+  Devise::ConfirmationsController.layout 'raw'
+  Devise::UnlocksController.layout 'raw'
+  Devise::PasswordsController.layout 'raw'
+end
+
+Devise::RegistrationsController
+class Devise::RegistrationsController < DeviseController
+  before_action do
+    raise 'VPS Provider mode required.' unless Virtkick.mode.vps_provider?
+  end
+end
