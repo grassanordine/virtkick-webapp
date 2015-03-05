@@ -24,6 +24,8 @@ Devise.setup do |config|
   config.reset_password_within = 6.hours
   config.sign_out_via = :get # TODO: change to :delete before merging into master
 
+  config.parent_controller = 'SpaController'
+
   config.warden do |manager|
     manager.failure_app = DeviseDemoRedirector
   end
@@ -39,7 +41,12 @@ end
 
 Devise::RegistrationsController
 class Devise::RegistrationsController < DeviseController
-  before_action do
-    raise 'VPS Provider mode required.' unless Virtkick.mode.vps_provider?
+  before_action do |controller|
+    action = controller.action_name
+    raise 'Not allowed.' if action == 'destroy'
+
+    if %w(new create).include?(action) and not Virtkick.mode.vps_provider?
+      raise 'Not allowed.'
+    end
   end
 end
