@@ -1,0 +1,44 @@
+#page-login.page-devise
+  .container-fluid.wrapper-container.logo-container
+    .row
+      .col-md-12.logo
+        = link_to '/' do
+          = image_tag 'logo/logo-big.png'
+  .container-fluid.alert-wrapper-container.hidden 
+    .row
+      .col-md-12
+        .alert.alert-info
+          p
+            | Thanks for hanging out!
+  .container-fluid.wrapper-container.form-container
+    .row
+      .col-md-12.form
+        h2.header
+          | Log in
+        = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+          .form-group
+            = f.label :email, for: 'user[email]'
+            .input-group
+              .input-group-addon
+                .fa.fa-user
+              = f.email_field :email, autofocus: true, class: 'form-control', placeholder: 'E-mail address'
+          .form-group
+            = f.label :password, for: 'user[password]'
+            .input-group
+              .input-group-addon
+                .fa.fa-lock
+              = f.password_field :password, autocomplete: 'off', class: 'form-control', placeholder: 'Password'
+
+          - if devise_mapping.rememberable?
+            .left
+              .checkbox
+                = f.label :remember_me 
+                  = f.check_box :remember_me
+                  | Remember me
+            .right.forgot
+              = render 'devise/shared/forgot'
+            .clear
+          .actions
+            = f.submit 'Launch Virtkick', class: 'btn btn-lg btn-primary btn-login'
+        .rest    
+          = render 'devise/shared/links'

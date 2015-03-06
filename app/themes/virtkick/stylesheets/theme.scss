@@ -105,6 +105,14 @@ $vk-setup-button-active-color: $vk-brand-primary-color !default;
 $vk-setup-button-border-color: $vk-border-color !default;
 $vk-setup-button-active-border-color: $vk-brand-primary-color !default;
 
+$vk-devise-color: $vk-text-mild-color !default;
+$vk-devise-muted-color: $vk-muted-color !default;
+$vk-devise-input-color: $vk-brand-secondary-color !default;
+$vk-devise-input-addon-color: $vk-muted-color !default;
+$vk-devise-alert-info-color: $vk-static-color !default;
+$vk-devise-alert-info-border-color: $vk-static-bg-color !default;
+$vk-devise-alert-info-bg-color: $vk-static-bg-color !default;
+
 $vk-billing-link-color: $vk-text-mild-color !default;
 $vk-billing-link-hover-color: $vk-brand-primary-color !default;
 $vk-billing-link-icon-color: $vk-brand-primary-color !default;
@@ -114,6 +122,8 @@ $vk-billing-payment-card-bg-color: $vk-static-bg-color !default;
 $vk-billing-tour-page-color: $vk-text-mild-color !default;
 $vk-billing-tour-summary-color: $vk-text-mild-color !default;
 $vk-billing-tour-skip-button-color: $vk-text-mild-color !default;
+
+$vk-img-logo-center-left-margin: -40px;
 
 // ------ bootstrap overrides ------ // 
 

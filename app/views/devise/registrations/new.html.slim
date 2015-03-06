@@ -1,0 +1,38 @@
+#page-register.page-devise
+  .container-fluid.wrapper-container.logo-container
+    .row
+      .col-md-12.logo
+        = link_to '/' do
+          = image_tag 'logo/logo-big.png'
+  .container-fluid.wrapper-container.form-container
+    .row
+      .col-md-12.form
+        h2.header
+          | Sign up
+        = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+          .form-group
+            = f.label :email, for: 'user[email]'
+            .input-group
+              .input-group-addon
+                .fa.fa-user
+              = f.email_field :email, autofocus: true, class: 'form-control', placeholder: 'E-mail address'
+          .form-group
+            = f.label :password, for: 'user[password]'
+            - if @validatable
+              p 
+                = @minimum_password_length
+                | characters minimum
+            .input-group
+              .input-group-addon
+                .fa.fa-lock
+              = f.password_field :password, autocomplete: 'off', class: 'form-control', placeholder: 'Password'
+          .form-group
+            .input-group
+              .input-group-addon
+                .fa.fa-repeat
+              = f.password_field :password_confirmation, autocomplete: 'off', class: 'form-control', placeholder: 'Repeat password'
+
+          .actions
+            = f.submit 'Sign up', class: 'btn btn-lg btn-primary btn-sign-up'
+        .rest    
+          = render 'devise/shared/links'
