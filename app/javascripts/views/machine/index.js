@@ -34,11 +34,10 @@ define(function(require) {
       show: true
     };
 
-
-    var aborter = $q.defer();
+    var abortRequest;
 
     $scope.$on('$stateChangeStart', function() {
-      aborter.resolve('');
+      abortRequest = true;
       $scope.app.action.show = false;
     });
 
@@ -46,7 +45,9 @@ define(function(require) {
       loading: true
     };
 
-    machineService.index(aborter).then(function(data) {
+    machineService.index().then(function(data) {
+      if(abortRequest) return;
+
       angular.extend($scope, data);
       $scope.state.loading = false;
     });

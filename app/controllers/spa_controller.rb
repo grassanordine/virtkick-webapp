@@ -16,8 +16,6 @@ class SpaController < AfterSetupController
 
   before_action :authenticate_user!
 
-  respond_to :html
-
   before_action do
     @navbar_links = []
   end

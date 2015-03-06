@@ -1,0 +1,14 @@
+.modal-header.billing-modal.payment
+  h3.modal-title(ng-switch='status')
+    span(ng-switch-when='connectionError') Connection error
+    span(ng-switch-when='authError') Authentication error
+.modal-body.billing-modal.payment
+  div(ng-switch='status')
+    span(ng-switch-when='connectionError')
+      p Lost connection to the server ... don't worry, your machine is safe!
+      p Please wait or come back later.
+    span(ng-switch-when='authError')
+      p Seems you are not authenticated any more, sorry
+.modal-footer(ng-switch='status')
+  span(ng-switch-when='authError')
+    a.btn.btn-lg.btn-primary(ng-click='logout()') OK

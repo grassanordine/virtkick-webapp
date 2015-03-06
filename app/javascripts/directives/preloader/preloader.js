@@ -1,5 +1,5 @@
 define(function(require) {
-  var module = require('module');
+  var moduleId = require('module').id;
   var angular = require('angular');
   var css = require('css!./preloader.css');
 
@@ -52,7 +52,7 @@ define(function(require) {
     $scope.size = 40;
   }
 
-  angular.module(module.uri, []).directive('preloader', function() {
+  angular.module(moduleId, []).directive('preloader', function() {
     return {
       replace: true,
       link: link,
@@ -66,5 +66,5 @@ define(function(require) {
       template: require('jade!./preloader')()
     }
   });
-  return module.uri;
+  return moduleId;
 });

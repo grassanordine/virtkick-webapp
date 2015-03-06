@@ -19,7 +19,8 @@ define(function(require) {
     'ct.ui.router.extras.sticky',
     'ct.ui.router.extras.future',
     require('angular-ui-router'),
-    require('modules/helpers')
+    require('modules/helpers'),
+    require('modules/connectionError')
   ];
 
   var billingModule = 'modules/billing';
@@ -35,12 +36,6 @@ define(function(require) {
   mod.config(function($urlMatcherFactoryProvider) {
     $urlMatcherFactoryProvider.caseInsensitive(true);
     $urlMatcherFactoryProvider.strictMode(false);
-  });
-
-  mod.controller('AppCtrl', function($scope) {
-    $scope.data = {
-      menuCollapse: false
-    };
   });
 
   return module.id;

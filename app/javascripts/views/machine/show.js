@@ -51,8 +51,7 @@ define(function(require) {
             }
           },
           template: require('jade!templates/machine/show'),
-          controller: 'ShowMachineCtrl',
-
+          controller: 'ShowMachineCtrl'
         })
         .state('machines.show.power', {
           url: '',
@@ -97,7 +96,6 @@ define(function(require) {
 
   app.controller('ShowMachineCtrl',
       function($scope,
-               $rootScope,
                $location,
                initialMachineData,
                isosData,
@@ -114,15 +112,6 @@ define(function(require) {
 
     $scope.app.header.title = initialMachineData.hostname;
     $scope.app.header.icon = 'monitor';
-
-    $scope.activate = function(tab) {
-      if($state.includes('machines.show')) {
-        $state.go('machines.show.' + tab, {
-          machineId: initialMachineData.id
-        });
-      }
-    };
-
 
     $scope.machine = initialMachineData;
       // THIS is workaround for null value in rest endpoint
@@ -150,6 +139,15 @@ define(function(require) {
 
     $scope.$on('$stateChangeSuccess', function(state, toState, toParams, fromState, fromParams) {
       var m;
+
+      if(toState.name == 'machines.show') {
+        $state.go('machines.show.power');
+      }
+
+      if(fromState.name === toState.name) {
+        return;
+      }
+
       m = fromState.name.match(/show\.(.+)/);
       if(m) {
         $scope.data.active[m[1]] = false;
@@ -276,7 +274,8 @@ define(function(require) {
     var timeoutHandler;
 
     var lastPromise;
-    var aborter;
+    var abortRequest;
+
     function updateState() {
       var skipIsoUpdate = $scope.requesting.changeIso;
 
@@ -287,8 +286,9 @@ define(function(require) {
         return lastPromise;
       }
 
-      aborter = $q.defer();
-      lastPromise = machineService.get($scope.machine.id, aborter).then(function(machineData) {
+      lastPromise = machineService.get($scope.machine.id).then(function(machineData) {
+        if(abortRequest)
+          return;
         var prevTime = $scope.machine.processorUsage.timeMillis;
         var prevCpuTime = $scope.machine.processorUsage.cpuTime;
 
@@ -331,9 +331,7 @@ define(function(require) {
 
     $scope.$on('$destroy', function() {
       $timeout.cancel(timeoutHandler);
-      if(aborter) {
-        aborter.resolve('');
-      }
+      abortRequest = true;
       $scope.app.menuCollapse = false;
     });
     

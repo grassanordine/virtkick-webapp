@@ -4,6 +4,6 @@
   - var tabs = ['power', 'console', 'storage', 'settings']
   tabset(justified=1 type='pills')
     for tab in tabs
-      tab(heading=capitalizeFirstLetter(tab) active="data.active.#{tab}" select="activate('#{tab}')")
+      li(ui-sref-active='active'): a(ui-sref='machines.show.#{tab}') #{capitalizeFirstLetter(tab)}
   div.tab-content(ui-view='tab')
   div.tab-content(ui-view='console' ng-show='data.active.console')

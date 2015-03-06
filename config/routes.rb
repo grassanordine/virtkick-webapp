@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   post '/setup/perform/:mode', to: 'setup#perform', as: 'perform_setup'
 
   scope :api do
+    get 'ping', to: 'api#ping', as: 'ping_api'
 
     resources :machines do
       member do
