@@ -51,7 +51,7 @@
             .button-wrapper
               /= button_to perform_setup_path(:vps_provider), method: :post, class: 'btn chooser', rel: 'nofollow noindex', disabled: true do
               /  .fa.fa-sitemap
-              button.btn.chooser(ng-click="setup.mode = 'vpsProvider'" ng-class="{active: setup.mode == 'vpsProvider'}" ng-disabled="!setup.allowVpsProvider")
+              button.btn.chooser(ng-click="setup.mode = 'vpsProvider'" ng-class="{active: setup.mode == 'vpsProvider'}" disabled="{{!setup.allowVpsProvider}}")
                 .fa.fa-sitemap
             .text-wrapper
               .title VPS Provider
@@ -72,7 +72,6 @@
                           | Passwords do not match
           div.option.disabled
             .button-wrapper
-              /= button_to perform_setup_path(:demo), method: :post, class: 'btn chooser', rel: 'nofollow noindex', disabled: true do
               button.btn.chooser(ng-click="setup.mode = 'demo'" ng-class="{active: setup.mode == 'demo'}" disabled)
                 .fa.fa-paper-plane
             .text-wrapper
