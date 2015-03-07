@@ -20,7 +20,7 @@ define(function(require) {
 
   app.controller('SetupCtrl', function($scope, $http, $location, $q, allowVpsProvider) {
     $scope.setup = {
-      allowVpsProvider: allowVpsProvider
+      allowVpsProvider: allowVpsProvider === true
     };
 
     $scope.submit = function(data) {

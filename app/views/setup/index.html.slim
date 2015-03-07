@@ -47,11 +47,11 @@
                     ng-messages for="setupForm.passwordConfirm.$error"
                       ng-message(when='match')
                         | Passwords do not match
-        div.option(ng-class='{disabled: !setup.allowVpsProvider}')
+        div.option(class=("disabled" unless Rails.configuration.x.allow_vps_provider == true))
           .button-wrapper
             /= button_to perform_setup_path(:vps_provider), method: :post, class: 'btn chooser', rel: 'nofollow noindex', disabled: true do
             /  .fa.fa-sitemap
-            button.btn.chooser(ng-click="setup.mode = 'vpsProvider'" ng-class="{active: setup.mode == 'vpsProvider'}")
+            button.btn.chooser(ng-click="setup.mode = 'vpsProvider'" ng-class="{active: setup.mode == 'vpsProvider'}" disabled=("disabled" unless Rails.configuration.x.allow_vps_provider == true))
               .fa.fa-sitemap
           .text-wrapper
             .title VPS Provider
