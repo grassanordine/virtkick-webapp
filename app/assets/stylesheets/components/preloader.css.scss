@@ -1,0 +1,9 @@
+.preloader {
+  .preloader-inner .preloader-rocket-wrapper .preloader-rocket path {
+    fill: $vk-preloader-rocket-color;
+  }
+
+  .preloader-inner .preloader-rocket-wrapper .preloader-rocket-window path {
+    fill: $vk-preloader-window-color;
+  }
+}

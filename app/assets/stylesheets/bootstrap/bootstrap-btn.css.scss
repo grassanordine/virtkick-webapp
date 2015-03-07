@@ -18,3 +18,14 @@
 .btn.btn-lg {
   @include button-size(20px, 35px, 17px, 17px, 4px);
 }
+
+.btn.btn-danger {
+  color: $vk-button-danger-color;
+  background-color: $vk-button-danger-bg-color;
+  border-color: $vk-button-danger-border-color;
+
+  &:hover, &:active, &:focus, &.active {
+    background-color: $vk-button-danger-hover-bg-color !important;
+    border-color: $vk-button-danger-hover-border-color !important;
+  }
+}

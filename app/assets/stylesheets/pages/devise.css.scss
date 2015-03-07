@@ -1,5 +1,5 @@
 .page-devise {
-  color: $vk-devise-color;
+  color: $vk-credentials-color;
 
   @media(max-width: $screen-sm-max) {
     margin-top: -$navbar-height;
@@ -28,9 +28,9 @@
         margin-top: 2em;
       }
 
-      color: $vk-devise-alert-info-color;
-      border-color: $vk-devise-alert-info-border-color;
-      background-color: $vk-devise-alert-info-bg-color;
+      color: $vk-credentials-alert-info-color;
+      border-color: $vk-credentials-alert-info-border-color;
+      background-color: $vk-credentials-alert-info-bg-color;
     }
   }
 
@@ -74,7 +74,7 @@
       height: 1.388em;
       line-height: 1.388em;
       font-size: 1.111em;
-      color: $vk-devise-input-addon-color;
+      color: $vk-credentials-input-addon-color;
 
       .fa {
         width: 1.388em;
@@ -93,7 +93,7 @@
        height: 2.611em;
        font-size: 0.944em;
        line-height: 2.611em;
-       color: $vk-devise-input-color;
+       color: $vk-credentials-input-color;
     }
 
     label {
@@ -132,7 +132,7 @@
   .forgot {
     @extend .opaque;
     a {
-      color: $vk-devise-color;
+      color: $vk-credentials-color;
     }
   }
 

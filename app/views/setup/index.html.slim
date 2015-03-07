@@ -9,7 +9,7 @@
       .col-md-offset-1.col-md-11
         .header
            a href="/"
-             = image_tag 'logo/logo-48.png', class: "pix"
+             = image_tag 'logo/logo-regular.png', class: "pix"
 
   .container
     .row
@@ -47,36 +47,36 @@
                     ng-messages for="setupForm.passwordConfirm.$error"
                       ng-message(when='match')
                         | Passwords do not match
-          div.option(class=("disabled" unless Rails.configuration.x.allow_vps_provider == true))
-            .button-wrapper
-              /= button_to perform_setup_path(:vps_provider), method: :post, class: 'btn chooser', rel: 'nofollow noindex', disabled: true do
-              /  .fa.fa-sitemap
-              button.btn.chooser(ng-click="setup.mode = 'vpsProvider'" ng-class="{active: setup.mode == 'vpsProvider'}" disabled=("disabled" unless Rails.configuration.x.allow_vps_provider == true))
-                .fa.fa-sitemap
-            .text-wrapper
-              .title VPS Provider
-              .disclaimer.hidden-xs Not implemented yet. Work in progress!
-              .form-wrapper.ng-cloak.private-cloud-form(ng-show="setup.mode == 'vpsProvider'")
-                form.private-cloud-only method='post' name='setupForm'
-                  .form-group show-errors=1
-                    label for="extra[email]" E-mail address
-                    input.form-control type='email' ng-model='setup.email' name='email' placeholder='E-mail' required=1
-                  .form-group show-errors=1
-                    label for="extra[password]" Password
-                    input.form-control type='password' ng-model='setup.password' name='password' placeholder='Password' required=1
-                  .form-group.no-margin show-errors=1
-                    input.form-control type='password' ng-model='setup.passwordConfirm' name='passwordConfirm' match='setupForm.password' placeholder='Confirm Password'
-                    .help-block
-                      ng-messages for="setupForm.passwordConfirm.$error"
-                        ng-message(when='match')
-                          | Passwords do not match
-          div.option.disabled
-            .button-wrapper
-              button.btn.chooser(ng-click="setup.mode = 'demo'" ng-class="{active: setup.mode == 'demo'}" disabled)
-                .fa.fa-paper-plane
-            .text-wrapper
-              .title Demo
-              .disclaimer.hidden-xs Sessions limited to 30 minutes.
+        div.option(class=("disabled" unless Rails.configuration.x.allow_vps_provider == true))
+          .button-wrapper
+            /= button_to perform_setup_path(:vps_provider), method: :post, class: 'btn chooser', rel: 'nofollow noindex', disabled: true do
+            /  .fa.fa-sitemap
+            button.btn.chooser(ng-click="setup.mode = 'vpsProvider'" ng-class="{active: setup.mode == 'vpsProvider'}" disabled=("disabled" unless Rails.configuration.x.allow_vps_provider == true))
+              .fa.fa-sitemap
+          .text-wrapper
+            .title VPS Provider
+            .disclaimer.hidden-xs Not implemented yet. Work in progress!
+            .form-wrapper.ng-cloak.private-cloud-form(ng-show="setup.mode == 'vpsProvider'")
+              form.private-cloud-only method='post' name='setupForm'
+                .form-group show-errors=1
+                  label for="extra[email]" E-mail address
+                  input.form-control type='email' ng-model='setup.email' name='email' placeholder='E-mail' required=1
+                .form-group show-errors=1
+                  label for="extra[password]" Password
+                  input.form-control type='password' ng-model='setup.password' name='password' placeholder='Password' required=1
+                .form-group.no-margin show-errors=1
+                  input.form-control type='password' ng-model='setup.passwordConfirm' name='passwordConfirm' match='setupForm.password' placeholder='Confirm Password'
+                  .help-block
+                    ng-messages for="setupForm.passwordConfirm.$error"
+                      ng-message(when='match')
+                        | Passwords do not match
+        div.option.disabled
+          .button-wrapper
+            button.btn.chooser(ng-click="setup.mode = 'demo'" ng-class="{active: setup.mode == 'demo'}" disabled)
+              .fa.fa-paper-plane
+          .text-wrapper
+            .title Demo
+            .disclaimer.hidden-xs Sessions limited to 30 minutes.
       .launch.col-lg-5
         div.ng-cloak ng-if='setup.error'
           div.alert.alert-danger
