@@ -14,6 +14,15 @@ input, .form-control input, select, .form-control select, .input-group input, te
   }  
 }
 
+input.form-control, input[type="text"], input[type="password"], input[type="email"] {
+  color: $vk-input-color;
+  background-color: transparent !important;
+
+  &:focus, &:active {
+    border-color: $vk-input-border-hover-color !important;
+  }  
+}
+
 input.wide {
   height: 50px;
   font-size: $text-normal;

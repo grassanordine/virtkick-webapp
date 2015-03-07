@@ -1,5 +1,6 @@
 .radio-group {
   .radio-elem {
+    color: $vk-radio-color;
     border-radius: 4px;
     display: inline-block;
     margin-right: 20px;
@@ -14,7 +15,7 @@
       box-sizing: border-box;
       padding: 0em; 
       border-radius: 4px;
-      background-color: white;
+      background-color: $vk-radio-bg-color;
       border: solid 1px $vk-input-border-color;
       @include box-shadow(none !important);
       @include transition(all, 0.25s, ease-in, 0s);
@@ -25,7 +26,7 @@
 
         .stripe {
           height: 0.3em;
-          background-color: white;
+          background-color: $vk-radio-stripe-bg-color;
           vertical-align: bottom;
           @include transition(all, 0.25s, ease-in, 0s);
           border-bottom-left-radius: 4px;
@@ -35,12 +36,16 @@
 
       &:hover, &:active, &.active {
         .padding .stripe {
-          background-color: $vk-radio-stripe-bg-color;
+          background-color: $vk-radio-active-stripe-bg-color;
         }
       }
 
       &.active {
         background-color: $vk-radio-active-bg-color;
+
+        .padding .stripe {
+          background-color: $vk-radio-active-stripe-bg-color;
+        }
       }
 
       .line {

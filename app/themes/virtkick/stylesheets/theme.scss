@@ -34,6 +34,7 @@ $vk-action-stop-color: #EC4863 !default; // pinkish
 
 $vk-muted-color: #D1C7CF !default; // violet muted on white
 $vk-dead-color: #000000 !default; // black
+$vk-transparent-color: transparent !default; // transparent
 $vk-element-on-color: #EC4863 !default; // pink (duplicated primary)
 $vk-element-off-color: #E1DFD8 !default; // a little creamy gray
 
@@ -54,10 +55,17 @@ $vk-navbar-icon-color: $vk-brand-primary-color !default;
 $vk-navbar-icon-hover-bg-color: $vk-brand-primary-color !default;
 
 $vk-button-primary-bg-color: $vk-brand-primary-color !default;
+$vk-button-danger-color: lighten($vk-action-stop-color, 35%) !default;
+$vk-button-danger-bg-color: $vk-action-stop-color !default;
+$vk-button-danger-border-color: $vk-button-danger-bg-color !default;
+$vk-button-danger-hover-bg-color: darken($vk-button-danger-bg-color, 10%) !default;
+$vk-button-danger-hover-border-color: $vk-button-danger-hover-bg-color !default;
 
 $vk-dropdown-bg-color: $vk-static-bg-color !default;
 
+$vk-input-color: $vk-text-color !default;
 $vk-input-border-color: $vk-border-color !default;
+$vk-input-border-hover-color: darken($vk-border-color, 20%);
 $vk-input-error-color: $vk-brand-primary-color !default;
 $vk-input-error-border-color: lighten($vk-brand-primary-color, 15%) !default;
 $vk-input-success-color: $vk-text-color !default;
@@ -65,9 +73,12 @@ $vk-input-success-border-color: lighten($vk-brand-secondary-color, 15%) !default
 $vk-input-addon-color: $vk-brand-primary-color !default;
 $vk-input-placeholder-color: $vk-muted-color !default;
 
+$vk-radio-color: $vk-text-color;
+$vk-radio-bg-color: $vk-transparent-color !default;
 $vk-radio-border-color: $vk-border-color !default;
+$vk-radio-stripe-bg-color: $vk-transparent-color !default;
 $vk-radio-active-bg-color: $vk-static-bg-light-color !default;
-$vk-radio-stripe-bg-color: $vk-brand-primary-color !default;
+$vk-radio-active-stripe-bg-color: $vk-brand-primary-color !default;
 
 $vk-table-color: $vk-text-mild-color !default;
 $vk-table-header-icon-color: $vk-static-light-color !default;
@@ -79,13 +90,25 @@ $vk-table-more-color: $vk-text-mild-color !default;
 $vk-table-more-hover-color: $vk-brand-primary-color !default;
 $vk-table-more-icon-color: $vk-brand-primary-color !default;
 
+$vk-alert-info-color: $vk-text-color !default;
+$vk-alert-info-bg-color: $vk-static-bg-light-color !default;
+$vk-alert-info-border-color: $vk-alert-info-bg-color !default;
+
+$vk-alert-error-color: darken(red, 35%) !default;
+$vk-alert-error-bg-color: lighten(red, 10%) !default;
+$vk-alert-error-border-color: $vk-alert-error-bg-color !default;
+
 $vk-modal-header-color: $vk-text-mild-color !default;
 $vk-modal-header-bg-color: $vk-static-bg-light-color !default;
 $vk-modal-body-bg-color: $vk-body-bg-color !default;
+$vk-modal-footer-bg-color: $vk-body-bg-color !default;
 
 $vk-dashboard-color: $vk-static-color !default;
 $vk-dashboard-bg-color: $vk-static-bg-color !default;
 $vk-dashboard-field-bg-color: $vk-static-field-bg-color !default;
+
+$vk-preloader-rocket-color: $vk-body-bg-color !default;
+$vk-preloader-window-color: $vk-brand-primary-color !default;
 
 $vk-console-bg-color: $vk-static-bg-color !default;
 $vk-console-button-color: $vk-text-mild-color !default;
@@ -101,17 +124,19 @@ $vk-newsletter-bg-color: lighten($vk-static-bg-color, 3%) !default;
 
 $vk-setup-color: $vk-text-mild-color !default;
 $vk-setup-button-color: $vk-muted-color !default;
+$vk-setup-button-bg-color: $vk-transparent-color !default;
 $vk-setup-button-active-color: $vk-brand-primary-color !default;
 $vk-setup-button-border-color: $vk-border-color !default;
+$vk-setup-button-disabled-opacity: 0.4;
 $vk-setup-button-active-border-color: $vk-brand-primary-color !default;
 
-$vk-devise-color: $vk-text-mild-color !default;
-$vk-devise-muted-color: $vk-muted-color !default;
-$vk-devise-input-color: $vk-brand-secondary-color !default;
-$vk-devise-input-addon-color: $vk-muted-color !default;
-$vk-devise-alert-info-color: $vk-static-color !default;
-$vk-devise-alert-info-border-color: $vk-static-bg-color !default;
-$vk-devise-alert-info-bg-color: $vk-static-bg-color !default;
+$vk-credentials-color: $vk-text-mild-color !default;
+$vk-credentials-muted-color: $vk-muted-color !default;
+$vk-credentials-input-color: $vk-brand-secondary-color !default;
+$vk-credentials-input-addon-color: $vk-muted-color !default;
+$vk-credentials-alert-info-color: $vk-static-color !default;
+$vk-credentials-alert-info-border-color: $vk-static-bg-color !default;
+$vk-credentials-alert-info-bg-color: $vk-static-bg-color !default;
 
 $vk-billing-link-color: $vk-text-mild-color !default;
 $vk-billing-link-hover-color: $vk-brand-primary-color !default;

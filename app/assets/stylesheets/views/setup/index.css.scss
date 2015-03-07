@@ -53,8 +53,12 @@
 
 
       &.disabled {
+        .button-wrapper .btn {
+          opacity: $vk-setup-button-disabled-opacity;
+        }
+        
         .text-wrapper {
-          opacity: 0.5;
+          opacity: $vk-setup-button-disabled-opacity;
         }
       }
 
@@ -140,7 +144,7 @@
     line-height: 1.5em;
     width: 4.5em;
     box-shadow: none !important;
-    background-color: white;
+    background-color: $vk-setup-button-bg-color;
     color: $vk-setup-button-color;
     border-color: $vk-setup-button-border-color;
     box-sizing: border-box;
