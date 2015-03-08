@@ -10,21 +10,25 @@ class Wvm::Machine < Wvm::Base
     response = call :post, "/status", json: payload
 
     response[:machines].map do |machine|
-      {
-          status: determine_status(machine),
-          hostname: machine[:hostname],
-          memory: machine[:cur_memory],
-          processors: machine[:vcpu],
-          disks: Wvm::Disk.array_of(machine[:disks], machine[:hypervisor_id])
-      }
-    end
+      begin
+        hypervisor machine[:hypervisor_id]
+        {
+            status: determine_status(machine),
+            hostname: machine[:hostname],
+            memory: machine[:cur_memory],
+            processors: machine[:vcpu],
+            disks: Wvm::Disk.array_of(machine[:disks], machine[:hypervisor_id])
+        }
+      rescue Exception => e
+        nil
+      end
+    end.compact
   end
 
   def self.find id, hypervisor_id
     response = call :get, "/#{hypervisor_id}/instance/#{id}"
 
     hypervisor_data = hypervisor hypervisor_id
-
     params = {
       processor_usage: response[:cpu_usage],
       hostname: response[:name],
@@ -35,6 +39,7 @@ class Wvm::Machine < Wvm::Base
       vnc_port: response[:vnc_port],
       vnc_listen_ip: hypervisor_data[:vnc_listen_ip],
       vnc_password: response[:vnc_password],
+      mac_address: response[:mac_address],
       disks: Wvm::Disk.array_of(response[:disks], hypervisor_id),
       iso_dir: hypervisor_data[:iso][:path],
       hypervisor_id: hypervisor_id
@@ -57,7 +62,11 @@ class Wvm::Machine < Wvm::Base
     machine = build_new_machine new_machine, hypervisor_id
 
     template = File.dirname(__FILE__) + '/new_machine.xml.slim'
-    xml = Slim::Template.new(template, format: :xhtml).render Object.new, {machine: machine}
+    xml = Slim::Template.new(template, format: :xhtml).render Object.new, {
+        machine: machine,
+        hypervisor: Wvm::Base.hypervisor(hypervisor_id)
+    }
+
     call :post, "/#{hypervisor_id}/create", create_xml: '',
         from_xml: xml
 
@@ -151,6 +160,10 @@ class Wvm::Machine < Wvm::Base
     machines.sort_by &:hostname
   end
 
+  def self.random_mac_address
+    ('%02x'%((rand 64)*4|2)) + (0..4).inject(''){|s,x|s+':%02x'%(rand 256)}
+  end
+
   def self.build_new_machine new_machine, hypervisor_id
     uuid = SecureRandom.uuid
     networks = setup_networks uuid, hypervisor_id
@@ -163,6 +176,7 @@ class Wvm::Machine < Wvm::Base
         processors: new_machine.plan.cpu,
         iso_distro_id: new_machine.iso_distro.id,
         iso_image_id: new_machine.iso_distro.iso_images.first.id,
+        mac_address: random_mac_address,
         networks: networks,
         vnc_listen_ip: hypervisor_data[:vnc_listen_ip],
         vnc_password: SecureRandom.urlsafe_base64(32),
@@ -173,6 +187,9 @@ class Wvm::Machine < Wvm::Base
   def self.setup_networks uuid, hypervisor_id
     networks = Infra::Networks.new
     hypervisor_data = hypervisor(hypervisor_id)
+
+    return if hypervisor_data[:network][:type] == 'bridge'
+
     networks.public = Infra::Network.new \
         pool_name: hypervisor_data[:network][:id],
         dhcp_network: IPAddress(hypervisor_data[:network][:address])

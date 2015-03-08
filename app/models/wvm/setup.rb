@@ -106,7 +106,10 @@ class Wvm::Setup < Wvm::Base
 
   def self.create_network hypervisor_id
     hypervisor_data = hypervisor hypervisor_id
+
     network = hypervisor_data[:network]
+
+    return if network[:type] == 'bridge'
 
     begin
       network_url = "/#{hypervisor_id}/network/#{hypervisor_data[:network][:id]}"

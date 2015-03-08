@@ -61,8 +61,7 @@ define(function(require) {
           function checkPing() {
             return $http.get('/api/ping').then(function() {
               var $state = $injector.get('$state');
-              // reload state on successful ping
-              $state.go($state.current, {}, {reload: true});
+              $state.go($state.current.name, {}, {reload: true});
               $modalInstance.close();
             }, function() {
               $timeout(checkPing, 3000);

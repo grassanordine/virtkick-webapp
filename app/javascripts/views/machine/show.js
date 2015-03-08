@@ -110,6 +110,8 @@ define(function(require) {
                $q
       ) {
 
+    $scope.state = $state;
+
     $scope.app.header.title = initialMachineData.hostname;
     $scope.app.header.icon = 'monitor';
 
@@ -138,36 +140,15 @@ define(function(require) {
     });
 
     $scope.$on('$stateChangeSuccess', function(state, toState, toParams, fromState, fromParams) {
-      var m;
-
       if(toState.name == 'machines.show') {
         $state.go('machines.show.power');
       }
-
-      if(fromState.name === toState.name) {
-        return;
-      }
-
-      m = fromState.name.match(/show\.(.+)/);
-      if(m) {
-        $scope.data.active[m[1]] = false;
-      }
-      m = toState.name.match(/show\.(.+)/);
-      if(m) {
-        $scope.data.active[m[1]] = true;
-      }
-      if(toState.name.match(/show$/)) {
-        $scope.data.active.power = true;
+      if(toState.name == 'machines.show.console') {
+        $scope.app.menuCollapse = true;
+      } else {
+        $scope.app.menuCollapse = false;
       }
     });
-
-
-    $scope.data = {
-      active: {
-      }
-    };
-
-    $scope.data.active[$location.path().substr(1)] = true;
 
     var updateSelectedIso = function() {
       $scope.machine.selectedIso = $scope.isoImages.filter(function(image) {
@@ -333,11 +314,6 @@ define(function(require) {
       $timeout.cancel(timeoutHandler);
       abortRequest = true;
       $scope.app.menuCollapse = false;
-    });
-    
-
-    $scope.$watch('data.active.console', function(val) {
-      $scope.app.menuCollapse = $scope.data.active.console;
     });
   });
 

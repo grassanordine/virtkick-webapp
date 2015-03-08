@@ -75,12 +75,9 @@ class MachinesController < ApiController
 
   def show
     machine = @meta_machine.machine
-    respond_with machine do |format|
-      format.html { index }
-      format.json {
-        render json: machine
-      }
-    end
+    render json: machine
+  rescue ActiveRecord::RecordNotFound
+    render json: {error: 'machine not found'}
   end
 
   def destroy
@@ -109,7 +106,11 @@ class MachinesController < ApiController
   end
 
   def vnc
-    machine = @meta_machine.machine
+    begin
+      machine = @meta_machine.machine
+    rescue ActiveRecord::RecordNotFound
+      render json: {}, status: :precondition_failed
+    end
     if machine.vnc_port
       render json: {port: machine.vnc_port, host: machine.vnc_listen_ip}
     else

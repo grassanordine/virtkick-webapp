@@ -2,10 +2,10 @@
   form.ng-cloak(name='form')
     h4 Subscription plan
     .plans
-      input(name='machine[plan_id]' ng-model='data.planId' required='true' class='hide')
+      input(name='machine[plan_id]' ng-model='newMachine.planId' required='true' class='hide')
       .radio-group
         .radio-elem.text-center(ng-repeat='plan in plans')
-          label(ng-model='data.planId' btn-radio="{{plan.id}}" ng-disabled='data.creatingMachine')
+          label(ng-model='newMachine.planId' btn-radio="{{plan.id}}" ng-disabled='newMachine.creatingMachine')
             .padding
             .line.strong
               | {{plan.memory | bytes: 'gb'}}
@@ -25,25 +25,25 @@
 
     h4 Machine image
     .image
-      input(name='machine[image_type]' ng-model='data.imageType' required='true' class='hide')
+      input(name='machine[image_type]' ng-model='newMachine.imageType' required='true' class='hide')
       .radio-group
         .radio-elem.text-center(ng-repeat="type in imageTypes")
-          label(ng-model='data.imageType' btn-radio="type.id" ng-disabled='data.creatingMachine')
+          label(ng-model='newMachine.imageType' btn-radio="type.id" ng-disabled='newMachine.creatingMachine')
             .padding
             .line
               | {{type.name}}
             .padding
               .stripe
 
-      .appliances.alert.alert-info.ng-cloak(ng-if='data.imageType == "appliances"')
+      .appliances.alert.alert-info.ng-cloak(ng-if='newMachine.imageType == "appliances"')
         p Virtkick will deliver appliances with various Linux distributions. Coming soon!
 
-      .isos.ng-cloak(ng-if='data.imageType == "isos"')
+      .isos.ng-cloak(ng-if='newMachine.imageType == "isos"')
         h4 Mounted OS
-        input(name='machine[iso_distro_id]' ng-model='data.isoId' required='true' class='hide')
+        input(name='machine[iso_distro_id]' ng-model='newMachine.isoId' required='true' class='hide')
         .radio-group
           .radio-elem.text-center(ng-repeat='iso in isos')
-            label(ng-model='data.isoId' btn-radio="iso.id" ng-disabled='data.creatingMachine')
+            label(ng-model='newMachine.isoId' btn-radio="iso.id" ng-disabled='newMachine.creatingMachine')
               .padding
               .wrap
                 img(ng-src='/assets/distros/{{iso.code}}.png')
@@ -52,14 +52,14 @@
             .name
               | {{iso.name}}
 
-      .apps.alert.alert-info.ng-cloak(ng-if='data.imageType == "apps"')
+      .apps.alert.alert-info.ng-cloak(ng-if='newMachine.imageType == "apps"')
         p Virtkick will deliver a 1-click integration with Sandstorm. It allows you to install many webapps with a single click. Coming soon!
 
     h4 Machine name
     .row
       .col-xs-7
         .form-group.details(ng-class="{ 'has-error' : form['machine[hostname]'].$invalid && !userForm.name.$pristine }")
-          input.form-control(name='machine[hostname]' ng-model='data.hostname' machine-name required placeholder="Machine hostname"  ng-disabled='data.creatingMachine')
+          input.form-control(name='machine[hostname]' ng-model='newMachine.hostname' machine-name required placeholder="Machine hostname"  ng-disabled='newMachine.creatingMachine')
           .ng-cloak.help-block
             ng-messages(for="form['machine[hostname]'].$error" ng-if="form.$dirty")
               //ng-message(when="required")
@@ -70,7 +70,7 @@
                 | Hostname already taken.
               ng-message(when="any")
                 | Hostname is invalid.
-
-    .ng-cloak
-      long-run-button.btn-primary.btn-lg.create(ng-disabled='form.$invalid' run='createMachine()' on-finish-animation='gotoMachine()')
-        | Create a Machine
+    div.alert.alert-danger(ng-if='newMachine.error')
+      | {{newMachine.error}}
+    long-run-button.btn-primary.btn-lg.create(ng-disabled='form.$invalid' run='createMachine()' on-finish-animation='gotoMachine()')
+      | Create a Machine

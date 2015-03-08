@@ -6,4 +6,4 @@
     for tab in tabs
       li(ui-sref-active='active'): a(ui-sref='machines.show.#{tab}') #{capitalizeFirstLetter(tab)}
   div.tab-content(ui-view='tab')
-  div.tab-content(ui-view='console' ng-show='data.active.console')
+  div.tab-content(ui-view='console' ng-show='$state.current.name == "machines.show.console"')

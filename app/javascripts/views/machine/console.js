@@ -122,7 +122,6 @@ define(function(require) {
       $(window).off('resize', updateConsole);
       destroying = true;
       scope.rfb.disconnect();
-      $canvasWrapper.remove();
       clearTimeout(connectTimeout);
       delete scope.rfb;
     }); 

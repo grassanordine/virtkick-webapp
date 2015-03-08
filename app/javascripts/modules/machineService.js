@@ -24,6 +24,9 @@ define(function(require) {
           if (!res.data.finished) {
             return $timeout(doQuery, 250);
           }
+          if(res.data.error_message) {
+            throw new Error(res.data.error_message);
+          }
           return res.data;
         });
       }
@@ -56,6 +59,9 @@ define(function(require) {
         }).then(function(data) {
           return machineProgress(data.data.data).then(function(data) {
             cacheTime = undefined;
+            if(!data.given_meta_machine_id) {
+              throw Error("Couldn't create new machine");
+            }
             return data.given_meta_machine_id;
           });
         }).finally(cleanCache);
@@ -73,14 +79,6 @@ define(function(require) {
         });
       },
       get: function(machineId, aborter) {
-        //if(isCacheFresh()) {
-        //  var machines = machinesCache.machines;
-        //  for(var i = 0;i < machines.length;++i) {
-        //    if(machines[i].id == machineId) {
-        //      return $q.when(machines[i]);
-        //    }
-        //  }
-        //}
         return $http.get('/api/machines/' + machineId, {
           timeout: aborter?(aborter.promise):undefined
         }).then(function(response) {

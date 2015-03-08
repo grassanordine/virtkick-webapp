@@ -72,11 +72,11 @@ define(function(require) {
       }
     });
 
-    $scope.data = {};
+    $scope.newMachine = {};
 
     $scope.gotoMachine = function() {
       $state.go('machines.show', {
-        machineId: $scope.data.createdMachineId
+        machineId: $scope.newMachine.id
       });
     };
 
@@ -84,12 +84,15 @@ define(function(require) {
 
       return $hook('createMachine').then(function() {
         return machineService.createMachine({
-          hostname: $scope.data.hostname,
-          planId: $scope.data.planId,
-          imageType: $scope.data.imageType,
-          isoId: $scope.data.isoId
+          hostname: $scope.newMachine.hostname,
+          planId: $scope.newMachine.planId,
+          imageType: $scope.newMachine.imageType,
+          isoId: $scope.newMachine.isoId
         }).then(function(machineId) {
-          $scope.data.createdMachineId = machineId
+          $scope.newMachine.id = machineId
+        }, function(err) {
+          $scope.newMachine.error = err;
+          throw err;
         });
       });
     };
