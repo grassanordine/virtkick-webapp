@@ -1,4 +1,7 @@
-#page-login.page-devise
+- content_for :scripts
+  = requirejs_include_tag 'signin'
+
+#page-login.page-devise(ng-controller='SignInCtrl')
   .container-fluid.wrapper-container.logo-container
     .row
       .col-md-12.logo
@@ -16,25 +19,27 @@
         h2.header
           | Log in
         = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-          .form-group
+          .form-group show-errors=1
             = f.label :email, for: 'user[email]'
             .input-group
               .input-group-addon
                 .fa.fa-user
-              = f.email_field :email, autofocus: true, class: 'form-control', placeholder: 'E-mail address'
-          .form-group
+              = f.email_field :email, required: true, autofocus: true, class: 'form-control', placeholder: 'E-mail address', 'ng-model' => 'email'
+          .form-group show-errors=1
             = f.label :password, for: 'user[password]'
             .input-group
               .input-group-addon
                 .fa.fa-lock
-              = f.password_field :password, autocomplete: 'off', class: 'form-control', placeholder: 'Password'
+              = f.password_field :password, required: true, autocomplete: 'off', class: 'form-control', placeholder: 'Password', 'ng-model' => 'password'
 
           - if devise_mapping.rememberable?
             .left
-              .checkbox
-                = f.label :remember_me 
-                  = f.check_box :remember_me
-                  | Remember me
+
+              .checkbox(style='line-height: 40px; padding-left: 5px;')
+                div(style='display: inline-block; width: 40px; height: 24px;')
+                  checkbox large=1 ng-model='remember_me'
+                input.hide type='checkbox' name='user[remember_me]' ng-model='remember_me'
+                | Remember me
             .right.forgot
               = render 'devise/shared/forgot'
             .clear

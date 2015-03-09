@@ -19,11 +19,12 @@ namespace :alpha do
       sleep 1
       print '.'
     end
+    puts ''
 
     response = Wvm::Base.call :get, '/1/instances'
-    response.instances.each do |machine|
-      puts "Deleting #{machine.name}"
-      Wvm::Machine.delete OpenStruct.new({hostname: machine.name})
+    response[:instances].each do |machine|
+      puts "Deleting #{machine.name} at #{machine.hypervisor_id}"
+      Wvm::Machine.delete OpenStruct.new({hostname: machine.name}), machine.hypervisor_id
     end
   end
 end

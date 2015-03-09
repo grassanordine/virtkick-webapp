@@ -1,8 +1,11 @@
 define(function(require) {
 
   var angular = require('angular');
-  var module = require('module');
-  var mod = angular.module(module.id, []);
+  var moduleId = require('module').id;
+  var mod = angular.module(moduleId, [
+    require('angular-input-match'),
+    require('angular-bootstrap-show-errors')
+  ]);
 
   mod.filter('currency', function() {
     return function(amount, currency) {
@@ -87,5 +90,5 @@ define(function(require) {
       }
     };
   });
-  return module.id;
+  return moduleId;
 });

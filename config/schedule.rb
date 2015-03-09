@@ -20,6 +20,6 @@
 # Learn more: http://github.com/javan/whenever
 #set :output, '/home/rush/test.log'
 
-every 2.minute do
-  rake 'db:migrate'
-end
+# every 2.minute do
+#   rake 'db:migrate'
+# end

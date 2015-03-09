@@ -1,6 +1,8 @@
 #!/bin/bash
 cd "$(dirname "$0")"
+if ! [ "$RAILS_ENV" == "" ];then
+  RAILS_ENV=development
+fi
 for file in config/schedule.rb engines/**/config/schedule.rb; do
-    whenever -f "$file" 
-done 
-#node cron-server.js
+    whenever -f "$file" --set "environment=$RAILS_ENV"
+done 2> /dev/null  | node cron-server.js

@@ -36,7 +36,7 @@ define(function(require) {
               };
               var timer = $timeout(function() {
                 $window.location = '/users/sign_out';
-              }, 500);
+              }, 0);
               $scope.$on('$destroy', function() {
                 $timeout.cancel(timer);
               });

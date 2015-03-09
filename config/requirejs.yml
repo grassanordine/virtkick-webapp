@@ -15,6 +15,10 @@ modules:
     exclude: []
   - name: 'setup'
     include: ['setup']
+  - name: 'signin'
+    include: ['signin']
+  - name: 'signup'
+    include: ['signup']
 preserveLicenseComments: false
 generateSourceMaps: true
 optimize: uglify2

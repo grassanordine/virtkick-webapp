@@ -40,7 +40,7 @@
           th.memory Memory
           th.storage Storage
       tbody
-        tr(ng-repeat='machine in machines')
+        tr(ng-repeat="machine in machines | orderBy:'hostname'")
           td.name(ng-class="{on : machine.status.running, off: !machine.status.running}")
             i(class='icon fa fa-{{machine.status.icon}}')
             a(href="/machines/{{machine.id}}")

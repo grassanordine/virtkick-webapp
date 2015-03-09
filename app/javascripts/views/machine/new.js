@@ -12,14 +12,11 @@ define(function(require) {
 
 
   app.config(function($stateProvider) {
-    $stateProvider
-        .state('machines.new', {
-          url: '/new',
-          template: require('jade!templates/machine/new'),
-          controller: 'NewMachineCtrl'
-        });
-
-
+    $stateProvider .state('machines.new', {
+      url: '/new',
+      template: require('jade!templates/machine/new'),
+      controller: 'NewMachineCtrl'
+    });
   });
 
   // directive for checking validity of the form
@@ -88,12 +85,15 @@ define(function(require) {
           planId: $scope.newMachine.planId,
           imageType: $scope.newMachine.imageType,
           isoId: $scope.newMachine.isoId
-        }).then(function(machineId) {
-          $scope.newMachine.id = machineId
-        }, function(err) {
-          $scope.newMachine.error = err;
-          throw err;
         });
+      }).then(function(machineId) {
+        $scope.newMachine.id = machineId
+      }, function(err) {
+        if(err === 'cancel' || err === 'backdrop click') {
+          throw err;
+        }
+        $scope.newMachine.error = err.message || err;
+        throw err;
       });
     };
   });

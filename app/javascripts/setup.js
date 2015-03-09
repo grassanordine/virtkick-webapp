@@ -8,8 +8,6 @@ define(function(require) {
     'ngAnimate',
     'ngMessages',
     require('directives/long-run-button/directive'),
-    require('angular-bootstrap-show-errors'),
-    require('angular-input-match'),
     require('modules/helpers'),
     require('modules/constants')
   ]);

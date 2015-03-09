@@ -49,7 +49,7 @@ define(function(require) {
         });
       },
       createMachine: function(data) {
-        return $http.post('/api/machines', {
+        return $http.post('/api/machines.json', {
           machine: {
             hostname: data.hostname,
             plan_id: data.planId,
