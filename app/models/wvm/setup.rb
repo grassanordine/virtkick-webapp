@@ -123,10 +123,10 @@ class Wvm::Setup < Wvm::Base
           bridge_name: '',
           dns: network[:dns].join(',')
     else
-      if libvirt_network.state != 1
+      if libvirt_network[:state] != 1
         call :post, network_url, start: ''
       end
-      if libvirt_network.autostart != 1
+      if libvirt_network[:autostart] != 1
         call :post, network_url, set_autostart: ''
       end
     end
