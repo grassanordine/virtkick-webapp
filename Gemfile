@@ -19,7 +19,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'jquery-rails'
 gem 'httparty'
 gem 'multimap'
-gem 'puma'
+gem 'puma' unless ENV['PACKAGING']
 gem 'rails', '4.2.0'
 gem 'twitter-bootstrap-rails-confirm', git: 'https://github.com/bluerail/twitter-bootstrap-rails-confirm.git'
 gem 'rails-html-sanitizer', '~> 1.0'

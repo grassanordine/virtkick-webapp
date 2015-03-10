@@ -16,7 +16,6 @@ namespace :package do
   namespace :linux do
     desc "Package your app for Linux x86_64"
     task :x86_64 => [:bundle_install,
-      "assets:precompile",
       "packaging/traveling-ruby-#{TRAVELING_RUBY_VERSION}-linux-x86_64.tar.gz",
       "packaging/traveling-ruby-#{TRAVELING_RUBY_VERSION}-linux-x86_64-sqlite3-#{SQLITE3_VERSION}.tar.gz",
       "packaging/traveling-ruby-#{TRAVELING_RUBY_VERSION}-linux-x86_64-nokogiri-#{NOKOGIRI_VERSION}.tar.gz",
@@ -85,7 +84,7 @@ def create_package(target)
     "-C #{package_dir}/lib/vendor/ruby"
   sh "tar -xzf packaging/traveling-ruby-#{TRAVELING_RUBY_VERSION}-#{target}-bcrypt-#{BCRYPT_VERSION}.tar.gz " +
     "-C #{package_dir}/lib/vendor/ruby"
-  if !ENV['DIR_ONLY']
+  unless ENV['DIR_ONLY']
     sh "tar -Jcf #{package_dir}.tar.xz #{package_dir}"
     sh "rm -rf #{package_dir}"
   end
