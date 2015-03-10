@@ -1,8 +1,11 @@
 - content_for :scripts do
   = requirejs_include_tag 'application'
+  - if Rails.configuration.x.livereload == true
+    = requirejs_include_tag 'livereload'
+
+
 
 = object_to_json_constant 'isoImagesData', @iso_images
-= object_to_json_constant 'diskTypes', @disk_types
 = object_to_json_constant 'isosData', @isos
 = object_to_json_constant 'plansData', @plans
 = object_to_json_constant 'diskPlans', Defaults::DiskSizePlan.all

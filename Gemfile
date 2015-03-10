@@ -47,6 +47,9 @@ end unless ENV['PACKAGING']
 
 group :development do
   gem 'rb-fsevent', require: false
+  gem 'guard', require: false
+  gem 'guard-livereload', require: false
+  gem 'rack-livereload'
 end unless ENV['PACKAGING']
 
 group :test do

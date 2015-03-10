@@ -1,9 +1,9 @@
 class Wvm::StoragePool < Wvm::Base
-  def self.all hypervisor_id
-    response = call :get, "/#{hypervisor_id}/storages"
+  def self.all hypervisor
+    response = call :get, "/#{hypervisor.wvm_id}/storages"
 
     pools = response[:storages].map do |remote_pool|
-      local_pool = to_local remote_pool[:name], hypervisor_id
+      local_pool = to_local remote_pool[:name], hypervisor
       next unless local_pool
 
       Infra::DiskType.new \
@@ -15,13 +15,13 @@ class Wvm::StoragePool < Wvm::Base
     pools.compact
   end
 
-  def self.find id, hypervisor_id
+  def self.find id, hypervisor
     raise unless id =~ /\A[a-zA-Z-]+\Z/
 
-    local_pool = to_local id, hypervisor_id
+    local_pool = to_local id, hypervisor
     raise unless local_pool
 
-    storage_pool = call :get, "/#{hypervisor_id}/storage/#{id}"
+    storage_pool = call :get, "/#{hypervisor.wvm_id}/storage/#{id}"
 
     Infra::DiskType.new \
         id: storage_pool[:pool],
@@ -30,10 +30,8 @@ class Wvm::StoragePool < Wvm::Base
         enabled: storage_pool[:state] == 1
   end
 
-  def self.to_local remote_pool, hypervisor_id
-
-
-    hypervisor(hypervisor_id)[:storages].find do |storage|
+  def self.to_local remote_pool, hypervisor
+    hypervisor.storages.find do |storage|
       storage[:id] == remote_pool
     end
   end

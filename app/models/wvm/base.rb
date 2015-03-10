@@ -1,5 +1,6 @@
 require 'httparty'
 require 'recursive_open_struct'
+require 'app/models/hypervisor'
 
 class Wvm::Base
 
@@ -12,6 +13,10 @@ class Wvm::Base
   include HTTParty
   base_uri 'http://0.0.0.0:8000/'
   default_timeout 15
+
+  def as_json config = {}
+    self.instance_values.as_json config
+  end
 
   def self.call method, url, **body
     params = {headers: {'Accept' => 'application/json'}}
@@ -45,11 +50,12 @@ class Wvm::Base
   end
 
   def self.hypervisor hypervisor_id
-    hypervisor = Wvm::Hypervisor.find_by_id hypervisor_id
+    hypervisor = Hypervisor.find_by_id hypervisor_id
+
     unless hypervisor
       raise Exception.new('No hypervisor found')
     end
-    hypervisor.attributes.deep_symbolize_keys
+    hypervisor
   end
 
   private

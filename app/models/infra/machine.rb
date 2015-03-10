@@ -13,16 +13,16 @@ class Infra::Machine < Infra::Base
   attr_accessor :hypervisor_id
   attr_accessor :mac_address
 
-  def self.all hypervisor_id
-    Wvm::Machine.all hypervisor_id
+  def self.all hypervisor
+    Wvm::Machine.all hypervisor
   end
 
-  def self.find hostname, hypervisor_id
-    Wvm::Machine.find hostname, hypervisor_id
+  def self.find hostname, hypervisor
+    Wvm::Machine.find hostname, hypervisor
   end
 
-  def self.create new_machine, hypervisor_id
-    Wvm::Machine.create new_machine, hypervisor_id
+  def self.create new_machine, hypervisor
+    Wvm::Machine.create new_machine, hypervisor
   end
 
   def id
@@ -30,21 +30,21 @@ class Infra::Machine < Infra::Base
   end
 
   %w(start pause resume stop force_stop restart force_restart).each do |operation|
-    define_method operation do |hypervisor_id|
-      Wvm::Machine.send operation, hostname, hypervisor_id
+    define_method operation do ||
+      Wvm::Machine.send operation, hostname, Hypervisor.find(hypervisor_id)
     end
   end
 
   def create_disk disk
-    Wvm::Machine.add_disk disk, self, hypervisor_id
+    Wvm::Machine.add_disk disk, self, Hypervisor.find(hypervisor_id)
   end
 
   def delete_disk disk
-    Wvm::Machine.delete_disk disk, self, hypervisor_id
+    Wvm::Machine.delete_disk disk, self, Hypervisor.find(hypervisor_id)
   end
 
   def mount_iso iso_image
-    Wvm::Machine.mount_iso self, iso_image, hypervisor_id
+    Wvm::Machine.mount_iso self, iso_image, Hypervisor.find(hypervisor_id)
   end
 
   def iso_distro
@@ -55,14 +55,8 @@ class Infra::Machine < Infra::Base
     Plans::IsoImage.find @iso_image_id if @iso_image_id
   end
 
-  def delete hypervisor_id
-    Wvm::Machine.delete self, hypervisor_id
-  end
-
-  def as_json config
-
-    self.instance_values['vnc_password'] = 'ddd'
-    self.instance_values.as_json config
+  def delete
+    Wvm::Machine.delete self , Hypervisor.find(hypervisor_id)
   end
 
   class Status < ActiveHash::Base

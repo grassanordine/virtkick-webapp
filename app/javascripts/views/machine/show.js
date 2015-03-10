@@ -100,14 +100,12 @@ define(function(require) {
                initialMachineData,
                isosData,
                isoImagesData,
-               diskTypes,
                diskPlans,
                $timeout,
                handleProgress,
                $state,
                $stateParams,
-               machineService,
-               $q
+               machineService
       ) {
 
     $scope.state = $state;
@@ -126,7 +124,7 @@ define(function(require) {
 
     $scope.isoImages =  isoImagesData;
 
-    $scope.diskTypes = diskTypes;
+    $scope.diskTypes = initialMachineData.diskTypes;
 
     $scope.diskPlans = {};
 

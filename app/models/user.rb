@@ -40,14 +40,9 @@ class User < ActiveRecord::Base
     per_hypervisor_machines = {}
     id_to_machine = {}
     meta_machines.not_deleted.each do |machine|
-      begin
-        Wvm::Base.hypervisor machine.libvirt_hypervisor_id
-      rescue Exception => e
-        next
-      end
       id_to_machine[machine.hostname] = machine.id
-      per_hypervisor_machines[machine.libvirt_hypervisor_id] ||= []
-      per_hypervisor_machines[machine.libvirt_hypervisor_id].push machine.hostname
+      per_hypervisor_machines[machine.hypervisor.wvm_id] ||= []
+      per_hypervisor_machines[machine.hypervisor.wvm_id].push machine.hostname
     end
 
     temporary_results = Wvm::Machine.status per_hypervisor_machines

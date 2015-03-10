@@ -1,5 +1,6 @@
 describe 'Demo sessions' do
   before do
+    Hypervisor.bootstrap
     SetupController.class_variable_set :@@ready, true
     Rails.configuration.x.demo_timeout = 5
     Mode.set 'demo'

@@ -17,7 +17,6 @@ module AfterSetupOnly
       begin
         SetupController.check
         ApplicationController.class_variable_set :@@ready, true
-
         if Virtkick.mode
           return
         end

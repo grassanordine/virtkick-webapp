@@ -10,24 +10,11 @@ class MachinesController < ApiController
   find_machine_before_action :id, except: [:index, :new, :create]
 
   def index
-    # TODO: handle multiple hypervisors here
-    @disk_types = Infra::DiskType.all 1
-    @disk = Infra::Disk.new
-    @iso_images = Plans::IsoImage.all
-    @isos = Plans::IsoDistro.all
-    @plans ||= Defaults::MachinePlan.all
-
-    run_hook :on_render_new
-
     respond_to do |format|
       format.json {
         render json: {machines: current_user.machines}
       }
     end
-  end
-
-  def new
-    index
   end
 
   def validate
@@ -57,24 +44,8 @@ class MachinesController < ApiController
     new
   end
 
-  def power
-    index
-  end
-
-  def console
-    index
-  end
-
-  def storage
-    index
-  end
-
-  def settings
-    index
-  end
-
   def show
-    machine = @meta_machine.machine
+    machine = @meta_machine.machine.as_json.merge disk_types: @meta_machine.hypervisor.disk_types
     render json: machine
   rescue ActiveRecord::RecordNotFound
     render json: {error: 'machine not found'}

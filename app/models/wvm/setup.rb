@@ -1,5 +1,7 @@
 require 'ipaddress'
 
+require 'app/models/hypervisor'
+
 class Wvm::Setup < Wvm::Base
   class Error < Exception
   end
@@ -7,13 +9,18 @@ class Wvm::Setup < Wvm::Base
   def self.setup hypervisor
     handle_exceptions do
       id = create_connection_if_needed hypervisor
-      hypervisor.id = id
+
+      hypervisor.wvm_id = id
       hypervisor.save
 
       create_network_if_needed id
       all_storages(id).each do |storage|
         create_storage_if_needed id, storage
       end
+
+      disk_types = Infra::DiskType.all(hypervisor).as_json
+      hypervisor.disk_types = disk_types
+      hypervisor.save
       id
     end
     # TODO: save response.hypervisor_id for future use

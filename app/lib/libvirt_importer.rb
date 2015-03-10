@@ -16,8 +16,8 @@ class LibvirtImporter
     local_machines = MetaMachine.all
 
     remote_machines = []
-    Wvm::Hypervisor.all.each do |hypervisor|
-      remote_machines = remote_machines + Infra::Machine.all(hypervisor.id)
+    Hypervisor.all.each do |hypervisor|
+      remote_machines = remote_machines + Infra::Machine.all(hypervisor)
     end
     local_ids = local_machines.map &:libvirt_machine_name # TODO: handle multiple hypervisors
     remote_machines.reject { |e| local_ids.include? e.hostname }

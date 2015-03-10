@@ -1,9 +1,10 @@
 require 'ipaddress'
+require 'app/models/hypervisor'
 
 class Wvm::Machine < Wvm::Base
-  def self.all hypervisor_id
-    response = call :get, "/#{hypervisor_id}/instances"
-    build_all_instances response, hypervisor_id
+  def self.all hypervisor
+    response = call :get, "/#{hypervisor[:wvm_id]}/instances"
+    build_all_instances response, hypervisor
   end
 
   def self.status payload
@@ -11,24 +12,21 @@ class Wvm::Machine < Wvm::Base
 
     response[:machines].map do |machine|
       begin
-        hypervisor machine[:hypervisor_id]
+        hypervisor = ::Hypervisor.find_by(wvm_id: machine[:hypervisor_id])
         {
             status: determine_status(machine),
             hostname: machine[:hostname],
             memory: machine[:cur_memory],
             processors: machine[:vcpu],
-            disks: Wvm::Disk.array_of(machine[:disks], machine[:hypervisor_id])
+            disks: Wvm::Disk.array_of(machine[:disks], hypervisor)
         }
-      rescue Exception => e
-        nil
       end
     end.compact
   end
 
-  def self.find id, hypervisor_id
-    response = call :get, "/#{hypervisor_id}/instance/#{id}"
+  def self.find id, hypervisor
+    response = call :get, "/#{hypervisor[:wvm_id]}/instance/#{id}"
 
-    hypervisor_data = hypervisor hypervisor_id
     params = {
       processor_usage: response[:cpu_usage],
       hostname: response[:name],
@@ -37,12 +35,12 @@ class Wvm::Machine < Wvm::Base
       processors: response[:vcpu],
       status: determine_status(response),
       vnc_port: response[:vnc_port],
-      vnc_listen_ip: hypervisor_data[:vnc_listen_ip],
+      vnc_listen_ip: hypervisor[:host],
       vnc_password: response[:vnc_password],
       mac_address: response[:mac_address],
-      disks: Wvm::Disk.array_of(response[:disks], hypervisor_id),
-      iso_dir: hypervisor_data[:iso][:path],
-      hypervisor_id: hypervisor_id
+      disks: Wvm::Disk.array_of(response[:disks], hypervisor),
+      iso_dir: hypervisor[:iso][:path],
+      hypervisor_id: hypervisor[:id]
     }
 
     if response[:media] and not response[:media].empty?
@@ -58,19 +56,19 @@ class Wvm::Machine < Wvm::Base
     Infra::Machine.new params
   end
 
-  def self.create new_machine, hypervisor_id
-    machine = build_new_machine new_machine, hypervisor_id
+  def self.create new_machine, hypervisor
+    machine = build_new_machine new_machine, hypervisor
 
     template = File.dirname(__FILE__) + '/new_machine.xml.slim'
     xml = Slim::Template.new(template, format: :xhtml).render Object.new, {
         machine: machine,
-        hypervisor: Wvm::Base.hypervisor(hypervisor_id)
+        hypervisor: hypervisor
     }
 
-    call :post, "/#{hypervisor_id}/create", create_xml: '',
+    call :post, "/#{hypervisor[:wvm_id]}/create", create_xml: '',
         from_xml: xml
 
-    machine = Infra::Machine.find machine.hostname, hypervisor_id
+    machine = Infra::Machine.find machine.hostname, hypervisor
 
     machine.create_disk Infra::Disk.new \
         size: new_machine.plan.storage,
@@ -89,38 +87,38 @@ class Wvm::Machine < Wvm::Base
   }
 
   OPERATIONS.each do |operation_name, libvirt_name|
-    define_singleton_method operation_name do |id, hypervisor_id|
-      operation libvirt_name, id, hypervisor_id
+    define_singleton_method operation_name do |id, hypervisor|
+      operation libvirt_name, id, hypervisor
     end
   end
 
-  def self.force_restart id, hypervisor_id
-    operation :destroy, id, hypervisor_id
-    operation :start, id, hypervisor_id
+  def self.force_restart id, hypervisor
+    operation :destroy, id, hypervisor
+    operation :start, id, hypervisor
   end
 
-  def self.add_disk disk, machine, hypervisor_id
+  def self.add_disk disk, machine, hypervisor
     disk.device = machine.disks.next_device_name
-    Wvm::Disk.create disk, machine.uuid, hypervisor_id
+    Wvm::Disk.create disk, machine.uuid, hypervisor
 
-    call :post, "/#{hypervisor_id}/instance/#{machine.hostname}", assign_volume: '',
+    call :post, "/#{hypervisor.wvm_id}/instance/#{machine.hostname}", assign_volume: '',
         file: disk.path, device: disk.device
   end
 
-  def self.delete_disk disk, machine, hypervisor_id
-    call :post, "/#{hypervisor_id}/instance/#{machine.hostname}", unassign_volume: '',
+  def self.delete_disk disk, machine, hypervisor
+    call :post, "/#{hypervisor.wvm_id}/instance/#{machine.hostname}", unassign_volume: '',
         device: disk.device
 
-    Wvm::Disk.delete disk, hypervisor_id
+    Wvm::Disk.delete disk, hypervisor
   end
 
-  def self.mount_iso machine, iso_image, hypervisor_id
-    call :post, "/#{hypervisor_id}/instance/#{machine.hostname}", mount_iso: '',
+  def self.mount_iso machine, iso_image, hypervisor
+    call :post, "/#{hypervisor.wvm_id}/instance/#{machine.hostname}", mount_iso: '',
         media: iso_image.file # device purposely omitted
   end
 
-  def self.delete machine, hypervisor_id
-    call :post, "/#{hypervisor_id}/instance/#{machine.hostname}", delete: '',
+  def self.delete machine, hypervisor
+    call :post, "/#{hypervisor.wvm_id}/instance/#{machine.hostname}", delete: '',
         delete_disk: ''
   end
 
@@ -130,8 +128,8 @@ class Wvm::Machine < Wvm::Base
     object.map(&property).inject(0, &:+)
   end
 
-  def self.operation operation, id, hypervisor_id
-    call :post, "/#{hypervisor_id}/instances", operation => '', name: id
+  def self.operation operation, id, hypervisor
+    call :post, "/#{hypervisor[:wvm_id]}/instances", operation => '', name: id
   end
 
   def self.determine_status response
@@ -148,14 +146,14 @@ class Wvm::Machine < Wvm::Base
     Infra::Machine::Status.find status
   end
 
-  def self.build_all_instances response, hypervisor_id
+  def self.build_all_instances response, hypervisor
     machines = response[:instances].map do |machine|
       Infra::Machine.new \
           hostname: machine[:name],
           memory: machine[:memory],
-          disks: Wvm::Disk.array_of(machine[:storage], hypervisor_id),
+          disks: Wvm::Disk.array_of(machine[:storage], hypervisor),
           status: determine_status(machine),
-          hypervisor_id: hypervisor_id
+          hypervisor_id: hypervisor[:wvm_id]
     end
     machines.sort_by &:hostname
   end
@@ -164,10 +162,9 @@ class Wvm::Machine < Wvm::Base
     ('%02x'%((rand 64)*4|2)) + (0..4).inject(''){|s,x|s+':%02x'%(rand 256)}
   end
 
-  def self.build_new_machine new_machine, hypervisor_id
+  def self.build_new_machine new_machine, hypervisor
     uuid = SecureRandom.uuid
-    networks = setup_networks uuid, hypervisor_id
-    hypervisor_data = hypervisor(hypervisor_id)
+    networks = setup_networks uuid, hypervisor
 
     Infra::Machine.new \
         uuid: uuid,
@@ -178,21 +175,20 @@ class Wvm::Machine < Wvm::Base
         iso_image_id: new_machine.iso_distro.iso_images.first.id,
         mac_address: random_mac_address,
         networks: networks,
-        vnc_listen_ip: hypervisor_data[:vnc_listen_ip],
+        vnc_listen_ip: hypervisor[:host],
         vnc_password: SecureRandom.urlsafe_base64(32),
-        iso_dir: hypervisor_data[:iso][:path],
-        hypervisor_id: hypervisor_id
+        iso_dir: hypervisor[:iso][:path],
+        hypervisor_id: hypervisor[:wvm_id]
   end
 
-  def self.setup_networks uuid, hypervisor_id
+  def self.setup_networks uuid, hypervisor
     networks = Infra::Networks.new
-    hypervisor_data = hypervisor(hypervisor_id)
 
-    return if hypervisor_data[:network][:type] == 'bridge'
+    return if hypervisor[:network][:type] == 'bridge'
 
     networks.public = Infra::Network.new \
-        pool_name: hypervisor_data[:network][:id],
-        dhcp_network: IPAddress(hypervisor_data[:network][:address])
+        pool_name: hypervisor[:network][:id],
+        dhcp_network: IPAddress(hypervisor[:network][:address])
     networks
   end
 end

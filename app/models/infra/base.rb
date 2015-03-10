@@ -9,4 +9,8 @@ class Infra::Base
   def to_s
     inspect
   end
+
+  def as_json config = {}
+    self.instance_values.as_json config
+  end
 end

@@ -30,10 +30,11 @@ class ApplicationController < ActionController::Base
         render json: {exception: true}, status: status
       end
 
+      puts '^^== BEGIN EXCEPTION'
       puts e.message
-      e.backtrace.each do |line|
-        puts line
-      end
+      puts e.backtrace.map { |e| '    ' + e }.join "\n"
+      puts '__== END EXCEPTION'
+
       Bugsnag.notify_or_ignore e
     else
       raise e

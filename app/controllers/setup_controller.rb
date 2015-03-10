@@ -14,7 +14,8 @@ class SetupController < ApplicationController
   end
 
   def self.setup_hypervisors
-    Wvm::Hypervisor.all.each do |hypervisor|
+    Hypervisor.bootstrap
+    Hypervisor.all.each do |hypervisor|
       Wvm::Setup.setup hypervisor
     end
   end
@@ -40,10 +41,6 @@ class SetupController < ApplicationController
 
   def self.check
     ModeSetup.check
-
-    Wvm::Hypervisor.all.each do |hypervisor|
-      Wvm::Setup.check hypervisor
-    end
   end
 
   private

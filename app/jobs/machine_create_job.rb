@@ -10,7 +10,7 @@ class MachineCreateJob < TrackableJob
     hypervisor = Wvm::Hypervisor.find_best_hypervisor @new_machine.plan
 
     step :create_machine do
-      Infra::Machine.create @new_machine, hypervisor.id
+      Infra::Machine.create @new_machine, hypervisor
       # TODO: extract disk create to a new step
     end
 

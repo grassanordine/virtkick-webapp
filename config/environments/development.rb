@@ -8,11 +8,8 @@ end
 Rails.application.configure do
   # delayed jobs always reload classes which breaks hooks
   bin_name = File.basename $0
-  if bin_name == 'rake'
-    config.cache_classes = true
-  else
-    config.cache_classes = false
-  end
+
+  config.cache_classes = false
 
   config.eager_load = false
   config.consider_all_requests_local = true
@@ -24,7 +21,7 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
   config.action_view.raise_on_missing_translations = true
 
-  if ENV['INLINE']
+  if ENV['INLINE_BACKGROUND_JOBS']
     config.active_job.queue_adapter = :inline
   end
   config.assets.digest = false
@@ -38,5 +35,12 @@ Rails.application.configure do
       config.assets.paths << Rails.root.join(dir_name, 'app', 'javascripts')
 
       config.sass.load_paths << Rails.root.join(dir_name, 'app', 'assets', 'stylesheets')
+  end
+
+  if ENV['LIVERELOAD']
+    config.x.livereload = true
+    config.middleware.insert_after(ActionDispatch::Static, Rack::LiveReload)
+  else
+    config.x.livereload = false
   end
 end
