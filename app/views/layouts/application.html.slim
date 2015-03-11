@@ -8,7 +8,7 @@ html
     meta name='description' content='A prototype of VirtKick, a user-oriented cloud management center.'
     meta name='viewport' content='width=device-width'
     link rel='shortcut icon' href='/favicon.ico'
-    = stylesheet_link_tag 'application', media: 'all'
+    = stylesheet_link_tag "application-#{Rails.configuration.theme}", media: 'all'
     = csrf_meta_tags
     = yield :header
   body(ng-app=1 ng-strict-di)

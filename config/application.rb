@@ -27,16 +27,11 @@ module VirtkickWebapp
 
     config.assets.digest = true
     config.assets.enabled = true
-
     config.assets.compile = true
     config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
 
-    if ENV['VIRTKICK_THEME']
-      config.theme = ENV['VIRTKICK_THEME']
-    else
-      config.theme = 'virtkick'
-    end
-    version=`git rev-parse --short HEAD 2> /dev/null || cat .version 2> /dev/null || echo unknown`.chop
+    config.theme = ENV['VIRTKICK_THEME'] || 'virtkick'
+    version = `git rev-parse --short HEAD 2> /dev/null || cat .version 2> /dev/null || echo unknown`.chop
     puts "App configured for version #{version}"
     config.version = config.assets.version = version + '-' + config.theme
 
