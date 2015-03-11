@@ -5,31 +5,31 @@
         p
           i.oi.oi-monitor
           | Machines
-        p.value.ng-cloak(ng-if='!state.loading')
+        p.value-field.ng-cloak(ng-if='!state.loading')
           | {{machines.length}}
-        p.value(ng-if='state.loading')
+        p.value-field(ng-if='state.loading')
           | &nbsp;
       li
         p
           i.oi.oi-puzzle-piece
           | Memory
-        p.value.ng-cloak(ng-if='!state.loading')
+        p.value-field.ng-cloak(ng-if='!state.loading')
           | {{machines | map: 'memory' | sum | bytes: 'mb'}}
-        p.value(ng-if='state.loading')
+        p.value-field(ng-if='state.loading')
           | &nbsp;
       li
         p
           i.fa.fa-database
           | Storage
-        p.value.ng-cloak(ng-if='!state.loading')
+        p.value-field.ng-cloak(ng-if='!state.loading')
           | {{machines | map: 'disks' | flatten | map: 'size' | sum | bytes}}
-        p.value(ng-if='state.loading')
+        p.value-field(ng-if='state.loading')
           | &nbsp;
       li
         p
           i.oi.oi-credit-card
           | Monthly
-        p.value
+        p.value-field
           | free
 
   span.ng-cloak(ng-if='machines.length')

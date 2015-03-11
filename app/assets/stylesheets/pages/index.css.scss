@@ -2,20 +2,20 @@
   $item-total-width: 200px;
 
   .items {
+    @extend .dashboard;
+    font-size: 1em;
     list-style: none;
     text-align: center;
 
     padding: 30px 0px 5px;
     margin: 0;
-    background-color: $vk-dashboard-bg-color;
-    border-radius: 4px;
 
     ul {
       padding: 0;
     }
 
     li {
-      $item-width: 120px;
+      $item-width: 130px;
       width: $item-width;
       display: inline-block;
 
@@ -28,7 +28,6 @@
       }
 
       padding: 10px 0;
-      border-radius: 10px;
 
       span {
         font-size: 150%;
@@ -39,10 +38,14 @@
         margin-right: 10px;
       }
 
-      .value {
+      .value-field {
         background-color: $vk-dashboard-field-bg-color;
         font-size: 24px;
         padding: 5px 0;
+        display: block;
+        height: 50px;
+        line-height: 40px;
+        vertical-align: middle;
       }
     }
   }

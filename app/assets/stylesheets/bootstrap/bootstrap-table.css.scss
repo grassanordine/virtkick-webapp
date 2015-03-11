@@ -15,7 +15,7 @@ h4.table-header {
 table.table {
   margin: 0 auto;
   border: 1px solid $vk-table-border-color;
-  border-radius: 4px;
+  border-radius: $vk-table-border-radius;
   border-collapse: initial;
 
   .btn {
@@ -24,7 +24,6 @@ table.table {
 
   thead tr th {
     border: 0px;
-    border-radius: 4px;
 
     &:first-child {
       padding-left: 20px;
@@ -53,7 +52,7 @@ table.table {
         }
       }    
       td, th {
-        border-radius: 4px;
+        border-radius: $vk-table-border-radius;
         vertical-align: middle;
 
         &.actions {      
@@ -107,6 +106,14 @@ table.table {
         td, th {
           background-color: $vk-table-stripe-bg-color !important;
         }
+      }
+
+      tr:last-child td:first-child {
+        border-bottom-left-radius: $vk-table-border-radius !important;
+      }
+
+      tr:last-child td:last-child {
+        border-bottom-right-radius: $vk-table-border-radius !important;
       } 
     }
   }

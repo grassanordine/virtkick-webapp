@@ -1,7 +1,8 @@
 @import 'machine/*';
 
 #page-machine {
-  .nav {
+  .nav-pills {
+    border-radius: $vk-navpills-border-radius;
     background-color: $vk-static-bg-color;
     li {
       background-color: $vk-static-bg-color;
@@ -17,31 +18,31 @@
       &.active {
         a {
           color: white;
-          border-radius: 0px;
+          border-radius: $vk-navpills-active-border-radius;
         }
       }
     }
 
     @media(min-width: $screen-md-min) {
-      border: 0px solid transparent;
-      border-radius: 4px;
-
+      
       li {
-        a {
-          border-radius: 0px;
+        border-radius: $vk-navpills-border-radius;
+
+        &.active {
+          border-radius: $vk-navpills-active-border-radius;
         }
 
         &.active:first-child {
           a {
-            border-top-left-radius: 3px !important;
-            border-bottom-left-radius: 3px !important;
+            border-top-left-radius: $vk-navpills-border-radius !important;
+            border-bottom-left-radius: $vk-navpills-border-radius !important;
           }
         }
 
         &.active:last-child {
           a {
-            border-top-right-radius: 3px !important;
-            border-bottom-right-radius: 3px !important;
+            border-top-right-radius: $vk-navpills-border-radius !important;
+            border-bottom-right-radius: $vk-navpills-border-radius !important;
           }
         }
       }

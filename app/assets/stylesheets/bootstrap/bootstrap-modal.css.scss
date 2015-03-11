@@ -15,6 +15,8 @@
         background-color: $vk-modal-header-bg-color;
         color: $vk-modal-header-color;
         font-weight: 700;
+        border-top-left-radius: $vk-modal-border-radius;
+        border-top-right-radius: $vk-modal-border-radius;
 
         h3 {
           text-align: center;
@@ -29,7 +31,9 @@
       .modal-footer {
         background-color: $vk-modal-footer-bg-color;
         text-align: center;
-        padding: 15px $modal-inner-padding 45px $modal-inner-padding;
+        padding: 15px $modal-inner-padding 45px $modal-inner-padding;        
+        border-bottom-left-radius: $vk-modal-border-radius;
+        border-bottom-right-radius: $vk-modal-border-radius;
 
         &.no-border-top {
           border-top: 0;

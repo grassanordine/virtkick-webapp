@@ -56,7 +56,7 @@ display: none !important;
       height: $header-height;
       box-sizing: content-box;
       background-color: $vk-logo-bg-color;
-      border-radius: 4px;
+      border-radius: $vk-border-radius;
     }
 
     p {
@@ -133,7 +133,10 @@ display: none !important;
 nav.navbar {
   border: 0 !important;
   background-color: $vk-navbar-bg-color;
-  border-radius: 4px;
+
+  @media(min-width: $grid-float-breakpoint-max) {
+    border-radius: $vk-navbar-border-radius;
+  }
 
   @media(min-width: $screen-md) {
     padding-top: 26px;
@@ -154,7 +157,7 @@ nav.navbar {
     display: inline-block;
     position: relative;
     top: 5px;
-    border-radius: 4px;
+    border-radius: $vk-navbar-icon-active-border-radius;
   }
 
   .active span.oi {

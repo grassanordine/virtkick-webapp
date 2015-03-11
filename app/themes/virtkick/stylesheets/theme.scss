@@ -38,6 +38,10 @@ $vk-transparent-color: transparent !default; // transparent
 $vk-element-on-color: #EC4863 !default; // pink (duplicated primary)
 $vk-element-off-color: #E1DFD8 !default; // a little creamy gray
 
+$vk-border-radius: 24px !default;
+$vk-border-large-radius: 24px !default;
+$vk-border-small-radius: 24px !default;
+
 // TODO:
 // 2. track all written (i.e. white)
 // 3. track all hardcorded with regexp #...
@@ -53,6 +57,11 @@ $vk-navbar-color: $vk-text-mild-color !default;
 $vk-navbar-bg-color: $vk-static-bg-color !default;
 $vk-navbar-icon-color: $vk-brand-primary-color !default;
 $vk-navbar-icon-hover-bg-color: $vk-brand-primary-color !default;
+$vk-navbar-icon-active-border-radius: $vk-border-radius !default;
+$vk-navbar-border-radius: $vk-border-radius !default;
+
+$vk-navpills-border-radius: $vk-border-radius !default; 
+$vk-navpills-active-border-radius: 0px !default;
 
 $vk-button-primary-bg-color: $vk-brand-primary-color !default;
 $vk-button-danger-color: lighten($vk-action-stop-color, 35%) !default;
@@ -60,12 +69,17 @@ $vk-button-danger-bg-color: $vk-action-stop-color !default;
 $vk-button-danger-border-color: $vk-button-danger-bg-color !default;
 $vk-button-danger-hover-bg-color: darken($vk-button-danger-bg-color, 10%) !default;
 $vk-button-danger-hover-border-color: $vk-button-danger-hover-bg-color !default;
+$vk-button-border-radius: $vk-border-radius !default;
 
 $vk-dropdown-bg-color: $vk-static-bg-color !default;
+$vk-dropdown-border-radius: $vk-border-radius !default;
 
 $vk-input-color: $vk-text-color !default;
 $vk-input-border-color: $vk-border-color !default;
 $vk-input-border-hover-color: darken($vk-border-color, 20%);
+$vk-input-border-radius: $vk-border-radius !default;
+$vk-input-border-large-radius: $vk-border-large-radius !default;
+$vk-input-border-small-radius: $vk-border-small-radius !default;
 $vk-input-error-color: $vk-brand-primary-color !default;
 $vk-input-error-border-color: lighten($vk-brand-primary-color, 15%) !default;
 $vk-input-success-color: $vk-text-color !default;
@@ -76,6 +90,7 @@ $vk-input-placeholder-color: $vk-muted-color !default;
 $vk-radio-color: $vk-text-color;
 $vk-radio-bg-color: $vk-transparent-color !default;
 $vk-radio-border-color: $vk-border-color !default;
+$vk-radio-border-radius: $vk-border-radius !default;
 $vk-radio-stripe-bg-color: $vk-transparent-color !default;
 $vk-radio-active-bg-color: $vk-static-bg-light-color !default;
 $vk-radio-active-stripe-bg-color: $vk-brand-primary-color !default;
@@ -83,6 +98,7 @@ $vk-radio-active-stripe-bg-color: $vk-brand-primary-color !default;
 $vk-table-color: $vk-text-mild-color !default;
 $vk-table-header-icon-color: $vk-static-light-color !default;
 $vk-table-border-color: $vk-border-color !default;
+$vk-table-border-radius: $vk-border-radius !default;
 $vk-table-button-color: $vk-static-light-color !default;
 $vk-table-stripe-bg-color: $vk-static-bg-mild-color !default;
 $vk-table-total-color: $vk-static-color !default;
@@ -93,19 +109,29 @@ $vk-table-more-icon-color: $vk-brand-primary-color !default;
 $vk-alert-info-color: $vk-text-color !default;
 $vk-alert-info-bg-color: $vk-static-bg-light-color !default;
 $vk-alert-info-border-color: $vk-alert-info-bg-color !default;
-
 $vk-alert-error-color: darken(red, 35%) !default;
 $vk-alert-error-bg-color: lighten(red, 10%) !default;
 $vk-alert-error-border-color: $vk-alert-error-bg-color !default;
+$vk-alert-border-radius: $vk-border-radius !default;
 
 $vk-modal-header-color: $vk-text-mild-color !default;
 $vk-modal-header-bg-color: $vk-static-bg-light-color !default;
 $vk-modal-body-bg-color: $vk-body-bg-color !default;
 $vk-modal-footer-bg-color: $vk-body-bg-color !default;
+$vk-modal-border-radius: $vk-border-radius !default;
+
+$vk-progress-border-radius: $vk-border-radius !default;
 
 $vk-dashboard-color: $vk-static-color !default;
 $vk-dashboard-bg-color: $vk-static-bg-color !default;
+$vk-dashboard-border-radius: $vk-border-radius !default;
 $vk-dashboard-field-bg-color: $vk-static-field-bg-color !default;
+$vk-dashboard-field-border-radius: $vk-border-radius !default;
+$vk-dashboard-inverse-color: $vk-navbar-color !default;
+$vk-dashboard-inverse-border-color: $vk-table-border-color !default;
+$vk-dashboard-inverse-border-radius: $vk-border-radius !default;
+$vk-dashboard-inverse-field-bg-color: $vk-static-bg-color !default;
+$vk-dashboard-inverse-field-border-radius: $vk-border-radius !default;
 
 $vk-preloader-rocket-color: $vk-body-bg-color !default;
 $vk-preloader-window-color: $vk-brand-primary-color !default;
@@ -117,6 +143,8 @@ $vk-console-overlay-color: $vk-contrary-front-color !default;
 $vk-console-overlay-bg-color: $vk-contrary-color !default;
 $vk-console-diode-on-bg-color: $vk-element-on-color !default;
 $vk-console-diode-off-bg-color: $vk-element-off-color !default;
+$vk-console-border-radius: $vk-border-radius !default;
+$vk-console-screen-border-radius: $vk-border-radius !default;
 
 $vk-newsletter-header-color: $vk-brand-primary-color !default;
 $vk-newsletter-result-color: $vk-brand-primary-color !default;
@@ -172,21 +200,22 @@ $btn-info-color: $text-color;
 $btn-default-bg: $vk-static-bg-color;
 $btn-default-color: $brand-secondary;
 
-$modal-inner-padding: 55px !default;
-$modal-content-border-color: $vk-border-color !default;
-$modal-backdrop-bg: lighten($vk-modal-header-bg-color, 3%) !default;
-$modal-backdrop-opacity: .75 !default;
-$modal-header-border-color: $vk-border-color !default;
-$modal-footer-border-color: $modal-header-border-color !default;
-$modal-lg: 550px !default;
-$modal-md: 550px !default;
-$modal-sm: 300px !default;
+$modal-inner-padding: 55px;
+$modal-content-border-color: $vk-border-color;
+$modal-backdrop-bg: lighten($vk-modal-header-bg-color, 3%);
+$modal-backdrop-opacity: .75;
+$modal-header-border-color: $vk-border-color;
+$modal-footer-border-color: $modal-header-border-color;
+$modal-lg: 550px;
+$modal-md: 550px;
+$modal-sm: 300px;
 
 $navbar-margin-top: 0;
 $navbar-default-border: transparent;
 $navbar-default-bg: $vk-static-bg-color;
 $navbar-default-color: $vk-navbar-color;
 
+$navbar-border-radius: $vk-navbar-border-radius;
 $navbar-default-link-color: $navbar-default-color;
 $navbar-default-link-active-bg: $navbar-default-bg;
 $navbar-default-link-active-color: $brand-primary;
@@ -202,3 +231,13 @@ $nav-tabs-border-color: $vk-brand-primary-color;
 $nav-tabs-active-link-hover-border-color: $nav-tabs-border-color;
 
 $progress-bg: $vk-static-bg-color;
+
+$border-radius-base: $vk-border-radius;
+$border-radius-large: $vk-border-large-radius;
+$border-radius-small: $vk-border-small-radius;
+$input-border-radius: $vk-input-border-radius;
+$input-border-radius-large: $vk-input-border-large-radius;
+$input-border-radius-small: $vk-input-border-small-radius;
+$alert-border-radius: $vk-alert-border-radius;
+$progress-border-radius: $vk-progress-border-radius;
+$nav-pills-border-radius: $vk-navpills-border-radius;

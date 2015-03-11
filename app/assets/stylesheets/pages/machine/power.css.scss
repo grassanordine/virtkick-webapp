@@ -5,31 +5,16 @@
       padding: 10px 15px;
     }
   }
-  .stats {
-    margin: 0;
-    border: solid 1px $vk-table-border-color;
-    border-radius: 4px;
-    color: $vk-navbar-color;
 
-    padding: 30px 20px;
+  .stats.dashboard-inverse {
+    margin: 0;
 
     .key {
       min-height: 40px;
     }
 
-    .val {
-      background-color: $vk-static-bg-color;
-      border-radius: 4px;
-      padding: 8px 0px;
-      text-align: center;
-
-      &.bigger {
-        padding: 17px 0px;
-      }
-
+    .value-field {
       &.power-state {
-        background-color: $vk-static-bg-color;
-
         i {
           margin-right: 7px;
           &.fa-play {
@@ -38,7 +23,7 @@
           &.fa-pause {
             color: $vk-action-pause-color;
           }
-          &.fa-repeat {
+          &.fa-repeat { 
             color: $vk-action-restart-color;
           }
           &.fa-stop {
@@ -46,12 +31,6 @@
           }
         }
       }
-    }
-
-    .progress {
-      margin-top: 8px;
-      height: 10px;
-      margin-bottom: 0;
     }
   }
 

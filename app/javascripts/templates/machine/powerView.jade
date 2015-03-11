@@ -1,12 +1,12 @@
 #power
-  .row.stats
+  .row.stats.dashboard-inverse
     .col-sm-3
       .key Memory:
-      .val.bigger
+      .value-field.bigger
         | {{machine.memory}} MB
     .col-sm-3
       .key Processors:
-      .val(ng-class="{bigger: machine.status.stopped}")
+      .value-field(ng-class="{bigger: machine.status.stopped}")
         | {{machine.processors}}
         |  CPU
       .progress
@@ -17,7 +17,7 @@
     .col-sm-3
       .key Storage:
       //- TODO: sum all disks
-      .val {{machine.disks[0].size | bytes}}
+      .value-field {{machine.disks[0].size | bytes}}
       .progress
         .progress-bar(role='progressbar', style="width: {{machine.disks.usage}}%; min-width: 1%")
           span.sr-only
@@ -27,7 +27,7 @@
             | %)
     .col-sm-3
       .key State:
-      .val.power-state.bigger(data-running="{{machine.status.running}}")
+      .value-field.power-state.bigger(data-running="{{machine.status.running}}")
         span
           i(class="icon fa fa-{{machine.status.icon}}")
           span.status 
