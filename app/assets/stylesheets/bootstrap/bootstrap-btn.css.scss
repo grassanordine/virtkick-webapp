@@ -1,5 +1,5 @@
 .btn {
-  border-radius: $vk-button-border-radius !important;
+  border-radius: $vk-button-border-radius;
   @include box-shadow(none !important);
   @include transition(background-color, 0.15s, ease-in, 0s);
   

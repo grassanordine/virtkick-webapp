@@ -8,6 +8,7 @@
       background-color: $vk-static-bg-color;
 
       a {
+        border-radius: $vk-navpills-active-border-radius;
         color: $navbar-default-color;
       }
 
@@ -26,20 +27,24 @@
     @media(min-width: $screen-md-min) {
       
       li {
-        border-radius: $vk-navpills-border-radius;
+        border-radius: $vk-navpills-active-border-radius;
 
         &.active {
           border-radius: $vk-navpills-active-border-radius;
         }
 
-        &.active:first-child {
+        &:first-child {
+          border-top-left-radius: $vk-navpills-border-radius !important;
+          border-bottom-left-radius: $vk-navpills-border-radius !important;
           a {
             border-top-left-radius: $vk-navpills-border-radius !important;
             border-bottom-left-radius: $vk-navpills-border-radius !important;
           }
         }
 
-        &.active:last-child {
+        &:last-child {
+          border-top-right-radius: $vk-navpills-border-radius !important;
+          border-bottom-right-radius: $vk-navpills-border-radius !important;
           a {
             border-top-right-radius: $vk-navpills-border-radius !important;
             border-bottom-right-radius: $vk-navpills-border-radius !important;

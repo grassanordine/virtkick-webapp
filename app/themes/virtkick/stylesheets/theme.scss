@@ -38,9 +38,9 @@ $vk-transparent-color: transparent !default; // transparent
 $vk-element-on-color: #EC4863 !default; // pink (duplicated primary)
 $vk-element-off-color: #E1DFD8 !default; // a little creamy gray
 
-$vk-border-radius: 24px !default;
-$vk-border-large-radius: 24px !default;
-$vk-border-small-radius: 24px !default;
+$vk-border-radius: 4px !default;
+$vk-border-large-radius: 4px !default;
+$vk-border-small-radius: 4px !default;
 
 // TODO:
 // 2. track all written (i.e. white)
@@ -87,11 +87,12 @@ $vk-input-success-border-color: lighten($vk-brand-secondary-color, 15%) !default
 $vk-input-addon-color: $vk-brand-primary-color !default;
 $vk-input-placeholder-color: $vk-muted-color !default;
 
-$vk-radio-color: $vk-text-color;
+$vk-radio-color: $vk-text-color !default;
+$vk-radio-border-color: $vk-border-color !default;
 $vk-radio-bg-color: $vk-transparent-color !default;
 $vk-radio-border-color: $vk-border-color !default;
 $vk-radio-border-radius: $vk-border-radius !default;
-$vk-radio-stripe-bg-color: $vk-transparent-color !default;
+$vk-radio-stripe-bg-color: $vk-border-color !default;
 $vk-radio-active-bg-color: $vk-static-bg-light-color !default;
 $vk-radio-active-stripe-bg-color: $vk-brand-primary-color !default;
 
@@ -127,8 +128,8 @@ $vk-dashboard-bg-color: $vk-static-bg-color !default;
 $vk-dashboard-border-radius: $vk-border-radius !default;
 $vk-dashboard-field-bg-color: $vk-static-field-bg-color !default;
 $vk-dashboard-field-border-radius: $vk-border-radius !default;
-$vk-dashboard-inverse-color: $vk-navbar-color !default;
-$vk-dashboard-inverse-border-color: $vk-table-border-color !default;
+$vk-dashboard-inverse-color: $vk-text-mild-color !default;
+$vk-dashboard-inverse-border-color: $vk-border-color !default;
 $vk-dashboard-inverse-border-radius: $vk-border-radius !default;
 $vk-dashboard-inverse-field-bg-color: $vk-static-bg-color !default;
 $vk-dashboard-inverse-field-border-radius: $vk-border-radius !default;
@@ -155,6 +156,8 @@ $vk-setup-button-color: $vk-muted-color !default;
 $vk-setup-button-bg-color: $vk-transparent-color !default;
 $vk-setup-button-active-color: $vk-brand-primary-color !default;
 $vk-setup-button-border-color: $vk-border-color !default;
+$vk-setup-button-border-radius: $vk-border-radius !default;
+$vk-setup-button-border-stripe-active-radius: $vk-border-radius !default;
 $vk-setup-button-disabled-opacity: 0.4;
 $vk-setup-button-active-border-color: $vk-brand-primary-color !default;
 
@@ -211,7 +214,7 @@ $modal-md: 550px;
 $modal-sm: 300px;
 
 $navbar-margin-top: 0;
-$navbar-default-border: transparent;
+$navbar-default-border: $vk-transparent-color;
 $navbar-default-bg: $vk-static-bg-color;
 $navbar-default-color: $vk-navbar-color;
 

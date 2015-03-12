@@ -7,6 +7,7 @@
 
   .modal-dialog {
     .modal-content {
+      border-radius: $vk-modal-border-radius;
       @include box-shadow(none !important);
 
       .modal-header {

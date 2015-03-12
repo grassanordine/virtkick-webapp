@@ -6,7 +6,6 @@
       .radio-group
         .radio-elem.text-center(ng-repeat='plan in plans')
           label(ng-model='newMachine.planId' btn-radio="{{plan.id}}" ng-disabled='newMachine.creatingMachine')
-            .padding
             .line.strong
               | {{plan.memory | bytes: 'gb'}}
               |  RAM
@@ -18,8 +17,6 @@
               |  CPU
             .line
               | {{plan.price | currency: 'usd'}} / {{plan.period | payPeriod}}
-            .padding
-              .stripe
           .paid(ng-if='plan.paidTo' title='Paid until {{plan.paidTo | date}}')
             img(src='/assets/paid.png' style='width: 100px;')
 
@@ -29,11 +26,8 @@
       .radio-group
         .radio-elem.text-center(ng-repeat="type in imageTypes")
           label(ng-model='newMachine.imageType' btn-radio="type.id" ng-disabled='newMachine.creatingMachine')
-            .padding
             .line
               | {{type.name}}
-            .padding
-              .stripe
 
       .appliances.alert.alert-info.ng-cloak(ng-if='newMachine.imageType == "appliances"')
         p Virtkick will deliver appliances with various Linux distributions. Coming soon!
@@ -44,11 +38,8 @@
         .radio-group
           .radio-elem.text-center(ng-repeat='iso in isos')
             label(ng-model='newMachine.isoId' btn-radio="iso.id" ng-disabled='newMachine.creatingMachine')
-              .padding
               .wrap
                 img(ng-src='/assets/distros/{{iso.code}}.png')
-              .padding
-                .stripe
             .name
               | {{iso.name}}
 

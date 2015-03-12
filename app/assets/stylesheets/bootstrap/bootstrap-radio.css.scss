@@ -13,39 +13,20 @@
     label {
       cursor: pointer;
       box-sizing: border-box;
-      padding: 0em; 
+      padding: 0.7em 0em; 
       border-radius: $vk-radio-border-radius;
       background-color: $vk-radio-bg-color;
       border: solid 1px $vk-input-border-color;
+      border-bottom: solid $vk-radio-border-radius $vk-radio-stripe-bg-color;
       @include box-shadow(none !important);
       @include transition(all, 0.25s, ease-in, 0s);
       
-      .padding {
-        padding-top: 0.7em;
-        height: 1em;
-
-        .stripe {
-          height: 0.3em;
-          background-color: $vk-radio-stripe-bg-color;
-          vertical-align: bottom;
-          @include transition(all, 0.25s, ease-in, 0s);
-          border-bottom-left-radius: $vk-radio-border-radius;
-          border-bottom-right-radius: $vk-radio-border-radius;
-        }
-      }
-
       &:hover, &:active, &.active {
-        .padding .stripe {
-          background-color: $vk-radio-active-stripe-bg-color;
-        }
+        border-bottom: solid $vk-radio-border-radius $vk-radio-active-stripe-bg-color;
       }
 
       &.active {
         background-color: $vk-radio-active-bg-color;
-
-        .padding .stripe {
-          background-color: $vk-radio-active-stripe-bg-color;
-        }
       }
 
       .line {
@@ -59,10 +40,6 @@
         font-weight: bold;
         font-size: 1.0em;
       }
-
-  //167: $btn-info-color:                 #fff !default;
-  //168: $btn-info-bg:                    $brand-info !default;
-  //169: $btn-info-border:                darken($btn-info-bg, 5%) !default;
     }
   }
 }

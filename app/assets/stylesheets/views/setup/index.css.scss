@@ -139,6 +139,7 @@
   }
 
   .btn.chooser {
+    border-radius: $vk-setup-button-border-radius;
     padding: 1.1em;
     line-height: 1.5em;
     width: 4.5em;
@@ -157,7 +158,7 @@
 
     &:hover, &:active, &.active {
       color: $vk-setup-button-active-color;
-      border-bottom: solid 5px $vk-setup-button-active-border-color;
+      border-bottom: solid $vk-setup-button-border-stripe-active-radius $vk-setup-button-active-border-color;
     }
   }
   .private-cloud-form {

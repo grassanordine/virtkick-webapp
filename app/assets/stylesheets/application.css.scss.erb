@@ -258,7 +258,7 @@ h3 {
       position: absolute;
       display: block;
       top: 0;
-      right: 0;
+      right: 15px;
       opacity: 0;
     }
 
@@ -281,7 +281,7 @@ h3 {
         padding-top: 0px;
         padding-bottom: 0px;
         display: block;
-        width: 82%;
+        width: 100%;
         min-height: 48px;
         @include transition(width, 0.2s, ease-in, 0s);
 
@@ -325,14 +325,15 @@ h3 {
       }
 
       .dropdown {
+        z-index: 2;
         position: absolute;
         display: block;
-        width: 18%;
+        width: 50px;
         opacity: 1;
         @include transition(opacity, 0.2s, ease-in, 0s);
 
         .btn {
-          padding: 10px 12px;
+          padding: 11px 12px;
           width: 100%;
         }
       }
