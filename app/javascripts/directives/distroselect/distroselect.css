@@ -16,7 +16,7 @@
   margin-right: 0px;
 }
 
-.distroselect .ui-select-bootstrap .ui-select-match {
+.distroselect .ui-select-bootstrap .ui-select-match button {
   padding: 8px 32px 8px 20px;
   height: auto;
   text-align: center;
