@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   auto_strip_attributes :email
 
   scope :guest, -> {
-    where(guest: true)
+    where(role: 'guest')
   }
 
   scope :to_delete, -> {
@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
 
   def self.create_guest!
     email = "guest_#{SecureRandom.uuid}@alpha.virtkick.io"
-    create_user! email, guest: true
+    create_user! email, role: 'guest'
   end
 
   def self.create_single_user!
@@ -32,8 +32,8 @@ class User < ActiveRecord::Base
     create_user! email
   end
 
-  def self.create_private_user! email, password
-    create_user! email, password: password, validate: true
+  def self.create_private_user! email, password, role = 'kicker'
+    create_user! email, password: password, role: role, validate: true
   end
 
   def machines
@@ -61,11 +61,11 @@ class User < ActiveRecord::Base
   end
 
   private
-  def self.create_user! email, password: nil, guest: false, validate: false
+  def self.create_user! email, password: nil, role: 'kicker', validate: false
     user = User.new \
         email: email,
         password: password,
-        guest: guest
+        role: role
     user.save validate: validate
     user
   end

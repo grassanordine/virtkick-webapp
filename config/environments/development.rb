@@ -9,7 +9,12 @@ Rails.application.configure do
   # delayed jobs always reload classes which breaks hooks
   bin_name = File.basename $0
 
-  config.cache_classes = false
+  if bin_name == 'rake'
+    # without cache_classes rake takes insane amount of CPU cycles
+    config.cache_classes = true
+  else
+    config.cache_classes = false
+  end
 
   config.eager_load = false
   config.consider_all_requests_local = true

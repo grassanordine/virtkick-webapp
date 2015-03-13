@@ -1,7 +1,6 @@
 class SetupController < ApplicationController
   layout 'raw'
 
-
   def index
     return redirect if @@ready
     self.class.check
@@ -25,9 +24,9 @@ class SetupController < ApplicationController
     render action: 'index'
   rescue Wvm::Setup::Error, ModeSetup::Error
     begin
-      self.class.setup_hypervisors
       user = ModeSetup.setup params
       sign_in user if user
+      self.class.setup_hypervisors
       render json: {success: 'All configured - start VirtKicking now! :-)'}
     rescue Wvm::Setup::Error => e
       render json: {error: e.message}, status: 500

@@ -11,6 +11,7 @@
 = object_to_json_constant 'diskPlans', Defaults::DiskSizePlan.all
 = object_to_json_constant 'version', Rails.configuration.version
 = object_to_json_constant 'virtkickMode', Virtkick.mode
+= object_to_json_constant 'userType', current_user.role
 
 - content_for :header do
   = run_render_home_hook

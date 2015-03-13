@@ -7,7 +7,19 @@ class Hypervisor < ActiveRecord::Base
 
   has_many :machines
 
+  def self.find_best_hypervisor plan
+    found = Hypervisor.order('random()').first
+    unless found
+      raise 'No capacity left to create new machines at this time, please come back later! Sorry :-('
+    end
+    found
+  end
+
   def self.bootstrap
+    if Virtkick.mode.vps_provider? and not ENV['VIRTKICK_BOOTSTRAP']
+      return
+    end
+
     Wvm::Hypervisor.all.each do |wvm_hypervisor|
       host, port = wvm_hypervisor[:host].split ':'
 

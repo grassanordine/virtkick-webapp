@@ -8,7 +8,7 @@ class Wvm::Machine < Wvm::Base
   end
 
   def self.status payload
-    response = call :post, "/status", json: payload
+    response = call :post, '/status', json: payload
 
     response[:machines].map do |machine|
       begin
@@ -183,7 +183,6 @@ class Wvm::Machine < Wvm::Base
 
   def self.setup_networks uuid, hypervisor
     networks = Infra::Networks.new
-
     return if hypervisor[:network][:type] == 'bridge'
 
     networks.public = Infra::Network.new \

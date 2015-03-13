@@ -37,7 +37,7 @@ class ModeSetup
   def self.setup_private_cloud extra
     email, password = extra[:email], extra[:password]
 
-    user = User.create_private_user! email, password
+    user = User.create_private_user! email, password, type: 'admin'
     Wvm::Setup.import_from_libvirt user
     Mode.set 'private_cloud'
     user
