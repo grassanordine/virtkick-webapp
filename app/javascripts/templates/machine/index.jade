@@ -32,7 +32,7 @@
         p.value-field
           | free
 
-  span.ng-cloak(ng-if='machines.length')
+  div.ng-cloak(ng-if='machines.length')
     table.table.table-striped
       thead
         tr
@@ -49,9 +49,9 @@
             | {{machine.memory | bytes: 'mb'}}
           td.storage
             | {{machine.disks | map: 'size' | sum | bytes}}
-  span.ng-cloak(ng-if='!machines.length && !state.loading')
+  div.ng-cloak(ng-if='!machines.length && !state.loading')
     p You don't have a machine yet. Kick things off and <a href="/machines/new">create one!</a>
-  span.ng-cloak(ng-if='state.loading')
+  div.ng-cloak(ng-if='state.loading')
     p
       ajaxloader(size=20 style='margin-right: 5px')
       | Wait a sec while we load all of your machines ...
