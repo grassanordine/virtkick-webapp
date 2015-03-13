@@ -8,7 +8,7 @@ class MachineCreateJob < TrackableJob
     job_initalize new_machine_id
 
     hypervisor = nil
-    step :find_hypervisor do
+    step do
       hypervisor = Hypervisor.find_best_hypervisor @new_machine.plan
     end
 
