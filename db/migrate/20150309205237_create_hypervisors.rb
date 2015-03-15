@@ -9,7 +9,7 @@ class CreateHypervisors < ActiveRecord::Migration
       t.text :storages # json
       t.text :iso # json
       t.text :disk_types #json
-      t.boolean :setup
+      t.boolean :is_setup
       t.integer :wvm_id
 
       t.index :name, unique: true

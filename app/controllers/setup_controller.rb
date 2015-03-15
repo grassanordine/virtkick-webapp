@@ -15,7 +15,7 @@ class SetupController < ApplicationController
   def self.setup_hypervisors
     Hypervisor.bootstrap
     Hypervisor.all.each do |hypervisor|
-      Wvm::Setup.setup hypervisor
+      hypervisor.setup import_machines: true
     end
   end
 

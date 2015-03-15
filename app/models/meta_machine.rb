@@ -8,7 +8,7 @@ class MetaMachine < ActiveRecord::Base
 
   after_destroy do
     force_stop rescue nil
-    machine.delete libvirt_hypervisor_id
+    machine.delete
   end
 
   def machine

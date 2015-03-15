@@ -24,7 +24,6 @@ class ModeSetup
   private
   def self.setup_localhost
     user = User.create_single_user!
-    Wvm::Setup.import_from_libvirt user
     Mode.set 'localhost'
     user
   end
@@ -37,8 +36,7 @@ class ModeSetup
   def self.setup_private_cloud extra
     email, password = extra[:email], extra[:password]
 
-    user = User.create_private_user! email, password, type: 'admin'
-    Wvm::Setup.import_from_libvirt user
+    user = User.create_private_user! email, password, role: 'admin'
     Mode.set 'private_cloud'
     user
   end

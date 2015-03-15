@@ -1,7 +1,11 @@
 class LibvirtImporter
-  def import_all user
-    machines_to_import.each do |machine|
-      import_machine machine, user # TODO: multiple hypervisors
+  def import_all hypervisor
+
+    admin_user = User.find_by role: 'admin'
+
+    machines_to_import(hypervisor).each do |machine|
+      user = User.find_by(email: machine.description)
+      import_machine machine, user || admin_user
     end
   end
 
@@ -12,13 +16,11 @@ class LibvirtImporter
   end
 
   private
-  def machines_to_import
+  def machines_to_import hypervisor
     local_machines = MetaMachine.all
 
-    remote_machines = []
-    Hypervisor.all.each do |hypervisor|
-      remote_machines = remote_machines + Infra::Machine.all(hypervisor)
-    end
+    remote_machines = Infra::Machine.all(hypervisor)
+
     local_ids = local_machines.map &:libvirt_machine_name # TODO: handle multiple hypervisors
     remote_machines.reject { |e| local_ids.include? e.hostname }
   end

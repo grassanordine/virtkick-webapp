@@ -12,8 +12,10 @@ class MachineCreateJob < TrackableJob
       hypervisor = Hypervisor.find_best_hypervisor @new_machine.plan
     end
 
+    user = User.find @new_machine.user_id
+
     step :create_machine do
-      Infra::Machine.create @new_machine, hypervisor
+      Infra::Machine.create @new_machine, hypervisor, user.email
       # TODO: extract disk create to a new step
     end
 

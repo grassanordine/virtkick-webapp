@@ -30,7 +30,17 @@ class Hypervisor < ActiveRecord::Base
           network: wvm_hypervisor[:network],
           storages: wvm_hypervisor[:storages],
           iso: wvm_hypervisor[:iso],
-          setup: false
+          is_setup: false
     end
+  end
+
+  def setup import_machines: false
+    Wvm::Setup.setup self
+
+    if import_machines
+      importer = LibvirtImporter.new
+      importer.import_all self
+    end
+    update is_setup: true
   end
 end

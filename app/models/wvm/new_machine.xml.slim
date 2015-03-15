@@ -1,6 +1,8 @@
 domain type='kvm'
   name = machine.hostname
   uuid = machine.uuid
+  / TODO: what if user changes email
+  description = description
   / TODO: auto-generate, then fetch the value
   memory unit='bytes' = machine.memory.gigabytes.to_i
   currentMemory unit='bytes' = machine.memory.gigabytes.to_i
@@ -56,7 +58,8 @@ domain type='kvm'
       target port='0' type='serial'
     input bus='usb' type='tablet'
     input bus='ps2' type='mouse'
-    graphics type='vnc' listen=machine.vnc_listen_ip autoport='yes' passwd=machine.vnc_password
+    - vnc_ip=(machine.vnc_listen_ip == 'localhost' ? '127.0.0.1' : machine.vnc_listen_ip)
+    graphics type='vnc' listen=vnc_ip autoport='yes' passwd=machine.vnc_password
     video
       model heads='1' type='cirrus' vram='9216'
       address bus='0x00' domain='0x0000' function='0x0' slot='0x02' type='pci'

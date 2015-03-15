@@ -12,6 +12,7 @@ class Infra::Machine < Infra::Base
   attr_accessor :iso_dir, :iso_distro_id, :iso_image_id
   attr_accessor :hypervisor_id
   attr_accessor :mac_address
+  attr_accessor :description
 
   def self.all hypervisor
     Wvm::Machine.all hypervisor
@@ -21,8 +22,8 @@ class Infra::Machine < Infra::Base
     Wvm::Machine.find hostname, hypervisor
   end
 
-  def self.create new_machine, hypervisor
-    Wvm::Machine.create new_machine, hypervisor
+  def self.create new_machine, hypervisor, description = ''
+    Wvm::Machine.create new_machine, hypervisor, description
   end
 
   def id

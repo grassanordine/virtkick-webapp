@@ -29,10 +29,10 @@ class User < ActiveRecord::Base
     email = 'user@alpha.virtkick.io'
     user = User.where(email: email).first
     return user if user
-    create_user! email
+    create_user! email, role: 'admin'
   end
 
-  def self.create_private_user! email, password, role = 'kicker'
+  def self.create_private_user! email, password, role: 'kicker'
     create_user! email, password: password, role: role, validate: true
   end
 

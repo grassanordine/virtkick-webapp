@@ -36,17 +36,12 @@ class Wvm::Setup < Wvm::Base
     end
   end
 
-  def self.import_from_libvirt user
-    importer = LibvirtImporter.new
-    importer.import_all user
-  end
-
   private
   def self.handle_exceptions
     yield
   rescue Timeout::Error
     raise Error, \
-        'Could not connect to localhost hypervisor. Is OpenSSH server running? Is libvirtd running? ' +
+        'Could not connect to the hypervisor. Is OpenSSH server running? Is libvirtd running? ' +
         'Can "virtkick" user execute virsh?'
   end
 

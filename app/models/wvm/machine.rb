@@ -40,7 +40,8 @@ class Wvm::Machine < Wvm::Base
       mac_address: response[:mac_address],
       disks: Wvm::Disk.array_of(response[:disks], hypervisor),
       iso_dir: hypervisor[:iso][:path],
-      hypervisor_id: hypervisor[:id]
+      hypervisor_id: hypervisor[:id],
+      description: response[:description]
     }
 
     if response[:media] and not response[:media].empty?
@@ -56,13 +57,14 @@ class Wvm::Machine < Wvm::Base
     Infra::Machine.new params
   end
 
-  def self.create new_machine, hypervisor
-    machine = build_new_machine new_machine, hypervisor
+  def self.create new_machine, hypervisor, description = ''
+    machine = build_new_machine new_machine, hypervisor, description
 
     template = File.dirname(__FILE__) + '/new_machine.xml.slim'
     xml = Slim::Template.new(template, format: :xhtml).render Object.new, {
         machine: machine,
-        hypervisor: hypervisor
+        hypervisor: hypervisor,
+        description: description
     }
 
     call :post, "/#{hypervisor[:wvm_id]}/create", create_xml: '',
@@ -153,7 +155,8 @@ class Wvm::Machine < Wvm::Base
           memory: machine[:memory],
           disks: Wvm::Disk.array_of(machine[:storage], hypervisor),
           status: determine_status(machine),
-          hypervisor_id: hypervisor[:wvm_id]
+          hypervisor_id: hypervisor[:wvm_id],
+          description: machine[:description]
     end
     machines.sort_by &:hostname
   end
@@ -162,12 +165,13 @@ class Wvm::Machine < Wvm::Base
     ('%02x'%((rand 64)*4|2)) + (0..4).inject(''){|s,x|s+':%02x'%(rand 256)}
   end
 
-  def self.build_new_machine new_machine, hypervisor
+  def self.build_new_machine new_machine, hypervisor, description
     uuid = SecureRandom.uuid
     networks = setup_networks uuid, hypervisor
 
     Infra::Machine.new \
         uuid: uuid,
+        description: description,
         hostname: new_machine.hostname,
         memory: new_machine.plan.memory,
         processors: new_machine.plan.cpu,
