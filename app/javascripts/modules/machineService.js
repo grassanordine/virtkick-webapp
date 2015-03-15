@@ -1,6 +1,6 @@
 define(function(require) {
-  var moduleUri = require('module').uri;
-  var mod = angular.module(moduleUri, [require('modules/handleProgress')]);
+  var moduleId = require('module').id;
+  var mod = angular.module(moduleId, [require('modules/handleProgress')]);
 
   var humps = require('humps');
 
@@ -119,5 +119,5 @@ define(function(require) {
       }
     }
   });
-  return moduleUri;
+  return moduleId;
 });

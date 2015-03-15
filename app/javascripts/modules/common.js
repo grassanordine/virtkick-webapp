@@ -23,12 +23,6 @@ define(function(require) {
     require('modules/connectionError')
   ];
 
-  var billingModule = 'modules/billing';
-  if(require.defined('modules/billing')) {
-    var str = require(billingModule);
-    deps.push(str);
-  }
-
 
   var mod = angular.module(module.id, deps);
   require('csrfSetup')(mod);
@@ -37,6 +31,5 @@ define(function(require) {
     $urlMatcherFactoryProvider.caseInsensitive(true);
     $urlMatcherFactoryProvider.strictMode(false);
   });
-
   return module.id;
 });

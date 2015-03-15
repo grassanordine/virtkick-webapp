@@ -1,5 +1,5 @@
 define(function(require) {
-  var module = require('module');
+  var moduleId = require('module').id;
   var angular = require('angular');
   var css = require('css!./ajaxloader.css');
 
@@ -11,7 +11,7 @@ define(function(require) {
     $scope.size = 40;
   }
 
-  angular.module(module.uri, []).directive('ajaxloader', function() {
+  angular.module(moduleId, []).directive('ajaxloader', function() {
     return {
       replace: true,
       link: link,
@@ -22,5 +22,5 @@ define(function(require) {
       template: require('jade!./ajaxloader')()
     }
   });
-  return module.uri;
+  return moduleId;
 });

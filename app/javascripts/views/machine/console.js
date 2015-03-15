@@ -1,5 +1,5 @@
 define(function(require) {
-  var module = require('module');
+  var moduleId = require('module').id;
   var angular = require('angular');
   var $ = require('jquery');
   var RFB = require('novnc/rfb');
@@ -132,7 +132,7 @@ define(function(require) {
     connect();
   }
 
-  angular.module(module.uri, [require('directives/preloader/preloader')]).directive('console', function() {
+  angular.module(moduleId, [require('directives/preloader/preloader')]).directive('console', function() {
     return {
       replace: true,
       restrict: 'E',
@@ -146,6 +146,6 @@ define(function(require) {
       link: link
     }
   });
-  return module.uri;
+  return moduleId
 
 });

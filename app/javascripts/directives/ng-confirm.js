@@ -1,11 +1,11 @@
 define(function(require) {
-  var module = require('module');
+  var moduleId = require('module').id;
   var angular = require('angular');
 
 
   require('ui-bootstrap');
 
-  angular.module(module.uri, ['ui.bootstrap'])
+  angular.module(moduleId, ['ui.bootstrap'])
   .directive('confirm', function($modal) {
     return {
       restrict: 'A',
@@ -45,5 +45,5 @@ define(function(require) {
       }
     };
   });
-  return module.uri;
+  return moduleId;
 });

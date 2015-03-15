@@ -33,7 +33,11 @@ module.exports = function(grunt) {
     }
   });
 
-//  console.log(JSON.stringify(options, null, 2));
+  if(grunt.option("debug")) {
+    options.optimize = "none";
+  }
+
+  //console.log(JSON.stringify(options, null, 2));
   var files = [
     {
       cwd: './app/javascripts',
@@ -75,8 +79,7 @@ module.exports = function(grunt) {
     },
     requirejs: {
       options: {
-        logLevel: 1,
-        optimize: grunt.option("debug") ? "none" : "uglify"
+        logLevel: 1
       },
       std: {
         options: options
@@ -87,7 +90,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks("grunt-shell-spawn");
   grunt.loadNpmTasks("grunt-contrib-watch");
-  grunt.loadNpmTasks("grunt-contrib-requirejs");
+  grunt.loadNpmTasks("grunt-requirejs");
   grunt.loadNpmTasks("grunt-contrib-copy");
   grunt.registerTask('build', ['copy:app', 'requirejs:std']);
   grunt.registerTask('run', ['shell:startRailsServer', 'watch:rubies']);

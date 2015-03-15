@@ -1,4 +1,4 @@
-shim: 
+shim:
   jquery:
     exports: 'jQuery'
   jquery_ujs: ['jquery']
@@ -9,6 +9,7 @@ shim:
   novnc/rfb:
     deps: ["novnc/util","novnc/webutil", "novnc/base64", "novnc/websock", "novnc/des", "novnc/keysymdef", "novnc/keyboard", "novnc/input", "novnc/display", "novnc/jsunzip"]
     exports: 'RFB'
+almond: true
 modules:
   - name: 'application'
     include: ['application', 'views/machine/index', 'views/machine/show', 'views/machine/new']

@@ -5,8 +5,8 @@ define(function(require) {
   var angular = require('angular');
   require('angular-route');
 
-  var moduleUri = require('module').uri;
-  var app = angular.module(moduleUri,
+  var moduleId = require('module').id;
+  var app = angular.module(moduleId,
     [
       require('modules/handleProgress'),
       require('modules/machineService'),
@@ -315,7 +315,7 @@ define(function(require) {
     });
   });
 
-  return moduleUri;
+  return moduleId;
 
 });
 

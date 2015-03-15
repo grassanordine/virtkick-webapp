@@ -2,9 +2,9 @@ define(function(require) {
   require('appcommon');
 
   var angular = require('angular');
-  var moduleUri = require('module').uri;
+  var moduleId = require('module').id;
 
-  var app = angular.module(moduleUri, [
+  var app = angular.module(moduleId, [
     require('modules/common'),
     require('directives/preloader/preloader'),
     require('directives/long-run-button/directive')
@@ -97,5 +97,5 @@ define(function(require) {
       });
     };
   });
-  return moduleUri;
+  return moduleId;
 });

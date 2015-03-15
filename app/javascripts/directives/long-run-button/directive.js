@@ -1,5 +1,5 @@
 define(function(require) {
-  var module = require('module');
+  var moduleId = require('module').id;
   var angular = require('angular');
   require('css!./style.css');
   require('ui-bootstrap');
@@ -94,7 +94,7 @@ define(function(require) {
     };
   }
 
-  angular.module(module.uri, ['ui.bootstrap', require('directives/preloader/preloader')])
+  angular.module(moduleId, ['ui.bootstrap', require('directives/preloader/preloader')])
       .directive('longRunButton', function() {
         return {
           replace: true,
@@ -113,5 +113,5 @@ define(function(require) {
           link: link
         };
       });
-  return module.uri;
+  return moduleId;
 });

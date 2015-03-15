@@ -1,5 +1,5 @@
 define(function(require) {
-  var module = require('module');
+  var moduleId = require('module').id;
   var angular = require('angular');
   var css = require('css!./distroselect.css');
 
@@ -30,7 +30,7 @@ define(function(require) {
     scope.width = attrs.width || 'auto';
   }
 
-  angular.module(module.uri, ['ngSanitize', 'ui.select'])
+  angular.module(moduleId, ['ngSanitize', 'ui.select'])
   .directive('distroselect', function() {
     return {
       replace: true,
@@ -44,5 +44,5 @@ define(function(require) {
       link: link
     };
   });
-  return module.uri;
+  return moduleId;
 });

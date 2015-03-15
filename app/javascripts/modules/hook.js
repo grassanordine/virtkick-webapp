@@ -1,8 +1,8 @@
 define(function(require) {
   var angular = require('angular');
-  var module = require('module');
+  var moduleId = require('module').id;
 
-  angular.module(module.uri, []).factory('$hook', function($injector, $q) {
+  angular.module(moduleId, []).factory('$hook', function($injector, $q) {
 
     var hooks = {};
     var hookFunction = function(name) {
@@ -30,5 +30,5 @@ define(function(require) {
     return hookFunction;
   });
 
-  return module.uri;
+  return moduleId;
 });
