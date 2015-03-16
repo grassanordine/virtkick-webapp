@@ -18,13 +18,13 @@
   sha512: dedd5d17723d34257e9b5ca3f584da12e487946e0adb406435942cc95326fe9c5ddcaae0310ae5be9e00f959abf06ed31f8857035022c48eaaf21dbd049c65e5
 - id: 20
   iso_distro_id: 20
-  file: debian-7.7.0-amd64-netinst.iso
+  file: debian-7.8.0-amd64-netinst.iso
   bit: 64
   short_name: wheezy
   long_name: Debian wheezy
   mirrors:
-  - http://cdimage.debian.org/debian-cd/7.7.0/amd64/iso-cd/debian-7.7.0-amd64-netinst.iso
-  sha512: 5cb6e4fea55fbb5173f90c3a545b843c6c193e29c3aa32b3306c9bbdfb1ad6a6a36ae8be50e91af9d03d5f21c472bd05d04d3508172e0b519e76714333c7c74b
+  - http://cdimage.debian.org/debian-cd/7.8.0/amd64/bt-cd/debian-7.8.0-amd64-netinst.iso.torrent
+  sha512: 9792020579824057723446a92ab97d50fdb7af15d265ff4be9081a963e36b3e3e6f44127766219320bc863c6a7ec378388a9d6faa7b51c3f74b259dc9049e071
 - id: 21
   iso_distro_id: 20
   file: debian-testing-amd64-netinst.iso
@@ -36,13 +36,13 @@
   # no sha512, the URL points to the newest release
 - id: 30
   iso_distro_id: 30
-  file: CentOS-7.0-1406-x86_64-NetInstall.iso
+  file: CentOS-7.0-1406-x86_64-Minimal.iso
   bit: 64
   short_name: 7.0
   long_name: CentOS 7.0
   mirrors:
-  - http://mirror.anl.gov/pub/centos/7.0.1406/isos/x86_64/CentOS-7.0-1406-x86_64-NetInstall.iso
-  sha512: dd7805512af8e47afa533c1a7b38662c99ee92520e9dd2e576c011431725d17a4630158590896e3e5b7c18375db214060e3b7ccc623cf6f74263e104c3a16b75
+  - http://mirrors.centarra.com/centos/7.0.1406/isos/x86_64/CentOS-7.0-1406-x86_64-Minimal.iso
+  sha512: a0b10d3eef00d71af8df5f9f4872864d32c4e0d3b20bf3e3e853a3d3a908cf679cfc899e5d604b49dc1e57361d304360b93e5b4c6d05c02d1b8368c71d126be4
 - id: 40
   iso_distro_id: 40
   file: Fedora-20-x86_64-netinst.iso
@@ -91,4 +91,4 @@
   mirrors:
   - http://ftp.freebsd.org/pub/FreeBSD/releases/amd64/amd64/ISO-IMAGES/10.1/FreeBSD-10.1-RELEASE-amd64-disc1.iso
   - http://ftp.icm.edu.pl/packages/FreeBSD/releases/ISO-IMAGES/10.1/FreeBSD-10.1-RELEASE-amd64-disc1.iso
-  sha512: 0a4962911741311ccc8e001e4800e9319d16d966f6f5ac15fad4ff789ff969a8b368f37ebbcc824642413fe352fac317ae4fde69ca9918e174027fd7ba066ce9
+  sha512: 070b9bade485617219a4a89830135f18aee29635abe3a500ae6d9dd374964e36096192bfc1e0f183e6043d076b6ce84945def8ac486a3e08d052406b99ef0e67
