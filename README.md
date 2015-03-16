@@ -10,12 +10,6 @@ Managing virtual machines or Docker containers has never been easier.
 
 That's the VirtKick Web Application. It provides a user interface and delegates virtualization-related tasks to the backend.
 
-<p align="center">
-  <a href="https://www.indiegogo.com/projects/virtkick-take-cloud-back">
-    <img src="https://raw.github.com/virtkick/virtkick/master/indiegogo.png" />
-  </a>
-</p>
-
 ## Issues
 
 Report bugs and feature requests in [virtkick](https://github.com/virtkick/virtkick) meta-project.
