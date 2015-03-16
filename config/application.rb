@@ -35,10 +35,15 @@ module VirtkickWebapp
     puts "App configured for version #{version}"
     config.version = config.assets.version = version + '-' + config.theme
 
-    %w(fonts images stylesheets).each do |dir|
-      config.assets.paths << Rails.root.join('app', 'themes', config.theme, dir)
-    end
 
+    %w(fonts images stylesheets).each do |dir|
+      if config.theme == 'virtkick'
+        config.assets.paths << Rails.root.join('app', 'default-theme', dir)
+      else
+        config.assets.paths << Rails.root.join('app', 'themes', config.theme, dir)
+      end
+
+    end
 
     config.assets.precompile += %w(.svg .eot .woff .ttf)
     config.stylesheets_dir = '/css'
