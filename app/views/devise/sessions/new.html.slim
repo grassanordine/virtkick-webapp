@@ -1,7 +1,7 @@
 - content_for :scripts
   = requirejs_include_tag 'signin'
 
-#page-login.page-devise(ng-controller='SignInCtrl')
+#page-login.page-credentials(ng-controller='SignInCtrl')
   .container-fluid.wrapper-container.logo-container
     .row
       .col-md-12.logo
@@ -34,10 +34,8 @@
 
           - if devise_mapping.rememberable?
             .left
-
-              .checkbox(style='line-height: 40px; padding-left: 5px;')
-                div(style='display: inline-block; width: 40px; height: 24px;')
-                  checkbox large=1 ng-model='remember_me'
+              .checkbox
+                checkbox ng-model='remember_me'
                 input.hide type='checkbox' name='user[remember_me]' ng-model='remember_me'
                 | Remember me
             .right.forgot
