@@ -53,6 +53,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def render_action_in_other_controller controller, action, params
+    c = controller.new
+    c.params = params
+    c.dispatch action, request
+    c.process_action(action)
+    render text: c.response.body
+  end
+
   def render_progress progress_id, custom_data = nil
     raise 'Not an ID. Make sure Job returns a Numeric - or use TrackableJob.' unless progress_id.is_a? Numeric
     render json: {progress_id: progress_id, data: custom_data}

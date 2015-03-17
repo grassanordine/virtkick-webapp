@@ -6,18 +6,18 @@ define(function(require) {
 
     var hooks = {};
     var hookFunction = function(name) {
+      var args = Array.prototype.slice.call(arguments);
+      args.shift();
       return $q(function(resolve, reject) {
         var value = null;
         if(hooks[name]) {
-          var args = Array.prototype.slice.call(arguments);
-          args.shift();
           try {
+            var resolved = args[0];
             value = $injector.invoke(hooks[name],
-                null, {
-                  args: args
-                }
+                null, resolved
             );
           } catch(err) {
+            console.error('Unable to run hook', name, err.stack);
             return reject(err);
           }
         }

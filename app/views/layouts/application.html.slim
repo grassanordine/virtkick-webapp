@@ -12,65 +12,8 @@ html
     = csrf_meta_tags
     = yield :header
   body(ng-app=1 ng-strict-di)
-    .container.main(ng-controller="AppCtrl")
-      .row.header
-        .menu.col-md-3.hidden-xs.hidden-sm
-          = link_to '/' do
-            = image_tag 'logo/logo-64.png'
-
-        .header.col-md-6
-          div.ng-cloak ng-if='app.header'
-            h1
-              span ng-if='app.header.icon' class="oi oi-{{app.header.icon}}"
-              | {{app.header.title}}
-        .action.col-md-3
-          = yield :action
-      .row
-        .col-md-3.side-menu-wrapper ng-class="{collapsed: app.menuCollapse}"
-          nav.navbar.navbar-default.side-menu role="navigation"
-            .navbar-header.hidden-md.hidden-lg
-              button.navbar-toggle data-target="#navbar-collapsable" data-toggle="collapse" type="button"
-                span.sr-only Toggle navigation
-                span.icon-bar
-                span.icon-bar
-                span.icon-bar
-              a.navbar-brand href='/'
-                = image_tag 'logo/logo-48.png', class: 'pix'
-            #navbar-collapsable.collapse.navbar-collapse
-              ul.nav.navbar-nav
-                - if user_signed_in?
-                  li: a ui-sref="machines.index" ui-sref-active='active'
-                    span.oi.oi-monitor
-                    | Machines
-                  - @navbar_links.sort.each do |link|
-                    li: a ui-sref=link.state ui-sref-active='active'
-                      span.oi(class="#{link.icon_class}")
-                      | #{link.title}
-                  - if Virtkick.mode.private_cloud? or Virtkick.mode.vps_provider?
-                    li: a ui-sref='logout' ui-sref-active='active'
-                      span.fa.fa-sign-out
-                      | Sign out
-                - else
-                  = navbar_item new_user_session_path do
-                    span.fa.fa-sign-in
-                    | Sign in
-                - if Virtkick.mode.demo?
-                  = navbar_item 'https://www.virtkick.io', class: 'home' do
-                    span.fa.fa-rocket
-                    | VirtKick.io
-          .dropdown
-            button.btn.btn-primary
-              span.caret
-              
-          /.desktop-newsletter.hidden-xs.hidden-sm.text-center
-          /  = render partial: 'layouts/newsletter'
-        .col-md-9(style='position: relative;')
-          /- if notice
-          /  .alert.alert-info = notice
-          /- if alert
-          /  .alert.alert-warning = alert
-          = yield
-
+    .container.main(ng-controller="AppCtrl" ui-view)
+      = yield
 
     = render partial: 'layouts/doorbell'
     = yield :scripts

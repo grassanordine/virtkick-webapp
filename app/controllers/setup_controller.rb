@@ -2,7 +2,9 @@ class SetupController < ApplicationController
   layout 'raw'
 
   def index
+    puts "DD"
     return redirect if @@ready
+    puts "EE"
     self.class.check
     redirect
   rescue Wvm::Setup::Error
@@ -46,7 +48,7 @@ class SetupController < ApplicationController
 
   def redirect
     @@ready = true
-    redirect_to guests_path
     CountDeploymentJob.track CountDeploymentJob::SETUP_SUCCESS
+    render_action_in_other_controller GuestsController, :index, params
   end
 end

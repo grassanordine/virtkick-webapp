@@ -40,7 +40,7 @@ define(function(require) {
   app.config(function($stateProvider) {
 
     $stateProvider
-        .state('machines.show', {
+        .state('user.machines.show', {
           url: '/{machineId:[0-9]{1,8}}',
           resolve: {
             initialMachineData: function($stateParams, machineService) {
@@ -50,45 +50,33 @@ define(function(require) {
               return machineService.get($stateParams.machineId);
             }
           },
-          template: require('jade!templates/machine/show'),
+          template: require('jade!./show'),
           controller: 'ShowMachineCtrl'
         })
-        .state('machines.show.power', {
+        .state('user.machines.show.power', {
           url: '',
-          views: {
-            'tab@machines.show': {
-              template: require('jade!templates/machine/powerView'),
-              controller: 'PowerCtrl'
-            }
-          }
+          template: require('jade!./powerView'),
+          controller: 'PowerCtrl'
         })
-        .state('machines.show.console', {
+        .state('user.machines.show.console', {
           url: '/console',
           sticky: true,
           views: {
-            'console@machines.show': {
-              template: require('jade!templates/machine/consoleView'),
+            'console@user.machines.show': {
+              template: require('jade!./consoleView'),
               controller: 'ConsoleCtrl'
             }
           }
         })
-        .state('machines.show.storage', {
+        .state('user.machines.show.storage', {
           url: '/storage',
-          views: {
-            'tab@machines.show': {
-              template: require('jade!templates/machine/storageView'),
-              controller: 'StorageCtrl'
-            }
-          }
+          template: require('jade!./storageView'),
+          controller: 'StorageCtrl'
         })
-        .state('machines.show.settings', {
+        .state('user.machines.show.settings', {
           url: '/settings',
-          views: {
-            'tab@machines.show': {
-              template: require('jade!templates/machine/settingsView'),
-              controller: 'SettingsCtrl'
-            }
-          }
+          template: require('jade!./settingsView'),
+          controller: 'SettingsCtrl'
         });
   });
 
@@ -137,11 +125,11 @@ define(function(require) {
       });
     });
 
-    $scope.$on('$stateChangeSuccess', function(state, toState, toParams, fromState, fromParams) {
-      if(toState.name == 'machines.show') {
-        $state.go('machines.show.power');
+    $scope.$on('$stateChangeSuccess', function(state, toState) {
+      if(toState.name == 'user.machines.show') {
+        $state.go('user.machines.show.power');
       }
-      if(toState.name == 'machines.show.console') {
+      if(toState.name == 'user.machines.show.console') {
         $scope.app.menuCollapse = true;
       } else {
         $scope.app.menuCollapse = false;

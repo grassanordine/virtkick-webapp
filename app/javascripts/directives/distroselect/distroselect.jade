@@ -1,7 +1,7 @@
 div.distroselect
-  ui-select(ng-model="machine.selectedIso", theme="bootstrap", style="width: {{width}};" on-select="changeIso($item.id)")
+  ui-select(ng-model="machine.selectedIso" theme="bootstrap", style="width: {{width}};" on-select="changeIso($item.id)")
     ui-select-match(placeholder="None selected")
-      img.chosen-distro(ng-if="!state.mountingIso", ng-src="/assets/distros/{{idToCode[$select.selected.isoDistroId]}}.png")
+      img.chosen-distro(ng-if="!state.mountingIso" ng-src="/assets/distros/{{idToCode[$select.selected.isoDistroId]}}.png" versioned)
       .ajaxloader-wrapper(ng-if="state.mountingIso")
         ajaxloader(size=14)
       span.chosen-distro-name

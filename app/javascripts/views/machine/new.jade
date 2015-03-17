@@ -39,7 +39,7 @@
           .radio-elem.text-center(ng-repeat='iso in isos')
             label(ng-model='newMachine.isoId' btn-radio="iso.id" ng-disabled='newMachine.creatingMachine')
               .wrap
-                img(ng-src='/assets/distros/{{iso.code}}.png')
+                img(ng-src='/assets/distros/{{iso.code}}.png' versioned)
             .name
               | {{iso.name}}
 
@@ -63,5 +63,5 @@
                 | Hostname is invalid.
     div.alert.alert-danger(ng-if='newMachine.error')
       | {{newMachine.error}}
-    long-run-button.btn-primary.btn-lg.create(ng-disabled='form.$invalid' run='createMachine()' on-finish-animation='gotoMachine()')
-      | Create a Machine
+    include createMachineButton.jade
+

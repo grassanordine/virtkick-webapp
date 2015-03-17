@@ -14,21 +14,19 @@ define(function(require) {
 
     var app = angular.module('app',
         [
-          require('views/machine/index'),
-          require('views/machine/show'),
-          require('views/machine/new')
+          require('views/user')
         ].concat(moduleAngularDeps)
     );
 
     app.config(function($urlMatcherFactoryProvider, $locationProvider, $stateProvider, $urlRouterProvider) {
       $locationProvider.html5Mode(true);
 
-      $urlRouterProvider.otherwise("/machines");
+      $urlRouterProvider.otherwise("/");
 
       $stateProvider
           .state('logout', {
             url: '^/users/sign_out',
-            template: require('jade!templates/logout'),
+            template: require('jade!views/logout'),
             controller: function($timeout, $window, $scope) {
               $scope.app.header = {
                 title: 'Signing out',
@@ -42,12 +40,9 @@ define(function(require) {
               });
             }
           });
-
-
     });
 
     app.controller('AppCtrl', function($scope, $state, $rootScope) {
-
       $scope.$state = $state;
 
       $scope.primaryState = '';
@@ -55,7 +50,6 @@ define(function(require) {
       $rootScope.$on('$stateChangeStart',
           function(event, toState, toParams, fromState, fromParams) {
             $scope.primaryState = toState.name.split('.')[0];
-
           });
 
       $scope.app = {

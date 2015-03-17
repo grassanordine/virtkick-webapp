@@ -142,7 +142,7 @@ define(function(require) {
         control: '='
       },
       controller: controller,
-      template: require('jade!templates/machine/console'),
+      template: require('jade!./console'),
       link: link
     }
   });

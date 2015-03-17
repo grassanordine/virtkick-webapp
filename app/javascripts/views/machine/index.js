@@ -12,14 +12,14 @@ define(function(require) {
 
   app.config(function($stateProvider) {
     $stateProvider
-        .state('machines', {
+        .state('user.machines', {
           url: '/machines',
           abstract: true,
           template: '<div ui-view></div>'
         })
-        .state('machines.index', {
+        .state('user.machines.index', {
           url: '',
-          template: require('jade!templates/machine/index'),
+          template: require('jade!./index'),
           controller: 'MachineIndex'
         });
   });
@@ -45,12 +45,15 @@ define(function(require) {
       loading: true
     };
 
-    machineService.index().then(function(data) {
-      if(abortRequest) return;
+    $timeout(function() {
+      machineService.index().then(function(data) {
+        if(abortRequest) return;
 
-      angular.extend($scope, data);
-      $scope.state.loading = false;
-    });
+        angular.extend($scope, data);
+        $scope.state.loading = false;
+      });
+    }, 0);
+
 
   });
 

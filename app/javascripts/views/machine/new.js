@@ -12,9 +12,9 @@ define(function(require) {
 
 
   app.config(function($stateProvider) {
-    $stateProvider .state('machines.new', {
+    $stateProvider .state('user.machines.new', {
       url: '/new',
-      template: require('jade!templates/machine/new'),
+      template: require('jade!./new'),
       controller: 'NewMachineCtrl'
     });
   });

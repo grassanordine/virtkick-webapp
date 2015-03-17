@@ -37,9 +37,8 @@ Rails.application.configure do
   config.assets.paths << Rails.root.join('app', 'javascripts')
   Dir['engines/*/*.gemspec'].each do |gemspec_file|
       dir_name = File.dirname(gemspec_file)
-      config.assets.paths << Rails.root.join(dir_name, 'app', 'javascripts')
-
-      config.sass.load_paths << Rails.root.join(dir_name, 'app', 'assets', 'stylesheets')
+      config.assets.paths.unshift Rails.root.join(dir_name, 'app', 'javascripts')
+      config.sass.load_paths.unshift Rails.root.join(dir_name, 'app', 'assets', 'stylesheets')
   end
 
   if ENV['LIVERELOAD']

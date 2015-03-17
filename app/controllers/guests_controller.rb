@@ -3,19 +3,26 @@ class GuestsController < AfterSetupController
 
   respond_to :html
 
-  before_action do
-    redirect_to '/machines' if user_signed_in?
+  def render_home
+    render_action_in_other_controller SpaController, :home, params
   end
 
+  around_action { |controller, block|
+    if user_signed_in?
+      render_home
+    else
+      block.call
+    end
+  }
 
   def index
     if Virtkick.mode.localhost?
       sign_in User.create_single_user!
-      redirect_to '/machines'
+      render_home
     elsif Virtkick.mode.demo?
       render action: 'index_demo'
     else
-      redirect_to '/machines'
+      render_home
     end
   end
 
@@ -23,6 +30,6 @@ class GuestsController < AfterSetupController
     raise unless Virtkick.mode.demo?
 
     sign_in User.create_guest!
-    redirect_to '/machines'
+    render_home
   end
 end
