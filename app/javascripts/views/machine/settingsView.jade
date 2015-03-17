@@ -1,10 +1,19 @@
 #page-settings
-  h3 CD image
+  h3 
+    .fa.fa-wrench
+    | CD image
 
-  form
-    label
-      | Mount ISO: &nbsp;
-      distroselect(machine='machine')
-  h3 Danger Zone
-  p
+  .dashboard-inverse
+    form.iso-form
+      label
+        | Mount ISO as CD-ROM &nbsp;
+      .iso-select
+        distroselect(machine='machine')
+  
+  h3 
+    .fa.fa-bomb
+    | Danger Zone
+
+  .dashboard-inverse.danger.danger-zone
+    span I don't need this machine anymore. 
     a.btn.btn-danger(confirm='Are you sure? This cannot be undone.',title='Delete {{machine.hostname}}?',action="machine.deletePermanently()") Delete machine

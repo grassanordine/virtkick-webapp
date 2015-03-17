@@ -1,14 +1,38 @@
-#page-machine #settings {
-  i.fa {
-    margin-left: 7px;
+#page-settings {
+  
+  
+  .dashboard-inverse {
+    padding: 30px;
   }
 
-  .users {
-    list-style-type: none;
-    padding-left: 0;
+  h3:first-child {
+    margin-top: 0px;
+  }
 
-    li {
-      padding-left: 20px;
+  h3 {
+    .fa {
+      margin-right: 0.5em;
+      margin-bottom: 0.3em;
+      color: $vk-brand-primary-color;
+    }
+  }
+
+  .iso-form {
+    label {
+      vertical-align: middle;
+      margin-bottom: 0em;
+      margin-right: 1em;
+    }
+
+    .iso-select {
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+
+  .danger-zone {
+    span {
+      margin-right: 1em;
     }
   }
 }

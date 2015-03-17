@@ -96,3 +96,7 @@
     margin-bottom: 0;
   }
 }
+
+.dashboard-inverse.danger {
+  border-color: $vk-dashboard-inverse-danger-border-color;
+}

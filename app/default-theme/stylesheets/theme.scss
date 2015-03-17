@@ -34,6 +34,7 @@ $vk-action-stop-color: #EC4863 !default; // pinkish
 
 $vk-muted-color: #D1C7CF !default; // violet muted on white
 $vk-dead-color: #000000 !default; // black
+$vk-danger-color: $vk-action-stop-color !default; // pink
 $vk-transparent-color: transparent !default; // transparent
 $vk-element-on-color: #EC4863 !default; // pink (duplicated primary)
 $vk-element-off-color: #E1DFD8 !default; // a little creamy gray
@@ -133,6 +134,7 @@ $vk-dashboard-inverse-border-color: $vk-border-color !default;
 $vk-dashboard-inverse-border-radius: $vk-border-radius !default;
 $vk-dashboard-inverse-field-bg-color: $vk-static-bg-color !default;
 $vk-dashboard-inverse-field-border-radius: $vk-border-radius !default;
+$vk-dashboard-inverse-danger-border-color: lighten($vk-danger-color, 20%) !default;
 
 $vk-preloader-rocket-color: $vk-body-bg-color !default;
 $vk-preloader-window-color: $vk-brand-primary-color !default;
