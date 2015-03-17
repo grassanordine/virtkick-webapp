@@ -27,7 +27,7 @@
           li: a(ui-sref="user.machines.index" ui-sref-active='active')
             span.oi.oi-monitor
             | Machines
-          li(ng-repeat="link in user.navbarLinks"): a(ui-sref='{{link.state}}' ui-sref-active='active')
+          li(ng-repeat="link in user.navbarLinks | orderBy: 'priority'"): a(ui-sref='{{link.state}}' ui-sref-active='active')
             span.oi(class="{{link.iconClass}}")
             | {{link.title}}
           li(ng-if='user.logoutAvailable'): a(ui-sref='logout' ui-sref-active='active')

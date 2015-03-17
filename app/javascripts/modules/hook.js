@@ -11,21 +11,28 @@ define(function(require) {
       return $q(function(resolve, reject) {
         var value = null;
         if(hooks[name]) {
-          try {
-            var resolved = args[0];
-            value = $injector.invoke(hooks[name],
-                null, resolved
-            );
-          } catch(err) {
-            console.error('Unable to run hook', name, err.stack);
-            return reject(err);
-          }
+
+          value = $q.all(hooks[name].map(function(hookFunc) {
+            try {
+              var resolved = args[0];
+              value = $injector.invoke(hookFunc,
+                  null, resolved
+              );
+            } catch(err) {
+              console.error('Unable to run hook', name, err.stack);
+              return reject(err);
+            }
+          }));
         }
         return resolve(value);
       });
     };
     hookFunction.register = function(name, handler) {
-      hooks[name] = handler;
+      if(!hooks[name]) {
+        hooks[name] = [handler];
+      } else {
+        hooks[name].push(handler);
+      }
     };
     return hookFunction;
   });
