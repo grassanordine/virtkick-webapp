@@ -35,6 +35,7 @@ module.exports = function(grunt) {
 
   if(grunt.option("debug")) {
     options.optimize = "none";
+    options.optimizeCss = "none";
   }
 
   //console.log(JSON.stringify(options, null, 2));
