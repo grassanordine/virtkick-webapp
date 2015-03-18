@@ -39,25 +39,24 @@ module RequirejsHelper
       args.each do |arg|
         html += "<script src=\"/javascripts/#{arg}.js?v=#{Rails.configuration.version}\"></script>"
       end
-      html += '<script>require([' + args.map {|a| '"' + a + '"'}.join(',') + ']);</script>'
     else
       html += '<script src="/require.js"></script>'
-      html +=
-  '''
-  <script>
-  require.config(
-  '''
-      html += @@require_config_json
-      html +=
-  '''
-  );
-  '''
-      html += 'require([' + args.map {|a| '"' + a + '"'}.join(',') + ']);'
-      html +=
-  '''
-  </script>
-  '''
     end
+    html +=
+'''
+<script>
+require.config(
+'''
+    html += @@require_config_json
+    html +=
+'''
+);
+'''
+    html += 'require([' + args.map {|a| '"' + a + '"'}.join(',') + ']);'
+    html +=
+'''
+</script>
+'''
     html.html_safe
   end
 end

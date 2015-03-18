@@ -1,3 +1,5 @@
+paths:
+  requireLib: 'require'
 shim:
   jquery:
     exports: 'jQuery'
@@ -9,17 +11,16 @@ shim:
   novnc/rfb:
     deps: ["novnc/util","novnc/webutil", "novnc/base64", "novnc/websock", "novnc/des", "novnc/keysymdef", "novnc/keyboard", "novnc/input", "novnc/display", "novnc/jsunzip"]
     exports: 'RFB'
-almond: true
 modules:
   - name: 'application'
-    include: ['application', 'views/machine/index', 'views/machine/show', 'views/machine/new']
+    include: ['requireLib', 'application', 'views/machine/index', 'views/machine/show', 'views/machine/new']
     exclude: []
   - name: 'setup'
-    include: ['setup']
+    include: ['requireLib', 'setup']
   - name: 'signin'
-    include: ['signin']
+    include: ['requireLib', 'signin']
   - name: 'signup'
-    include: ['signup']
+    include: ['requireLib', 'signup']
 preserveLicenseComments: false
 generateSourceMaps: true
 optimize: uglify2

@@ -4,6 +4,7 @@ class Hypervisor < ActiveRecord::Base
   serialize :storages, JsonWithIndifferentAccess
   serialize :iso, JsonWithIndifferentAccess
   serialize :disk_types, JsonWithIndifferentAccess
+  serialize :spec, JsonWithIndifferentAccess
 
   has_many :machines
 

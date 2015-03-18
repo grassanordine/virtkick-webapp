@@ -31,7 +31,9 @@ define(function(require) {
   mod.filter('bytes', function() {
     return function(amount, amountFormat, precision) {
 
-      precision = precision || 0;
+      if(typeof precision === 'undefined') {
+        precision = 2
+      }
 
       amountFormat = (amountFormat || 'b').toUpperCase();
 
@@ -66,10 +68,13 @@ define(function(require) {
         }
       }
 
-      amount = amount.toFixed(2);
+      amount = amount.toFixed(precision);
       if(amount.match(/\..*[0]+$/)) {
         amount = amount.replace(/\.?0+$/, '');
       }
+
+
+
       return amount + ' ' + amountFormat;
     };
   });
