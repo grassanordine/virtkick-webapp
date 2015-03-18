@@ -42,7 +42,11 @@ module VirtkickWebapp
       config.theme = ENV['VIRTKICK_THEME'] || 'default'
     end
     version = `git rev-parse --short HEAD 2> /dev/null || cat .version 2> /dev/null || echo unknown`.chop
-    puts "App configured for version #{version}"
+
+    unless File.basename($0) == "rake"
+      puts "App configured for version #{version}"
+    end
+
     config.version = config.assets.version = version + '-' + config.theme
 
 
@@ -52,7 +56,6 @@ module VirtkickWebapp
       else
         config.assets.paths << Rails.root.join('app', 'themes', config.theme, dir)
       end
-
     end
 
     config.assets.precompile += %w(.svg .eot .woff .ttf)

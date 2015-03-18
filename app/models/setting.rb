@@ -4,6 +4,17 @@ class Setting < ActiveRecord::Base
     val.nil? ? default : val
   end
 
+  def self.set_by_key key, value
+    key.downcase!
+    setting = Setting.find_by key: key
+    if setting
+      setting.val = value
+      setting.save!
+    else
+      Setting.create! key: key, val: value
+    end
+  end
+
   def self.get name
     if Rails.env.development?
       find_by_key(name) || ENV['VIRTKICK_' + name.upcase]
