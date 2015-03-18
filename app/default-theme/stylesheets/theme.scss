@@ -139,6 +139,15 @@ $vk-dashboard-inverse-danger-border-color: lighten($vk-danger-color, 20%) !defau
 $vk-preloader-rocket-color: $vk-body-bg-color !default;
 $vk-preloader-window-color: $vk-brand-primary-color !default;
 
+$vk-switcher-color: lighten($vk-text-color, 30%) !default;
+$vk-switcher-hover-color: darken($vk-text-color, 10%) !default;
+$vk-switcher-active-color: $vk-text-color !default;
+$vk-switcher-bg-color: $vk-static-bg-color !default;
+$vk-switcher-size: 32px !default;
+$vk-switcher-border-radius: $vk-border-radius !default;
+$vk-switcher-handle-color: $vk-body-bg-color !default;
+$vk-switcher-handle-bg-color: $vk-brand-primary-color !default;
+
 $vk-console-bg-color: $vk-static-bg-color !default;
 $vk-console-button-color: $vk-text-mild-color !default;
 $vk-console-button-border-color: $vk-static-light-color !default;

@@ -1,0 +1,38 @@
+.switch-wrapper .switch {
+  border-radius: $vk-switcher-border-radius;
+  background-color: $vk-switcher-bg-color;
+  width: 2*$vk-switcher-size;
+  height: $vk-switcher-size;
+}
+
+.switch-wrapper .switch .handle {
+  border-radius: $vk-switcher-border-radius;
+  background-color: $vk-switcher-handle-bg-color;
+  width: $vk-switcher-size;
+  height: $vk-switcher-size;
+  line-height: $vk-switcher-size;
+}
+
+.switch-wrapper .switch .handle.right {
+  left: $vk-switcher-size;
+}
+
+.switch-wrapper .switch .handle .option {
+  color: $vk-switcher-handle-color;
+  line-height: $vk-switcher-size;
+  width: $vk-switcher-size;
+  height: $vk-switcher-size;
+}
+
+.switch-wrapper span {
+  line-height: $vk-switcher-size;
+  color: $vk-switcher-color;
+}
+
+.switch-wrapper span:hover {
+  color: $vk-switcher-hover-color;
+}
+
+.switch-wrapper span.active {
+  color: $vk-switcher-active-color;
+}
