@@ -26,26 +26,45 @@
 
       .modal-body {
         background-color: $vk-modal-body-bg-color;
-        padding: 15px $modal-inner-padding 15px $modal-inner-padding;
+
+        p:last-child {
+          margin-bottom: 0;
+        }
       }
 
       .modal-footer {
         background-color: $vk-modal-footer-bg-color;
         text-align: center;
-        padding: 15px $modal-inner-padding 45px $modal-inner-padding;        
         border-bottom-left-radius: $vk-modal-border-radius;
         border-bottom-right-radius: $vk-modal-border-radius;
 
         &.no-border-top {
           border-top: 0;
+          padding-top: 0;
         }
 
-        .btn {
-          margin-top: 10px;
+        &.no-border-top.large-padding {
+          padding-top: 0;
+        }
+
+        @media(max-width: $grid-float-breakpoint-max) {
+          .btn {
+            margin-top: 5px;
+            margin-bottom: 5px;
+          }
         }
 
         .btn-lg {  
           @include button-size(18px, 45px, $text-normal, $text-normal, 4px);
+        }
+      }
+
+      .modal-body.large-padding, .modal-footer.large-padding {
+        padding: 55px 55px 55px 55px;
+
+
+        @media (max-width: $screen-sm-min - 1) {
+          padding-right: 95px;
         }
       }
 

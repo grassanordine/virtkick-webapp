@@ -121,6 +121,7 @@ $vk-modal-header-bg-color: $vk-static-bg-light-color !default;
 $vk-modal-body-bg-color: $vk-body-bg-color !default;
 $vk-modal-footer-bg-color: $vk-body-bg-color !default;
 $vk-modal-border-radius: $vk-border-radius !default;
+$vk-modal-padding: 25px !default;
 
 $vk-progress-border-radius: $vk-border-radius !default;
 
@@ -214,7 +215,7 @@ $btn-info-color: $text-color;
 $btn-default-bg: $vk-static-bg-color;
 $btn-default-color: $brand-secondary;
 
-$modal-inner-padding: 55px;
+$modal-inner-padding: $vk-modal-padding;
 $modal-content-border-color: $vk-border-color;
 $modal-backdrop-bg: lighten($vk-modal-header-bg-color, 3%);
 $modal-backdrop-opacity: .75;
