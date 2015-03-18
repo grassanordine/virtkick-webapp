@@ -4,7 +4,7 @@
     "url": "https://github.com/virtkick/virtkick-webapp.git"
   },
   "dependencies": {
-    "ng-annotate": "0.10.2"
+    "ng-annotate": "^0.15.4"
   },
   "devDependencies": {
     "cron": "^1.0.6",
@@ -17,6 +17,7 @@
     "grunt-requirejs": "^0.4.2",
     "grunt-shell-spawn": "^0.3.1",
     "js-yaml": "^3.2.5",
+    "recursive-merge": "^1.2.0",
     "split": "^0.3.3"
   }
 }

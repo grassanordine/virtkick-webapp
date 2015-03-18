@@ -1,6 +1,6 @@
 var fs = require('fs');
 var YAML = require('js-yaml');
-var extend = require('extend');
+var merge = require('recursive-merge');
 module.exports = function(grunt) {
 
   var requirejsConfig = YAML.safeLoad(fs.readFileSync('./config/requirejs.yml', 'utf8'));
@@ -17,17 +17,21 @@ module.exports = function(grunt) {
       requirejsConfigExtension = fs.readFileSync('./engines/' + engine + '/config/requirejs.yml');
     } catch(err) {
     }
-    extend(true, requirejsConfig, YAML.safeLoad(requirejsConfigExtension));
+    requirejsConfig = merge(requirejsConfig, YAML.safeLoad(requirejsConfigExtension));
   });
 
-  var options = extend(true, requirejsConfig, {
+  var options = merge(requirejsConfig, {
     appDir: './tmp/requirejs',
     baseUrl: '.',
     paths: {
       app: './',
     },
     dir: './public/javascripts',
-    onBuildRead: function (moduleName, path, contents) { return require('ng-annotate')(contents, {add: true}).src;},
+    onBuildRead: function (moduleName, path, contents) {
+      return require('ng-annotate')(contents, {
+        add: true
+      }).src;
+    },
     pragmasOnSave: {
       excludeJade: true
     }
@@ -38,7 +42,7 @@ module.exports = function(grunt) {
     options.optimizeCss = "none";
   }
 
-  //console.log(JSON.stringify(options, null, 2));
+//  console.log(JSON.stringify(options, null, 2));
   var files = [
     {
       cwd: './app/javascripts',

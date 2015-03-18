@@ -13,7 +13,7 @@ shim:
     exports: 'RFB'
 modules:
   - name: 'application'
-    include: ['requireLib', 'application', 'views/machine/index', 'views/machine/show', 'views/machine/new']
+    include: ['requireLib', 'application']
     exclude: []
   - name: 'setup'
     include: ['requireLib', 'setup']
