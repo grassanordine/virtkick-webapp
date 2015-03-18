@@ -67,9 +67,9 @@ if File.exists?('Gemfile.local')
   eval File.read('Gemfile.local'), nil, 'Gemfile.local'
 end
 
-
-## plugins
-Dir['engines/*/*.gemspec'].each do |gemspec_file|
+## Modules
+require_relative 'app/lib/virtkick'
+Virtkick.engines(base: File.dirname(__FILE__)).each do |gemspec_file|
   dir_name = File.dirname gemspec_file
   gem_name = File.basename gemspec_file, File.extname(gemspec_file)
 

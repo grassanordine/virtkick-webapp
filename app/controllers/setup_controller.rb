@@ -2,9 +2,7 @@ class SetupController < ApplicationController
   layout 'raw'
 
   def index
-    puts "DD"
     return redirect if @@ready
-    puts "EE"
     self.class.check
     redirect
   rescue Wvm::Setup::Error
@@ -33,11 +31,6 @@ class SetupController < ApplicationController
     rescue Wvm::Setup::Error => e
       render json: {error: e.message}, status: 500
     end
-  end
-
-  def recheck
-    @@ready = false
-    index
   end
 
   def self.check

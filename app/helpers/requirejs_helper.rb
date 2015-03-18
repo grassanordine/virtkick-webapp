@@ -2,7 +2,7 @@ module RequirejsHelper
   def self.included base
     require_config_file = YAML.load_file(Rails.root.join('config', 'requirejs.yml'))
 
-    Dir['engines/*/config/requirejs.yml'].each do |requirejs_file|
+    Virtkick.engines('config/requirejs.yml').each do |requirejs_file|
       loaded_extension = YAML.load_file(requirejs_file)
       require_config_file = require_config_file.deeper_merge(loaded_extension)
     end

@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   # end
 
   before_action do
-    @@paths ||= Dir['engines/*/*.gemspec'].map { |e| File.dirname e}
+    @@paths ||= Virtkick.engines.map { |e| File.dirname e }
 
     @@paths.each do |engine_path|
       prepend_view_path "#{engine_path}/app/views"

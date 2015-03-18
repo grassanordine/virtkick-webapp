@@ -7,7 +7,6 @@ Rails.application.routes.draw do
   resources :guests, only: [:index, :create]
 
   get '/setup', to: 'setup#index', as: 'setup'
-  get '/setup/recheck', to: 'setup#recheck', as: 'recheck_setup'
   post '/setup/perform/:mode', to: 'setup#perform', as: 'perform_setup'
 
   scope :api do
