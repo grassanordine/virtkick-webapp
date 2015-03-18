@@ -6,7 +6,7 @@ assets.precompile += %w(*.svg *.eot *.woff *.ttf *.gif *.png *.ico)
 module EngineCssLoader
   def include_engines
     out = ''
-    Dir['engines/*/*.gemspec'].each do |gemspec_file|
+    Virtkick.engines.each do |gemspec_file|
       dir_name = File.dirname(gemspec_file)
       out += "@import '#{dir_name}';"
     end

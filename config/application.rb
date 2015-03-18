@@ -17,8 +17,8 @@ module VirtkickWebapp
     )
 
     ENV['PATH'] = "#{Rails.root.join('bin')}:#{ENV['PATH']}"
-    Dir['engines/*/*.gemspec'].each do |gemspec_file|
-      dir_name = Rails.root.join(File.dirname(gemspec_file), 'bin');
+    Virtkick.engines.each do |gemspec_file|
+      dir_name = Rails.root.join File.dirname(gemspec_file), 'bin'
       ENV['PATH'] = "#{dir_name}:#{ENV['PATH']}"
     end
 

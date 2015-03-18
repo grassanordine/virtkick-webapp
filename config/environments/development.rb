@@ -35,7 +35,7 @@ Rails.application.configure do
 
   # only for development since digest is off
   config.assets.paths << Rails.root.join('app', 'javascripts')
-  Dir['engines/*/*.gemspec'].each do |gemspec_file|
+  Virtkick.engines.each do |gemspec_file|
       dir_name = File.dirname(gemspec_file)
       config.assets.paths.unshift Rails.root.join(dir_name, 'app', 'javascripts')
       config.sass.load_paths.unshift Rails.root.join(dir_name, 'app', 'assets', 'stylesheets')
