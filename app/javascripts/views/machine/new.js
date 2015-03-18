@@ -72,7 +72,7 @@ define(function(require) {
     $scope.newMachine = {};
 
     $scope.gotoMachine = function() {
-      $state.go('machines.show', {
+      $state.go('user.machines.show', {
         machineId: $scope.newMachine.id
       });
     };

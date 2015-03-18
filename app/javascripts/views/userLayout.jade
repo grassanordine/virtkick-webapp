@@ -36,5 +36,7 @@
     .dropdown
       button.btn.btn-primary
         span.caret
+    span(ng-if='app.hasAdminMode')
+      switcher(ng-model='app.adminMode' left='User' right='Admin' left-icon='fa fa-rocket' right-icon='fa fa-gear')
   .col-md-9(style='position: relative;')
     div(ui-view="")

@@ -16,17 +16,15 @@
     .row
       .col-lg-12
       .options.col-lg-offset-1.col-lg-5
-        h4 Choose installation type: 
-        - from_localhost = request.ip == '127.0.0.1'
-        - if from_localhost
-          div.option
-            .button-wrapper
-              /= button_to perform_setup_path(:localhost), method: :post, class: 'btn chooser', rel: 'nofollow noindex' do= button_to perform_setup_path(:localhost), method: :post, class: 'btn chooser', rel: 'nofollow noindex' do
-              button.btn.chooser(ng-click="setup.mode = 'localhost'" ng-class="{active: setup.mode == 'localhost'}")
-                .fa.fa-home  
-            .text-wrapper
-              .title Trusted Network
-              .disclaimer.hidden-xs No passwords or anything. Just use.
+        h4 Choose installation type:
+        div.option
+          .button-wrapper
+            /= button_to perform_setup_path(:localhost), method: :post, class: 'btn chooser', rel: 'nofollow noindex' do= button_to perform_setup_path(:localhost), method: :post, class: 'btn chooser', rel: 'nofollow noindex' do
+            button.btn.chooser(ng-click="setup.mode = 'localhost'" ng-class="{active: setup.mode == 'localhost'}")
+              .fa.fa-home
+          .text-wrapper
+            .title Trusted Network
+            .disclaimer.hidden-xs No passwords or anything. Just use.
         div.option(class=("disabled" unless Rails.configuration.x.allow_private_cloud == true))
           .button-wrapper
             button.btn.chooser(ng-click="setup.mode = 'privateCloud'" ng-class="{active: setup.mode == 'privateCloud'}" disabled=("disabled" unless Rails.configuration.x.allow_private_cloud == true))

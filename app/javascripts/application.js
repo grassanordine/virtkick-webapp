@@ -42,7 +42,7 @@ define(function(require) {
           });
     });
 
-    app.controller('AppCtrl', function($scope, $state, $rootScope) {
+    app.controller('AppCtrl', function($scope, $state, $rootScope, $hook) {
       $scope.$state = $state;
 
       $scope.primaryState = '';
@@ -59,6 +59,7 @@ define(function(require) {
         },
         menuCollapse: false
       };
+      $hook('AppCtrl', {$scope: $scope});
     });
 
 

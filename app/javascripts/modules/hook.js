@@ -18,6 +18,7 @@ define(function(require) {
               value = $injector.invoke(hookFunc,
                   null, resolved
               );
+              return $q.when(value);
             } catch(err) {
               console.error('Unable to run hook', name, err.stack);
               return reject(err);

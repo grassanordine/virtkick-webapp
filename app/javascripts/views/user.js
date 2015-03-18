@@ -19,6 +19,8 @@ define(function(require) {
   });
 
   app.controller('UserCtrl', function($scope, $hook, $state, virtkickMode) {
+    $scope.app.adminMode = false;
+
     $scope.user = {
       navbarLinks: [],
       logoutAvailable: virtkickMode !== 'localhost'

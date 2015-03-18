@@ -3,25 +3,23 @@ define(function(require) {
   var angular = require('angular');
   require('css!./style.css');
 
-  function controller($scope, $q) {
-    $scope.switch = function() {
-      if ($scope.switcher.activeOption.position == 'left') {
-        $scope.set($scope.switcher.options[1]);
-      } else {
-        $scope.set($scope.switcher.options[0]);
+  function link(scope, element, attrs, ngModel) {
+    scope.switcher = {};
+    scope.switcher.activeOption = ngModel.$modelValue;
+
+    scope.switch = function(val) {
+      if(typeof val !== 'undefined') {
+        ngModel.$setViewValue(val);
+        scope.switcher.activeOption = val;
+        return;
       }
-    }
+      ngModel.$setViewValue(!scope.switcher.activeOption);
+      scope.switcher.activeOption = !scope.switcher.activeOption;
+    };
 
-    $scope.set = function (option) {
-      $scope.switcher.activeOption = option;
-    }
-  }
-
-  function link(scope, element, attrs) {
-    scope.switcher = scope.$parent.switcher;
-    scope.switcher.options[0].position = 'left';
-    scope.switcher.options[1].position = 'right';
-    scope.switcher.activeOption = scope.switcher.options[0];
+    ngModel.$render = function() {
+      scope.switcher.activeOption = ngModel.$modelValue;
+    };
   }
 
   angular.module(moduleId, [])
@@ -30,15 +28,13 @@ define(function(require) {
           replace: true,
           transclude: true,
           restrict: 'E',
+          require: 'ngModel',
           scope: {
-            running: '=',
-            runningAnimation: '=',
-            onError: '&',
-            onFinish: '&',
-            onFinishAnimation: '&',
-            run: '&'
+            left: '@',
+            right: '@',
+            leftIcon: '@',
+            rightIcon: '@'
           },
-          controller: controller,
           template: require('jade!./template')(),
           link: link
         };
