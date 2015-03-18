@@ -68,10 +68,27 @@ if File.exists?('Gemfile.local')
 end
 
 ## Modules
-require_relative 'app/lib/virtkick'
-Virtkick.engines(base: File.dirname(__FILE__)).each do |gemspec_file|
-  dir_name = File.dirname gemspec_file
-  gem_name = File.basename gemspec_file, File.extname(gemspec_file)
+unless ENV['COMMIT']
+  # Gemfile is in a different location depending on a situation.
+  if ENV['PACKAGED']
+    # /opt/virtkick/webapp/lib/vendor/Gemfile - one level down to Rails.root
+    require_relative '../app/lib/virtkick'
+  elsif ENV['PACKAGING']
+    # virtkick-package/webapp/packaging/tmp/Gemfile - two levels down to Rails.root
+    require_relative '../../app/lib/virtkick'
+  else
+    # virtkick-package/webapp/Gemfile
+    require_relative 'app/lib/virtkick'
+  end
 
-  gem gem_name, path: dir_name, require: true
-end unless ENV['COMMIT']
+  Virtkick.engines.each do |gemspec_file|
+    dir_name = File.dirname gemspec_file
+    gem_name = File.basename gemspec_file, File.extname(gemspec_file)
+
+    if ENV['PACKAGED']
+      dir_name = '../app/' + dir_name
+    end
+
+    gem gem_name, path: dir_name, require: true
+  end
+end

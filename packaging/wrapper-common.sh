@@ -22,6 +22,8 @@ fi
 export DEVISE_SECRET_KEY="$(cat .devise-secret)"
 export SECRET_KEY_BASE="$(cat .cookie-secret)"
 export PACKAGING=1 # prevent errors from missing development/test dependencies
+export PACKAGED=1
+
 if [ "$RAILS_ENV" == "" ];then
     export RAILS_ENV=production
 fi

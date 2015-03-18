@@ -7,7 +7,9 @@ class Virtkick
     '0.6.alpha' # TODO: git describe or something
   end
 
-  def self.engines path = '*.gemspec', base: Rails.root
+  def self.engines path = '*.gemspec'
+    base = File.dirname(__FILE__) + '/../..'
+
     Dir.chdir base do
       Dir["engines/*/#{path}"]
     end
