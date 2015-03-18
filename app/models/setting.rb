@@ -6,9 +6,9 @@ class Setting < ActiveRecord::Base
 
   def self.get name
     if Rails.env.development?
-      find_by_key(:val) || ENV['VIRTKICK_' + name.upcase]
+      find_by_key(name) || ENV['VIRTKICK_' + name.upcase]
     else
-      find_by_key :val
+      find_by_key name
     end
   end
 end
