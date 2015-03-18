@@ -33,8 +33,9 @@ namespace :package do
     sh "rm -rf packaging/tmp"
     sh "mkdir -p packaging/tmp packaging/tmp/engines"
     sh "cp Gemfile packaging/tmp/"
-    if ENV['MODULE']
-      mod = ENV['MODULE']
+
+    mod = ENV['MODULE']
+    if mod and mode != 'basic'
       sh "cp -r ../modules/#{mod} packaging/tmp/engines"
     end
 
@@ -79,8 +80,8 @@ def create_package(target)
   sh "cp packaging/virtkick-webapp packaging/virtkick-work #{package_dir}"
   sh "cp -pR packaging/vendor #{package_dir}/lib/"
   sh "cp packaging/tmp/Gemfile packaging/tmp/Gemfile.lock #{package_dir}/lib/vendor/"
-  if ENV['MODULE']
-    mod = ENV['MODULE']
+  mod = ENV['MODULE']
+  if mod and mod != 'basic'
     sh "mkdir -p #{package_dir}/lib/app/engines"
     sh "mv packaging/tmp/engines/#{mod} #{package_dir}/lib/app/engines"
   end
