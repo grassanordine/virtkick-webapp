@@ -5,7 +5,8 @@ define(function(require) {
   var app = angular.module(moduleId, [
     require('views/machine/index'),
     require('views/machine/show'),
-    require('views/machine/new')
+    require('views/machine/new'),
+    require('directives/switcher/directive')
   ]);
 
   app.config(function($urlMatcherFactoryProvider, $locationProvider, $stateProvider, $urlRouterProvider) {

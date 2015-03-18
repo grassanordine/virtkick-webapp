@@ -1,0 +1,11 @@
+.switch-wrapper
+  span(ng-class="{active: switcher.activeOption===switcher.options[0]}", ng-click="set(switcher.options[0])")
+    | {{switcher.options[0].label}}
+  .switch(ng-click="switch()")
+    div.handle(ng-class="switcher.activeOption.position")
+      .option.first
+        div(ng-class="switcher.options[0].icon")
+      .option.second
+        div(ng-class="switcher.options[1].icon")
+  span(ng-class="{active: switcher.activeOption===switcher.options[1]}", ng-click="set(switcher.options[1])")
+    | {{switcher.options[1].label}}
