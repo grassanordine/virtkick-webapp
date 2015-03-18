@@ -71,8 +71,8 @@ end
 unless ENV['COMMIT']
   # Gemfile is in a different location depending on a situation.
   if ENV['PACKAGED']
-    # /opt/virtkick/webapp/lib/vendor/Gemfile - one level down to Rails.root
-    require_relative '../app/lib/virtkick'
+    # /opt/virtkick/webapp/lib/vendor/Gemfile - one level down to Rails.root, then go to 'app'
+    require_relative '../app/app/lib/virtkick'
   elsif ENV['PACKAGING']
     # virtkick-package/webapp/packaging/tmp/Gemfile - two levels down to Rails.root
     require_relative '../../app/lib/virtkick'

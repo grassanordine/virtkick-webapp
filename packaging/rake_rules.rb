@@ -31,8 +31,12 @@ namespace :package do
       abort "You can only 'bundle install' using Ruby 2.1, because that's what Traveling Ruby uses."
     end
     sh "rm -rf packaging/tmp"
-    sh "mkdir -p packaging/tmp"
+    sh "mkdir -p packaging/tmp packaging/tmp/engines"
     sh "cp Gemfile packaging/tmp/"
+    if ENV['MODULE']
+      mod = ENV['MODULE']
+      sh "cp -r ../modules/#{mod} packaging/tmp/engines"
+    end
 
     Bundler.with_clean_env do
       sh "cd packaging/tmp && env BUNDLE_IGNORE_CONFIG=1 NOKOGIRI_USE_SYSTEM_LIBRARIES=1 PACKAGING=1 bundle install --path ../vendor --without development test"
@@ -75,6 +79,11 @@ def create_package(target)
   sh "cp packaging/virtkick-webapp packaging/virtkick-work #{package_dir}"
   sh "cp -pR packaging/vendor #{package_dir}/lib/"
   sh "cp packaging/tmp/Gemfile packaging/tmp/Gemfile.lock #{package_dir}/lib/vendor/"
+  if ENV['MODULE']
+    mod = ENV['MODULE']
+    sh "mkdir -p #{package_dir}/lib/app/engines"
+    sh "mv packaging/tmp/engines/#{mod} #{package_dir}/lib/app/engines"
+  end
   sh "rm -rf packaging/tmp"
   sh "mkdir #{package_dir}/lib/vendor/.bundle"
   sh "cp packaging/bundler-config #{package_dir}/lib/vendor/.bundle/config"
