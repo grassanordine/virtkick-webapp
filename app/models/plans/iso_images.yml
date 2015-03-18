@@ -42,7 +42,7 @@
   long_name: CentOS 7.0
   mirrors:
   - http://mirrors.centarra.com/centos/7.0.1406/isos/x86_64/CentOS-7.0-1406-x86_64-Minimal.iso
-  sha512: a0b10d3eef00d71af8df5f9f4872864d32c4e0d3b20bf3e3e853a3d3a908cf679cfc899e5d604b49dc1e57361d304360b93e5b4c6d05c02d1b8368c71d126be4
+  sha512: d2bcbe6bc187760a001bf16413993b9b8483daeaccbab750cceefac60f2e9627e12056cd1236901ac402760aa95a462e3bf2aff51d3f9338b8cd61b2d5316c94
 - id: 40
   iso_distro_id: 40
   file: Fedora-20-x86_64-netinst.iso

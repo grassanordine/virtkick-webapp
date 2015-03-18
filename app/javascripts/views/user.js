@@ -10,11 +10,11 @@ define(function(require) {
 
   app.config(function($urlMatcherFactoryProvider, $locationProvider, $stateProvider, $urlRouterProvider) {
     $stateProvider
-        .state('user', {
-          url: '',
-          template: require('jade!./userLayout'),
-          controller: 'UserCtrl'
-        })
+      .state('user', {
+        url: '',
+        template: require('jade!./userLayout'),
+        controller: 'UserCtrl'
+      });
   });
 
   app.controller('UserCtrl', function($scope, $hook, $state, virtkickMode) {
@@ -28,7 +28,7 @@ define(function(require) {
       if(toState.name == 'user') {
         $state.go('user.machines.index');
       }
-    })
+    });
   });
 
   return moduleId;

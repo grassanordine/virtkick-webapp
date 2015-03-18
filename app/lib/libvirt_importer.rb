@@ -5,12 +5,12 @@ class LibvirtImporter
 
     machines_to_import(hypervisor).each do |machine|
       user = User.find_by(email: machine.description)
-      import_machine machine, user || admin_user
+      import_machine hypervisor, machine, user || admin_user
     end
   end
 
-  def import_machine machine, user
-    MetaMachine.create_machine! machine.hostname, user.id, machine.hypervisor_id, machine.hostname
+  def import_machine hypervisor, machine, user
+    MetaMachine.create_machine! machine.hostname, user.id, hypervisor.id, machine.hostname
   rescue Exception => e
     puts "Could not import machine #{machine.hostname} from libvirt, skipping."
   end

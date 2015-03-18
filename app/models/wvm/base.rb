@@ -50,6 +50,7 @@ class Wvm::Base
   end
 
   def self.hypervisor hypervisor_id
+
     hypervisor = Hypervisor.find_by_id hypervisor_id
 
     unless hypervisor

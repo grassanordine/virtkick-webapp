@@ -2,6 +2,7 @@
   = requirejs_include_tag 'setup'
 
 = object_to_json_constant 'allowVpsProvider', Rails.configuration.x.allow_vps_provider
+= object_to_json_constant 'allowPrivateCloud', Rails.configuration.x.allow_private_cloud
 
 #page-setup(ng-app=1 ng-controller='SetupCtrl')
   .container-fluid
@@ -24,11 +25,11 @@
               button.btn.chooser(ng-click="setup.mode = 'localhost'" ng-class="{active: setup.mode == 'localhost'}")
                 .fa.fa-home  
             .text-wrapper
-              .title Localhost
+              .title Trusted Network
               .disclaimer.hidden-xs No passwords or anything. Just use.
-        div.option
+        div.option(class=("disabled" unless Rails.configuration.x.allow_private_cloud == true))
           .button-wrapper
-            button.btn.chooser(ng-click="setup.mode = 'privateCloud'" ng-class="{active: setup.mode == 'privateCloud'}")
+            button.btn.chooser(ng-click="setup.mode = 'privateCloud'" ng-class="{active: setup.mode == 'privateCloud'}" disabled=("disabled" unless Rails.configuration.x.allow_private_cloud == true))
               .fa.fa-cloud
           .text-wrapper
             .title Private Cloud
@@ -55,7 +56,10 @@
               .fa.fa-sitemap
           .text-wrapper
             .title VPS Provider
-            .disclaimer.hidden-xs Not implemented yet. Work in progress!
+            - if Rails.configuration.x.allow_vps_provider == true
+              .disclaimer.hidden-xs Let's sell some VPS together!
+            - else
+              .disclaimer.hidden-xs Not implemented yet. Work in progress!
             .form-wrapper.ng-cloak.private-cloud-form(ng-show="setup.mode == 'vpsProvider'")
               form.private-cloud-only method='post' name='setupForm'
                 .form-group show-errors=1

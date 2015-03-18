@@ -16,6 +16,12 @@ module VirtkickWebapp
       #{config.root}/app/lib
     )
 
+    ENV['PATH'] = "#{Rails.root.join('bin')}:#{ENV['PATH']}"
+    Dir['engines/*/*.gemspec'].each do |gemspec_file|
+      dir_name = Rails.root.join(File.dirname(gemspec_file), 'bin');
+      ENV['PATH'] = "#{dir_name}:#{ENV['PATH']}"
+    end
+
     config.active_record.raise_in_transactional_callbacks = true
 
     config.active_support.deprecation = :notify
