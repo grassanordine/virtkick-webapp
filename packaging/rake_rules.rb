@@ -35,7 +35,7 @@ namespace :package do
     sh "cp Gemfile packaging/tmp/"
 
     mod = ENV['MODULE']
-    if mod and mode != 'basic'
+    if mod and mod != 'basic'
       sh "cp -r ../modules/#{mod} packaging/tmp/engines"
     end
 
