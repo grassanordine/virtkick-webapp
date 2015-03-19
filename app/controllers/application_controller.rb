@@ -65,4 +65,10 @@ class ApplicationController < ActionController::Base
     raise 'Not an ID. Make sure Job returns a Numeric - or use TrackableJob.' unless progress_id.is_a? Numeric
     render json: {progress_id: progress_id, data: custom_data}
   end
+
+  def render_exception e, production_message
+    Bugsnag.notify_or_ignore e
+    message = Rails.env.production? ? production_message : e
+    render json: {error: message}, status: :unprocessable_entity
+  end
 end

@@ -76,6 +76,15 @@ class Wvm::Setup < Wvm::Base
   def self.create_connection hypervisor
 
     Timeout.timeout 1.second do
+      begin
+        response = call :post, '/servers', host_del_by_name: '',
+                        host_name: hypervisor.name,
+                        name: hypervisor.name,
+                        hostname: hypervisor.host,
+                        login: hypervisor.login
+      rescue => e
+      end
+
       response = call :post, '/servers', host_ssh_add: '',
           name: hypervisor.name,
           hostname: hypervisor.host,
@@ -112,7 +121,7 @@ class Wvm::Setup < Wvm::Base
     return if network[:type] == 'bridge'
 
     begin
-      network_url = "/#{hypervisor.id}/network/#{hypervisor_data[:network][:id]}"
+      network_url = "/#{hypervisor.id}/network/#{hypervisor.network[:id]}"
       libvirt_network = call :get, network_url
     rescue Errors
       call :post, "/#{hypervisor.id}/networks", create: '',

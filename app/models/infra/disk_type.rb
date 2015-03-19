@@ -6,7 +6,6 @@ class Infra::DiskType < Infra::Base
   attr_accessor :path # extract to FileDiskType
   attr_accessor :enabled
 
-
   def self.all hypervisor
     Wvm::StoragePool.all hypervisor
   end
