@@ -112,10 +112,10 @@ class Wvm::Setup < Wvm::Base
     return if network[:type] == 'bridge'
 
     begin
-      network_url = "/#{hypervisor_id}/network/#{hypervisor_data[:network][:id]}"
+      network_url = "/#{hypervisor.id}/network/#{hypervisor_data[:network][:id]}"
       libvirt_network = call :get, network_url
     rescue Errors
-      call :post, "/#{hypervisor_id}/networks", create: '',
+      call :post, "/#{hypervisor.id}/networks", create: '',
           name: network[:id],
           subnet: network[:address],
           dhcp: network[:dhcp],
