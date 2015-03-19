@@ -33,10 +33,10 @@ class MachinesController < ApiController
 
     @machine.valid?
 
+    hypervisor = Hypervisor.find_best_hypervisor @machine.plan
     hook_results = run_hook :pre_create_machine
-
     if @machine.save
-      progress_id = MachineCreateJob.perform_later current_user, @machine.id, hook_results
+      progress_id = MachineCreateJob.perform_later current_user, @machine.id, hypervisor.id, hook_results
       render_progress progress_id, @machine.id
       return
     end

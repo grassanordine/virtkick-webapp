@@ -4,13 +4,10 @@ class MachineCreateJob < TrackableJob
 
   self.run_once
 
-  def perform new_machine_id, hook_results
+  def perform new_machine_id, hypervisor_id, hook_results
     job_initalize new_machine_id
 
-    hypervisor = nil
-    step do
-      hypervisor = Hypervisor.find_best_hypervisor @new_machine.plan
-    end
+    hypervisor = Hypervisor.find hypervisor_id
 
     user = User.find @new_machine.user_id
 

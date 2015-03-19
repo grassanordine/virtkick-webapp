@@ -92,6 +92,9 @@ define(function(require) {
         if(err === 'cancel' || err === 'backdrop click') {
           throw err;
         }
+        if(err.data && err.data.message) {
+          err = err.data;
+        }
         $scope.newMachine.error = err.message || err;
         throw err;
       });
