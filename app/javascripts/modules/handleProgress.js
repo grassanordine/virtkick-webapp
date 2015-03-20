@@ -3,8 +3,12 @@ define(function(require) {
 
   var angular = require('angular');
   var mod = angular.module(module.id, []);
-  mod.factory('handleProgress', function($http, $timeout) {
+  mod.factory('handleProgress', function($http, $timeout, $q) {
     return function(progressId) {
+      if(progressId.data && progressId.data.progress_id) {
+        progressId = progressId.data.progress_id;
+      }
+
       function doQuery() {
         return $http.get('/api/progress/' + progressId).then(function(res) {
           if(!res.data.finished) {
@@ -16,7 +20,7 @@ define(function(require) {
           return true;
         });
       }
-      return  $timeout(doQuery, 250);
+      return $timeout(doQuery, 250);
     };
   });
 

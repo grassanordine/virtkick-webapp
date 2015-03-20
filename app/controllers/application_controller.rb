@@ -18,24 +18,20 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  rescue_from SafeException do |e|
+    if request.format == 'application/json'
+      render json: {error:  e.message}, status: 500
+    else
+      raise e
+    end
+  end
+
   rescue_from Exception do |e|
     if request.format == 'application/json'
       status = 500
-
       status = 440 if e.is_a? ActionController::InvalidAuthenticityToken
 
-      if Rails.configuration.consider_all_requests_local
-        render json: {exception: e.class.name, message: e.message}, status: status
-      else
-        render json: {exception: true}, status: status
-      end
-
-      puts '^^== BEGIN EXCEPTION'
-      puts e.message
-      puts e.backtrace.map { |e| '    ' + e }.join "\n"
-      puts '__== END EXCEPTION'
-
-      Bugsnag.notify_or_ignore e
+      render_exception e, 'A problem occured, we\'ve already notified our engineers, sorry!', status
     else
       raise e
     end
@@ -66,9 +62,18 @@ class ApplicationController < ActionController::Base
     render json: {progress_id: progress_id, data: custom_data}
   end
 
-  def render_exception e, production_message
+  def render_exception e, production_message, status = 500
     Bugsnag.notify_or_ignore e
-    message = Rails.env.production? ? production_message : e
-    render json: {error: message}, status: :unprocessable_entity
+    message = Rails.env.production? ? production_message : e.message
+
+    puts '^^== BEGIN EXCEPTION'
+    puts e.message
+    puts e.backtrace.map { |e| '    ' + e }.join "\n"
+    puts '__== END EXCEPTION'
+    render json: {error: message}, status: status
+  end
+
+  def render_success
+    render json: {status: 'success'}
   end
 end

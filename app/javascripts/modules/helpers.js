@@ -64,9 +64,9 @@ define(function(require) {
               amount /= 1024;
               amountFormat = 'TB';
             }
-          }
-        }
-      }
+          } else precision = 0;
+        } else precision = 0;
+      } else precision = 0;
 
       amount = amount.toFixed(precision);
       if(amount.match(/\..*[0]+$/)) {

@@ -92,6 +92,7 @@ define(function(require) {
         if(err === 'cancel' || err === 'backdrop click') {
           throw err;
         }
+        // TODO: fix up error handling
         if(err.data && err.data.message) {
           err = err.data;
         }

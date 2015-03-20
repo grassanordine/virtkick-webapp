@@ -1,0 +1,3 @@
+class SafeException < StandardError
+
+end
