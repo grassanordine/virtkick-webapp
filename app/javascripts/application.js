@@ -42,7 +42,7 @@ define(function(require) {
           });
     });
 
-    app.controller('AppCtrl', function($scope, $state, $rootScope, $hook) {
+    app.controller('AppCtrl', function($scope, $state, $rootScope, $hook, virtkickMode) {
       $scope.$state = $state;
 
       $scope.primaryState = '';
@@ -57,7 +57,8 @@ define(function(require) {
           title: '',
           icon: ''
         },
-        menuCollapse: false
+        menuCollapse: false,
+        mode: virtkickMode
       };
       $hook('AppCtrl', {$scope: $scope});
     });
