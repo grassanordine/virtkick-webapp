@@ -147,11 +147,9 @@ class Wvm::Setup < Wvm::Base
   # Storage
 
   def self.create_storage_if_needed hypervisor, storage
-    begin
-      find_storage hypervisor, storage[:id]
-    rescue Exception
-      create_storage hypervisor, storage[:id], storage[:path]
-    end
+    find_storage hypervisor, storage[:id]
+  rescue Exception
+    create_storage hypervisor, storage[:id], storage[:path]
   end
 
   def self.find_storage hypervisor, storage_id

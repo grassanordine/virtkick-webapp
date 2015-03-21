@@ -36,7 +36,11 @@ class Hypervisor < ActiveRecord::Base
   end
 
   def setup import_machines: false
-    Wvm::Setup.setup self
+    begin
+      Wvm::Setup.check self
+    rescue Wvm::Setup::Error
+      Wvm::Setup.setup self
+    end
 
     if import_machines
       importer = LibvirtImporter.new
