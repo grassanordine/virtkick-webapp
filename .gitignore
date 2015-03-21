@@ -13,3 +13,4 @@
 vendor/cache
 bower_components
 db/schema.rb
+engines/*
