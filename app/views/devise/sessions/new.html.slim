@@ -20,27 +20,29 @@
           | Log in
         = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
           .form-group show-errors=1
-            = f.label :email, for: 'user[email]'
             .input-group
               .input-group-addon
                 .fa.fa-user
               = f.email_field :email, required: true, autofocus: true, class: 'form-control', placeholder: 'E-mail address', 'ng-model' => 'email'
           .form-group show-errors=1
-            = f.label :password, for: 'user[password]'
             .input-group
               .input-group-addon
                 .fa.fa-lock
               = f.password_field :password, required: true, autocomplete: 'off', class: 'form-control', placeholder: 'Password', 'ng-model' => 'password'
 
           - if devise_mapping.rememberable?
-            .left
-              .checkbox
-                checkbox ng-model='remember_me'
-                input.hide type='checkbox' name='user[remember_me]' ng-model='remember_me'
-                | Remember me
-            .right.forgot
-              = render 'devise/shared/forgot'
-            .clear
+            input type='hidden' name='user[remember_me]' value='1'
+
+            /.left
+            /  .checkbox
+            /    label
+            /      checkbox ng-model='rememberMe'
+            /      input.hide type='checkbox' name='user[remember_me]' ng-model='rememberMe' ng-true-value="1" ng-false-value="0"
+            /      | Remember me
+
+          .right.forgot
+            = render 'devise/shared/forgot'
+          .clear
           .actions
             = f.submit 'Launch Virtkick', class: 'btn btn-lg btn-primary btn-login'
         .rest    

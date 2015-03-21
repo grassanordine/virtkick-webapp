@@ -53,7 +53,8 @@ class User < ActiveRecord::Base
   end
 
   def remember_me
-    true
+    user_choice = super
+    user_choice.nil? ? '1' : user_choice
   end
 
   def to_s

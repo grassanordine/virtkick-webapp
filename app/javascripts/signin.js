@@ -3,14 +3,13 @@ define(function(require) {
 
   var angular = require('angular');
 
-  var app = angular.module('app',
-      [
-          require('./angular-bootstrap-checkbox'),
-          require('./modules/helpers')
-      ]
-  );
+  var app = angular.module('app', [
+    require('./angular-bootstrap-checkbox'),
+    require('./modules/helpers')
+  ]);
 
   app.controller('SignInCtrl', function($scope) {
+    $scope.rememberMe = true;
   });
 
 
