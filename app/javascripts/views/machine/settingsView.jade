@@ -1,4 +1,29 @@
 #page-settings
+  div(ng-if="false")
+    h3 
+      .fa.fa-signal
+      | Network
+    
+    .dashboard-inverse.network-zone
+      form.iso-form
+        .info-row
+          label
+            | IP
+          .value-field
+            | 192.168.1.100
+        .info-row
+          label
+            | Gateway
+          .value-field
+            | 192.168.1.1
+        .info-row.mask
+          label
+            | Mask
+          .value-field
+            | 255.255.255.0
+          .value-field.mask-field
+            | /24
+
   h3 
     .fa.fa-wrench
     | CD image

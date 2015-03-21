@@ -1,6 +1,4 @@
 #page-settings {
-  
-  
   .dashboard-inverse {
     padding: 30px;
   }
@@ -27,6 +25,40 @@
     .iso-select {
       vertical-align: middle;
       display: inline-block;
+    }
+  }
+
+  .network-zone {
+    .info-row {
+      margin-top: 0.25em;
+
+      &:first-child {
+        margin-top: 0em;
+      }
+
+      label {
+        min-width: 5em;
+      }
+
+      .value-field {
+        text-align: center;
+        display: inline-block;
+        padding-left: 0.25em;
+        padding-right: 0.25em;
+        margin-top: 0.25em;
+        min-width: 10em;
+      }
+
+      &.mask {
+        .value-field {
+          min-width: 7em;
+        }
+
+        .value-field.mask-field {
+          margin-left: 0.5em;
+          min-width: 2.5em;
+        }
+      }
     }
   }
 
