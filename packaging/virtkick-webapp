@@ -8,7 +8,5 @@ SELFDIR="`cd \"$SELFDIR\" && pwd`"
 cd "$SELFDIR"
 . lib/wrapper-common.sh
 
-if ! [ -e db/$RAILS_ENV.sqlite3 ];then
-    "$SELFDIR/lib/ruby/bin/bundle" exec rake db:migrate
-fi
+"$SELFDIR/lib/ruby/bin/bundle" exec rake db:migrate
 exec "$SELFDIR/lib/ruby/bin/ruby" -rbundler/setup "$SELFDIR/lib/app/bin/rails" s $*
