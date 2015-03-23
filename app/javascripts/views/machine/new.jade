@@ -20,28 +20,28 @@
           .paid(ng-if='plan.paidTo' title='Paid until {{plan.paidTo | date}}')
             img(src='/assets/paid.png' style='width: 100px;')
 
-    h4 Machine image
-    .image
-      input(name='machine[image_type]' ng-model='newMachine.imageType' required='true' class='hide')
-      .radio-group
-        .radio-elem.text-center(ng-repeat="type in imageTypes")
-          label(ng-model='newMachine.imageType' btn-radio="type.id" ng-disabled='newMachine.creatingMachine')
-            .line
-              | {{type.name}}
-
-      .appliances.alert.alert-info.ng-cloak(ng-if='newMachine.imageType == "appliances"')
-        p Virtkick will deliver appliances with various Linux distributions. Coming soon!
-
-      .isos.ng-cloak(ng-if='newMachine.imageType == "isos"')
-        h4 Mounted OS
-        input(name='machine[iso_distro_id]' ng-model='newMachine.isoId' required='true' class='hide')
+    // image choosing disabled for now, will be shown later or in demo
+      h4 Machine image
+      .image
+        input(name='machine[image_type]' ng-model='newMachine.imageType' required='true' class='hide')
         .radio-group
-          .radio-elem.text-center(ng-repeat='iso in isos')
-            label(ng-model='newMachine.isoId' btn-radio="iso.id" ng-disabled='newMachine.creatingMachine')
-              .wrap
-                img(ng-src='/assets/distros/{{iso.code}}.png' versioned)
-            .name
-              | {{iso.name}}
+          .radio-elem.text-center(ng-repeat="type in imageTypes")
+            label(ng-model='newMachine.imageType' btn-radio="type.id" ng-disabled='newMachine.creatingMachine')
+              .line
+                | {{type.name}}
+        .appliances.alert.alert-info.ng-cloak(ng-if='newMachine.imageType == "appliances"')
+          p Virtkick will deliver appliances with various Linux distributions. Coming soon!
+
+    .isos.ng-cloak(ng-if='newMachine.imageType == "isos"')
+      h4 Mounted OS
+      input(name='machine[iso_distro_id]' ng-model='newMachine.isoId' required='true' class='hide')
+      .radio-group
+        .radio-elem.text-center(ng-repeat='iso in isos')
+          label(ng-model='newMachine.isoId' btn-radio="iso.id" ng-disabled='newMachine.creatingMachine')
+            .wrap
+              img(ng-src='/assets/distros/{{iso.code}}.png' versioned)
+          .name
+            | {{iso.name}}
 
       .apps.alert.alert-info.ng-cloak(ng-if='newMachine.imageType == "apps"')
         p Virtkick will deliver a 1-click integration with Sandstorm. It allows you to install many webapps with a single click. Coming soon!

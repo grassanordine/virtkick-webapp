@@ -69,7 +69,10 @@ define(function(require) {
       }
     });
 
-    $scope.newMachine = {};
+    $scope.newMachine = {
+      // as iso is only available for now, make it default
+      imageType: $scope.imageTypes[0].id
+    };
 
     $scope.gotoMachine = function() {
       $state.go('user.machines.show', {
