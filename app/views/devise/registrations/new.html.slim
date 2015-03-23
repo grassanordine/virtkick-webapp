@@ -9,18 +9,16 @@
           = image_tag 'logo/logo-big.png'
   .container-fluid.wrapper-container.form-container
     .row
-      .col-md-12.form
+      .col-md-12.form.new-user
         h2.header
           | Sign up
         = form_for(resource, as: resource_name, url: registration_path(resource_name), html: {name: 'form'}) do |f|
           .form-group show-errors=1
-            = f.label :email, for: 'user[email]'
             .input-group
               .input-group-addon
                 .fa.fa-user
               = f.email_field :email, required: true, autofocus: true, class: 'form-control', placeholder: 'E-mail address', 'ng-model' => 'email'
           .form-group show-errors=1
-            = f.label :password, for: 'user[password]'
             - if @validatable
               p 
                 = @minimum_password_length
