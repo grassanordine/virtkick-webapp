@@ -56,17 +56,23 @@
 
     .name {
       i {
-        margin-right: 5px;
+        margin-right: 9px;
+      }
+
+      &.state-play a {
+        color: $vk-action-run-color;
+      }
+      &.state-pause a {
+        color: $vk-action-pause-color;
+      }
+      &.state-repeat a { 
+        color: $vk-action-restart-color;
+      }
+      &.state-stop a {
+        color: $vk-action-stop-color;
       }
 
       width: 70%;
-
-      &.on * {
-        color: $brand-success;
-      }
-      &.off * {
-        color: $brand-primary;
-      }
 
       .error {
         margin-left: 15px;

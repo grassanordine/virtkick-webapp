@@ -38,6 +38,22 @@ display: none !important;
   }
 }
 
+i.power-state-icon {
+  margin-right: 7px;
+  &.fa-play {
+    color: $vk-action-run-color;
+  }
+  &.fa-pause {
+    color: $vk-action-pause-color;
+  }
+  &.fa-repeat { 
+    color: $vk-action-restart-color;
+  }
+  &.fa-stop {
+    color: $vk-action-stop-color;
+  }
+}
+
 .header.row {
   margin-top: 30px;
   margin-bottom: 20px;
@@ -429,12 +445,17 @@ html {
   overflow-y: scroll;
 }
 
-.form-group .help-block {
-  display: none;
+.no-side-padding {
+  padding-left: 0px;
+  padding-right: 0px;
+} 
+
+.no-right-padding {
+  padding-right: 0px;
 }
 
-.form-group.has-error .help-block {
-  display: block;
+.no-left-padding {
+  padding-left: 0px;
 }
 
 .no-transition {

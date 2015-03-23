@@ -61,6 +61,10 @@
             margin: 0 auto;
             margin-top: -60px;
 
+            .btn .preloader {
+              background-color: transparent;
+            }
+
             .symbol {
               position: relative;
               height: 70px;

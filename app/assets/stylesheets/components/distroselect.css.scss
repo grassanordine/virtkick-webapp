@@ -1,0 +1,26 @@
+.distroselect .ui-select-bootstrap .ui-select-match button {
+  color: $vk-distroselect-button-color;
+  border-radius: $vk-distroselect-border-radius;
+  border-color: $vk-distroselect-button-bg-color;
+  background-color: $vk-distroselect-button-bg-color;
+
+  &:hover {
+    color: $vk-distroselect-button-hover-color;
+    background-color: $vk-distroselect-button-hover-bg-color;
+  }
+}
+
+.distroselect .ui-select-bootstrap .dropdown-menu {
+  color: $vk-distroselect-list-color;
+  background-color: $vk-distroselect-list-bg-color;
+
+  .ui-select-choices-row > a {
+    color: $vk-distroselect-list-color;
+    background-color: $vk-distroselect-list-bg-color;
+  }
+
+  .ui-select-choices-row.active > a, .ui-select-choices-row.active > a:hover, .ui-select-choices-row.active > a:focus, .ui-select-choices-row.active > a:active {
+    color: $vk-distroselect-list-highlight-color !important;
+    background-color: $vk-distroselect-list-highlight-bg-color !important;
+  }
+}

@@ -7,6 +7,7 @@
 
   .modal-dialog {
     .modal-content {
+      border-color: $vk-modal-border-color;
       border-radius: $vk-modal-border-radius;
       @include box-shadow(none !important);
 
@@ -16,6 +17,7 @@
         background-color: $vk-modal-header-bg-color;
         color: $vk-modal-header-color;
         font-weight: 700;
+        border-bottom: 1px solid $vk-modal-border-color;
         border-top-left-radius: $vk-modal-border-radius;
         border-top-right-radius: $vk-modal-border-radius;
 
@@ -55,7 +57,7 @@
         }
 
         .btn-lg {  
-          @include button-size(18px, 45px, $text-normal, $text-normal, 4px);
+          @include button-size(18px, 45px, $text-normal, $text-normal, $vk-border-large-radius);
         }
       }
 

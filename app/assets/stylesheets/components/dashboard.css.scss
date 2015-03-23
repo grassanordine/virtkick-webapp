@@ -17,6 +17,7 @@
 
   &.setup {
     background-color: transparent;
+    color: $vk-dashboard-inverse-color;
     border: 1px solid $vk-billing-setup-border-color;
 
     .setup-icon {
@@ -42,7 +43,7 @@
 
   .btn.btn-lg {
     border: 0px solid transparent !important;
-    @include button-size(18px, 35px, $text-normal, $text-normal, 4px);
+    @include button-size(18px, 35px, $text-normal, $text-normal, $vk-button-border-radius);
   }
 
   .value-field {
@@ -81,6 +82,7 @@
   }
 
   .value-field {  
+    color: $vk-dashboard-inverse-field-color;
     background-color: $vk-dashboard-inverse-field-bg-color;
     border-radius: $vk-dashboard-inverse-field-border-radius;
     padding: 8px 0px;
@@ -92,9 +94,14 @@
   }
 
   .progress {
+    background-color: $vk-dashboard-inverse-field-bg-color;
     margin-top: 8px;
     height: 10px;
     margin-bottom: 0;
+
+    .progress-bar {
+      background-color: $vk-dashboard-inverse-progress-bg-color;
+    }
   }
 }
 

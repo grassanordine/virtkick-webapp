@@ -1,0 +1,8 @@
+.checkbox .btn.btn-default {
+  color: $vk-checkbox-color;
+  background-color: $vk-checkbox-bg-color;
+
+  &:hover, &:active, &:focus {
+    background-color: $vk-checkbox-hover-bg-color;
+  }
+}

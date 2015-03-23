@@ -41,8 +41,8 @@
           th.storage Storage
       tbody
         tr(ng-repeat="machine in machines | orderBy:'hostname'")
-          td.name(ng-class="{on : machine.status.running, off: !machine.status.running}")
-            i(class='icon fa fa-{{machine.status.icon}}')
+          td(class="name state-{{machine.status.icon}}")
+            i.power-state-icon(class='icon fa fa-{{machine.status.icon}}')
             a(href="/machines/{{machine.id}}")
               | {{machine.hostname}}
           td.memory
@@ -53,6 +53,6 @@
     p You don't have a machine yet. Kick things off and <a href="/machines/new">create one!</a>
   div.ng-cloak(ng-if='state.loading')
     p
-      ajaxloader(size=20 style='margin-right: 5px')
+      ajaxloader(size=16 style='margin-right: 5px')
       | Wait a sec while we load all of your machines ...
 

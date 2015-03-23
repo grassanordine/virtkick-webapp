@@ -1,0 +1,34 @@
+.ui-select-bootstrap {
+  .ui-select-match {
+    button {
+      color: $vk-select-button-color;
+      border-radius: $vk-select-border-radius;
+      border-color: $vk-select-button-bg-color;
+      background-color: $vk-select-button-bg-color;
+
+      &:hover {
+        color: $vk-select-button-hover-color;
+        background-color: $vk-select-button-hover-bg-color;
+      }
+    }
+  }
+
+  .dropdown-menu {
+    color: $vk-select-list-color;
+    background-color: $vk-select-list-bg-color;
+
+    .ui-select-choices-row > a {
+      color: $vk-select-list-color;
+      background-color: $vk-select-list-bg-color;
+    }
+
+    .ui-select-choices-row.active > a, .ui-select-choices-row.active > a:hover, .ui-select-choices-row.active > a:focus, .ui-select-choices-row.active > a:active {
+      color: $vk-select-list-highlight-color !important;
+      background-color: $vk-select-list-highlight-bg-color !important;
+    }
+  }
+}
+
+.btn-default-focus {
+  box-shadow: none !important;
+}
