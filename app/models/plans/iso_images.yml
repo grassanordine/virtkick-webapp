@@ -89,6 +89,6 @@
   short_name: 10.1
   long_name: FreeBSD 10.1
   mirrors:
-  - http://ftp.freebsd.org/pub/FreeBSD/releases/amd64/amd64/ISO-IMAGES/10.1/FreeBSD-10.1-RELEASE-amd64-disc1.iso
+  - http://ftp.freebsd.org/pub/FreeBSD/releases/ISO-IMAGES/10.1/FreeBSD-10.1-RELEASE-amd64-disc1.iso
   - http://ftp.icm.edu.pl/packages/FreeBSD/releases/ISO-IMAGES/10.1/FreeBSD-10.1-RELEASE-amd64-disc1.iso
-  sha512: 070b9bade485617219a4a89830135f18aee29635abe3a500ae6d9dd374964e36096192bfc1e0f183e6043d076b6ce84945def8ac486a3e08d052406b99ef0e67
+  sha256: 0c3d64ce48c3ef761761d0fea07e1935e296f8c045c249118bc91a7faf053a6b
