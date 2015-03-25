@@ -63,17 +63,23 @@ table.table {
           .buttons {
             opacity: 0;
 
-            a.btn {
+            a {
               margin: 0px;
               padding: 6px;
-              color: $vk-table-button-color;
-              @include transition(color, 0.1s, ease-in, 0s);
               display: inline-block;
-
-              &:hover, &:focus, &:active {
-                color: darken($vk-table-button-color, 10%);
-                @include transition(opacity, 0.1s, ease-in, 0s);
+              
+              &:not(.btn) {
+                cursor: pointer;
+                color: $vk-table-link-color;
+                @include transition(color, 0.1s, ease-in, 0s);
+                
+                &:hover, &:focus, &:active {
+                  text-decoration: none;
+                  color: $vk-table-link-hover-color;
+                  @include transition(opacity, 0.1s, ease-in, 0s);
+                }
               }
+              
 
               span.action {
                 margin-left: 5px;

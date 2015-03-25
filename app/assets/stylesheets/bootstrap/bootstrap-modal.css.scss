@@ -7,6 +7,7 @@
 
   .modal-dialog {
     .modal-content {
+      background-color: transparent;
       border-color: $vk-modal-border-color;
       border-radius: $vk-modal-border-radius;
       @include box-shadow(none !important);
