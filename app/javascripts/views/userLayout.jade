@@ -6,7 +6,7 @@
   .header.col-md-6
     div.ng-cloak(ng-if='app.header')
       h1
-        span(ng-if='app.header.icon' class="oi oi-{{app.header.icon}}")
+        span(ng-if='app.header.icon' class="{{app.header.icon}}")
         | {{app.header.title}}
   .action.col-md-3
     div.top-action-button.fade-ng-show(ng-show='app.action.show')
@@ -36,7 +36,7 @@
     .dropdown
       button.btn.btn-primary
         span.caret
-    span(ng-if='app.hasAdminMode')
+    span.fade-ng-switch(ng-show='app.hasAdminMode && !app.menuCollapse')
       switcher(ng-model='app.adminMode' left='User' right='Admin' left-icon='fa fa-rocket' right-icon='fa fa-gear')
   .col-md-9(style='position: relative;')
     div(ui-view="")

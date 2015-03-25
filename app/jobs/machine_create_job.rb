@@ -17,8 +17,15 @@ class MachineCreateJob < TrackableJob
     end
 
     step do
-      machine = MetaMachine.create_machine! \
+      machine = MetaMachine.create_machine \
           @new_machine.hostname, @new_machine.user_id, hypervisor.id, @new_machine.hostname # TODO: support multiple hypervisors
+
+      # Ip.transaction do
+      #   puts 'reserving Ip'
+      #   ip = Ip.where({ip_pool_id: hypervisor.ip_pools.pluck(:id)}).not_taken.first
+      #   machine.ips << ip
+      #   machine.save!
+      # end if hypervisor.network[:type] == 'bridge' # TODO improve this
 
       @new_machine.update_attributes! \
           given_meta_machine_id: machine.id,

@@ -36,11 +36,17 @@ domain type='kvm'
     controller index='0' type='ide'
       address bus='0x00' domain='0x0000' function='0x1' slot='0x01' type='pci'
 
-    - if hypervisor[:network][:type] == 'bridge'
+    - if machine.network_type == 'direct'
       interface type='direct'
         mac address='#{machine.mac_address}'
         source dev=hypervisor[:network][:dev] mode='bridge'
-    - else
+    - elsif machine.network_type == 'bridge'
+      interface type='bridge'
+        mac address='#{machine.mac_address}'
+        source dev='br0' mode='bridge'
+        filterref filter='clean-traffic'
+          parameter name='IP' value='150.107.224.1'
+    - elsif machine.network_type == 'nat'
       interface type='network'
         - network = machine.networks.public
         source network = network.pool_name

@@ -7,7 +7,7 @@ class MachinesController < ApiController
   define_hooks :on_destroy
   
   include FindMachine
-  find_machine_before_action :id, except: [:index, :new, :create]
+  find_machine_before_action :id, except: [:index, :create]
 
   def index
     respond_to do |format|
@@ -48,7 +48,7 @@ class MachinesController < ApiController
     machine = @meta_machine.machine.as_json.merge disk_types: @meta_machine.hypervisor.disk_types
     render json: machine
   rescue ActiveRecord::RecordNotFound
-    render json: {error: 'machine not found'}
+    raise SafeException, 'Machine not found'
   end
 
   def destroy

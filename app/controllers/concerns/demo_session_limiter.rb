@@ -10,8 +10,9 @@ module DemoSessionLimiter
       @demo_timeout = Rails.configuration.x.demo_timeout
 
       return unless user_signed_in?
-      if current_user.guest? and current_user.created_at <= @demo_timeout.minutes.ago
+      if current_user.role == 'guest' and current_user.created_at <= @demo_timeout.minutes.ago
         sign_out
+        # FIX THIS TO Angular
         flash[:alert] = "Demo sessions are limited to #{@demo_timeout} minutes.\n Start again if you wish! :-)"
         redirect_to '/'
       end

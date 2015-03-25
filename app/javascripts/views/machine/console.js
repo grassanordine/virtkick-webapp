@@ -70,6 +70,8 @@ define(function(require) {
     scope.data = {};
     scope.data.isConnecting = false;
 
+
+    var afterConnectTimeout;
     var destroying = false;
     scope.rfb = new RFB({
       'target': element.find('canvas')[0],
@@ -83,7 +85,18 @@ define(function(require) {
         scope.state.vncState = state;
 
         if(state !== 'normal' && state !== 'disconnected') {
+          if(state == 'connect') {
+            afterConnectTimeout = setTimeout(function() {
+              scope.rfb.disconnect();
+              connect();
+            }, 2000);
+          }
+
           scope.data.isConnecting = true;
+        }
+
+        if(state !== 'connect') {
+          clearTimeout(afterConnectTimeout);
         }
 
         if(state === 'failed' && !destroying) {

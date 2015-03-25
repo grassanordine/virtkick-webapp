@@ -1,6 +1,7 @@
 class MetaMachine < ActiveRecord::Base
   belongs_to :user
   belongs_to :hypervisor
+  has_many :ips
 
   scope :not_deleted, -> {
     where deleted: false
@@ -27,13 +28,13 @@ class MetaMachine < ActiveRecord::Base
     update_attribute :deleted, true
   end
 
-  def self.create_machine! hostname, user_id, hypervisor_id, libvirt_machine_name
+  def self.create_machine hostname, user_id, hypervisor_id, libvirt_machine_name
     machine = MetaMachine.new \
         hostname: hostname,
         user_id: user_id,
         hypervisor_id: hypervisor_id,
         libvirt_machine_name: libvirt_machine_name
-    machine.save!
+    machine.save
     machine
   end
 

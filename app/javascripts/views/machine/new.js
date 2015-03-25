@@ -57,7 +57,7 @@ define(function(require) {
                                             $hook, $state, machineService) {
 
     $scope.app.header.title = 'Create new machine';
-    $scope.app.header.icon = 'monitor';
+    $scope.app.header.icon = 'oi oi-monitor';
 
     $scope.plans = plansData;
     $scope.isos = isosData;

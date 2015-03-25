@@ -10,7 +10,8 @@ class LibvirtImporter
   end
 
   def import_machine hypervisor, machine, user
-    MetaMachine.create_machine! machine.hostname, user.id, hypervisor.id, machine.hostname
+    machine = MetaMachine.create_machine machine.hostname, user.id, hypervisor.id, machine.hostname
+    machine.save!
   rescue Exception => e
     puts "Could not import machine #{machine.hostname} from libvirt, skipping."
   end

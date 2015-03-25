@@ -13,7 +13,12 @@ class Wvm::Setup < Wvm::Base
       hypervisor.wvm_id = id
       hypervisor.save
 
-      create_network_if_needed hypervisor
+
+      networks = Array.wrap(hypervisor.network)
+      networks.each do |network|
+        create_network_if_needed hypervisor, network
+      end
+
       all_storages(hypervisor).each do |storage|
         create_storage_if_needed hypervisor, storage
       end
@@ -29,9 +34,12 @@ class Wvm::Setup < Wvm::Base
   def self.check hypervisor
     handle_exceptions do
       id = find_connection hypervisor
-      find_network id
-      all_storages(id).each do |storage|
-        find_storage id, storage[:id]
+      networks = Array.wrap(hypervisor.network)
+      networks.each do |network|
+        find_network hypervisor, network
+      end
+      all_storages(hypervisor).each do |storage|
+        find_storage hypervisor, storage[:id]
       end
     end
   end
@@ -96,17 +104,17 @@ class Wvm::Setup < Wvm::Base
 
   # Network
 
-  def self.create_network_if_needed hypervisor
+  def self.create_network_if_needed hypervisor, network
     begin
-      find_network hypervisor
+      find_network hypervisor, network
     rescue Exception
-      create_network hypervisor
+      create_network hypervisor, network
     end
   end
 
-  def self.find_network hypervisor
+  def self.find_network hypervisor, network
 
-    network = call :get, "/#{hypervisor.wvm_id}/network/#{hypervisor.network[:id]}"
+    network = call :get, "/#{hypervisor.wvm_id}/network/#{network[:id]}"
     if network[:state] != 1
       raise Errors, ['Network not active']
     end
@@ -114,15 +122,11 @@ class Wvm::Setup < Wvm::Base
     raise Error, 'Network not configured.'
   end
 
-  def self.create_network hypervisor
-
-    puts "Network in hypervisor #{hypervisor}"
-    network = hypervisor[:network]
-
-    return if network[:type] == 'bridge'
+  def self.create_network hypervisor, network
+    return if network[:type] == 'bridge' or network[:type] == 'direct'
 
     begin
-      network_url = "/#{hypervisor.wvm_id}/network/#{hypervisor.network[:id]}"
+      network_url = "/#{hypervisor.wvm_id}/network/#{network[:id]}"
       libvirt_network = call :get, network_url
     rescue Errors
       call :post, "/#{hypervisor.wvm_id}/networks", create: '',

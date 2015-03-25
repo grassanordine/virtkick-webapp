@@ -1,9 +1,9 @@
 describe 'Demo sessions' do
   before do
-    Hypervisor.bootstrap
     SetupController.class_variable_set :@@ready, true
     Rails.configuration.x.demo_timeout = 5
     Mode.set 'demo'
+    Hypervisor.bootstrap
   end
 
   after do
@@ -12,9 +12,9 @@ describe 'Demo sessions' do
 
   it 'logs out after timeout' do
     post guests_path
-    expect(response).to redirect_to '/machines'
+    expect(response).to render_template(:home)
 
-    stub_request(:get, "http://0.0.0.0:8000/1/storages").
+    stub_request(:get, 'http://0.0.0.0:8000/1/storages').
         with(:headers => {:'Accept'=>'application/json'}).
         to_return(
             status: 200,

@@ -144,10 +144,15 @@ define(function(require) {
 
     updateSelectedIso();
 
+    function showAndRethrow(error) {
+      $scope.machine.error = error.message || error;
+      throw error;
+    }
+
     $scope.machine.deletePermanently = function() {
       return machineService.deletePermanently($scope.machine.id)
           .then(function() {
-            window.location.href = '/machines';
+            $state.go('user.machines.index');
           });
     };
 
@@ -180,8 +185,9 @@ define(function(require) {
 
     $scope.doAction = function(name) {
       $scope.requesting[name] = true;
+      $scope.machine.erorr = null;
       return machineService.doAction($scope.machine.id, name)
-          .then(updateState)
+          .then(updateState).catch(showAndRethrow)
         .finally(function() {
           $scope.requesting[name] = false;
       });
@@ -208,8 +214,6 @@ define(function(require) {
     };
 
     $scope.console = {}; // will be bound by directive
-
-    var baseUrl = '/machines/' + $scope.machine.id;
 
     $scope.$watch(function() {
 
@@ -285,6 +289,9 @@ define(function(require) {
         if(err && err.status === 0) {
           throw err;
         }
+        // make a better message
+        $state.go('user.machines.index');
+
         $scope.machine.stateDisconnected = true;
         timeoutHandler = $timeout(updateState, 5000);
         throw err;

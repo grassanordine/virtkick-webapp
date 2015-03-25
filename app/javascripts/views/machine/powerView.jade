@@ -35,8 +35,6 @@
 
   //- = render partial: '/flash', locals: {section: 'power'}
 
-  .alert.alert-danger.fade.in(ng-if="data.error")
-    | {{data.error}}
   .controls
     .btn-group
       a.btn.btn-default(ng-click="doAction('start')" ng-class="{disabled: !canDo.start}")
@@ -88,6 +86,7 @@
               span.icon.fa.fa-power-off
               span.status Hard reset
 
-  div(ng-if="machine.error" class="alert alert-danger fade in")
-    button.close(data-dismiss="alert") ×
+
+  div.alert.alert-danger(ng-show='machine.error')
+    button.close(data-dismiss="alert" ng-click='machine.error = null') ×
     | {{machine.error}}

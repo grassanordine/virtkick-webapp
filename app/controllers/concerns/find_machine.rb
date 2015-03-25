@@ -6,8 +6,12 @@ module FindMachine
 
     def self.find_machine_before_action key, *options
       around_filter lambda { |controller, block|
-        @meta_machine = current_user.meta_machines.find params[key]
-        block.call
+        begin
+          @meta_machine = current_user.meta_machines.find params[key]
+          block.call
+        rescue Exception => e
+          raise SafeException, 'Cannot find machine with given id'
+        end
       }, *options
     end
   end

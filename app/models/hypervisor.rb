@@ -6,7 +6,8 @@ class Hypervisor < ActiveRecord::Base
   serialize :disk_types, JsonWithIndifferentAccess
   serialize :spec, JsonWithIndifferentAccess
 
-  has_many :machines
+  has_and_belongs_to_many :ip_pools
+  has_many :meta_machines
 
   def self.find_best_hypervisor plan
     found = Hypervisor.order('random()').first
@@ -33,6 +34,18 @@ class Hypervisor < ActiveRecord::Base
           iso: wvm_hypervisor[:iso],
           is_setup: false
     end
+  end
+
+  def bridge
+    Array.wrap(network).find { |c| c[:type] == 'bridge' }
+  end
+
+  def nat
+    Array.wrap(network).find { |c| c[:type] == 'nat' }
+  end
+
+  def route
+    Array.wrap(network).find { |c| c[:type] == 'route' }
   end
 
   def setup import_machines: false

@@ -4,6 +4,7 @@ class CreateIpPool < ActiveRecord::Migration
       t.string :netmask
       t.string :gateway
       t.integer :hypervisor_id, default: 1 # TODO: remove once we support more hypervisors
+      t.string :note
     end
 
     create_table :ips do |t|

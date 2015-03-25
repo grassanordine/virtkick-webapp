@@ -165,33 +165,33 @@ class Wvm::Machine < Wvm::Base
     ('%02x'%((rand 64)*4|2)) + (0..4).inject(''){|s,x|s+':%02x'%(rand 256)}
   end
 
-  def self.build_new_machine new_machine, hypervisor, description
+  def self.build_new_machine machine, hypervisor, description
     uuid = SecureRandom.uuid
-    networks = setup_networks uuid, hypervisor
+    networks = setup_networks hypervisor
 
     Infra::Machine.new \
         uuid: uuid,
         description: description,
-        hostname: new_machine.hostname,
-        memory: new_machine.plan.memory,
-        processors: new_machine.plan.cpu,
-        iso_distro_id: new_machine.iso_distro.id,
-        iso_image_id: new_machine.iso_distro.iso_images.first.id,
+        hostname: machine.hostname,
+        memory: machine.plan.memory,
+        processors: machine.plan.cpu,
+        iso_distro_id: machine.iso_distro.id,
+        iso_image_id: machine.iso_distro.iso_images.first.id,
         mac_address: random_mac_address,
         networks: networks,
+        network_type: 'nat',
         vnc_listen_ip: hypervisor[:host],
         vnc_password: SecureRandom.urlsafe_base64(32),
         iso_dir: hypervisor[:iso][:path],
         hypervisor_id: hypervisor[:wvm_id]
   end
 
-  def self.setup_networks uuid, hypervisor
+  def self.setup_networks hypervisor
     networks = Infra::Networks.new
-    return if hypervisor[:network][:type] == 'bridge'
 
     networks.public = Infra::Network.new \
-        pool_name: hypervisor[:network][:id],
-        dhcp_network: IPAddress(hypervisor[:network][:address])
+        pool_name: hypervisor.nat[:id],
+        dhcp_network: IPAddress(hypervisor.nat[:address])
     networks
   end
 end

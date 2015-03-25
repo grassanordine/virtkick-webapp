@@ -10,6 +10,12 @@ define(function(require) {
     var machinesCache;
     var cacheTime;
 
+    function extractErrorMessage(response) {
+      if(response.data && response.data.error)
+        throw response.data.error;
+      throw response;
+    }
+
     function isCacheFresh() {
       return cacheTime && new Date().getTime() - cacheTime < 10000
     }
@@ -46,7 +52,7 @@ define(function(require) {
           cacheTime = new Date().getTime();
 
           return humps.camelizeKeys(res.data);
-        });
+        }).catch(extractErrorMessage);
       },
       createMachine: function(data) {
         return $http.post('/api/machines.json', {
@@ -64,7 +70,7 @@ define(function(require) {
             }
             return data.given_meta_machine_id;
           });
-        }).finally(cleanCache);
+        }).catch(extractErrorMessage).finally(cleanCache);
       },
       validateHostname: function(hostname) {
         return $http.post('/api/machines',  {
@@ -84,21 +90,20 @@ define(function(require) {
         }).then(function(response) {
           var machineData = humps.camelizeKeys(response.data);
           return machineData;
-        });
+        }).catch(extractErrorMessage);
       },
       deletePermanently: function(machineId) {
-        return $http.delete('/api/machines/' + machineId)
-            .finally(cleanCache);
+        return $http.delete('/api/machines/' + machineId).finally(cleanCache).catch(extractErrorMessage);
       },
       deleteDisk: function(machineId, diskId) {
-        return $http.delete('/api/machines/' + machineId + '/disks/' + diskId);
+        return $http.delete('/api/machines/' + machineId + '/disks/' + diskId).catch(extractErrorMessage);
       },
       createDisk: function(machineId, diskType) {
         return $http.post('/api/machines/' + machineId + '/disks', {
           disk: humps.decamelizeKeys(diskType)
         }).then(function(res) {
           return handleProgress(res.data.progress_id);
-        });
+        }).catch(extractErrorMessage);
       },
       changeIso: function(machineId, imageId) {
         return $http.post('/api/machines/' + machineId + '/mount_iso', {
@@ -107,15 +112,16 @@ define(function(require) {
           }
         }).then(function(res) {
           return handleProgress(res.data.progress_id);
-        });
+        }).catch(extractErrorMessage);
       },
       doAction: function(machineId, action) {
         return $http.post('/api/machines/' + machineId + '/' + action).then(function(res) {
           return handleProgress(res.data.progress_id);
-        }).finally(cleanCache);
+        }).catch(extractErrorMessage).finally(cleanCache);
       },
       forceRestart: function(machineId) {
-        return $http.post('/api/machines/' + machineId + '/force_restart');
+        return $http.post('/api/machines/' + machineId + '/force_restart')
+            .catch(extractErrorMessage);
       }
     }
   });

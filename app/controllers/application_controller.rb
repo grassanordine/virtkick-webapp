@@ -18,22 +18,30 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  rescue_from SafeException do |e|
-    if request.format == 'application/json'
-      render json: {error:  e.message}, status: 500
-    else
-      raise e
-    end
-  end
-
+  problem_message = 'A problem occured, we\'ve already notified our engineers, sorry!'
   rescue_from Exception do |e|
-    if request.format == 'application/json'
-      status = 500
-      status = 440 if e.is_a? ActionController::InvalidAuthenticityToken
-
-      render_exception e, 'A problem occured, we\'ve already notified our engineers, sorry!', status
+    if e.is_a? ActionView::MissingTemplate
+      if request.format == 'application/json'
+        #e.message = 'API end-point did not render anything'
+        render_exception e, problem_message
+      else
+        raise e
+      end
+    elsif e.is_a? SafeException
+      if request.format == 'application/json'
+        render json: {error:  e.message}, status: 500
+      else
+        raise e
+      end
     else
-      raise e
+      if request.format == 'application/json'
+        status = 500
+        status = 440 if e.is_a? ActionController::InvalidAuthenticityToken
+
+        render_exception e, problem_message, status
+      else
+        raise e
+      end
     end
   end
 
@@ -75,5 +83,9 @@ class ApplicationController < ActionController::Base
 
   def render_success
     render json: {status: 'success'}
+  end
+
+  def render_invalid obj
+    render json: {errors: obj.errors}, status: :unprocessable_entity
   end
 end
