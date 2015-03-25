@@ -8,7 +8,7 @@
       h1
         span(ng-if='app.header.icon' class="{{app.header.icon}}")
         | {{app.header.title}}
-  .action.col-md-3
+  .action.col-md-3.no-right-padding
     div.top-action-button.fade-ng-show(ng-show='app.action.show')
       a.ng-cloak(href='{{app.action.url}}' class='btn btn-primary btn-block') {{app.action.title}}
 .row

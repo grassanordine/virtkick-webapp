@@ -1,4 +1,7 @@
 .preloader {
+  background-color: $vk-preloader-bg-color;
+  border-radius: $vk-preloader-border-radius;
+
   .preloader-inner .preloader-rocket-wrapper .preloader-rocket path {
     fill: $vk-preloader-rocket-color;
   }

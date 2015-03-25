@@ -27,14 +27,17 @@ $vk-static-bg-light-color: #F0EDE3 !default; // lighter creamy
 $vk-static-bg-mild-color: #F9F8F4 !default; // almost not visible creamy 
 $vk-static-field-bg-color: #FFFFFF !default; // white
 
-$vk-action-run-color: #3FC380 !default; // green
-$vk-action-pause-color: #A2DED0 !default; // light blue
-$vk-action-restart-color: #F2784B !default; // orange
-$vk-action-stop-color: #EC4863 !default; // pinkish
+$vk-action-run-color: #96C33F !default; // green
+$vk-action-pause-color: desaturate(#96C33F, 90%) !default; // gray
+$vk-action-restart-color: #96C33F !default; // green
+$vk-action-stop-color: #FF5948 !default; // redish
 
+$vk-success-color: #96C33F !default; // green
+$vk-error-color: #FF5948 !default; // red
+$vk-warning-color: #F5BB82 !default; // orange
 $vk-muted-color: #D1C7CF !default; // violet muted on white
 $vk-dead-color: #000000 !default; // black
-$vk-danger-color: $vk-action-stop-color !default; // pink
+$vk-danger-color: $vk-error-color !default; // pink
 $vk-transparent-color: transparent !default; // transparent
 $vk-element-on-color: #EC4863 !default; // pink (duplicated primary)
 $vk-element-off-color: #E1DFD8 !default; // a little creamy gray
@@ -48,7 +51,6 @@ $vk-border-small-radius: 4px !default;
 // 3. track all hardcorded with regexp #...
 // 4. check for all inproper bootstrap vars use
 // 5. refactor size vars names
-// 6. additional variables - border radius, shading?
 
 // ------ vk components ------ // 
 
@@ -64,13 +66,26 @@ $vk-navbar-border-radius: $vk-border-radius !default;
 $vk-navpills-border-radius: $vk-border-radius !default; 
 $vk-navpills-active-border-radius: 0px !default;
 
+$vk-button-primary-color: white !default; 
 $vk-button-primary-bg-color: $vk-brand-primary-color !default;
-$vk-button-danger-color: lighten($vk-action-stop-color, 35%) !default;
+$vk-button-primary-disabled-bg-color: lighten($vk-button-primary-bg-color, 15%) !default; 
+$vk-button-default-color: $vk-brand-secondary-color !default; 
+$vk-button-default-bg-color: $vk-static-bg-color !default; 
+$vk-button-default-disabled-bg-color: lighten($vk-button-default-bg-color, 45%) !default; 
+$vk-button-danger-color: lighten($vk-action-stop-color, 35%) !default; 
 $vk-button-danger-bg-color: $vk-action-stop-color !default;
-$vk-button-danger-border-color: $vk-button-danger-bg-color !default;
-$vk-button-danger-hover-bg-color: darken($vk-button-danger-bg-color, 10%) !default;
-$vk-button-danger-hover-border-color: $vk-button-danger-hover-bg-color !default;
-$vk-button-border-radius: $vk-border-radius !default;
+$vk-button-danger-disabled-bg-color: lighten($vk-button-danger-bg-color, 45%) !default; 
+$vk-button-info-color: $vk-text-color !default;
+$vk-button-info-bg-color: $vk-muted-color !default;
+$vk-button-info-disabled-bg-color: lighten($vk-button-info-bg-color, 45%) !default; 
+$vk-button-warning-color: $vk-brand-secondary-color !default; 
+$vk-button-warning-bg-color: $vk-button-default-bg-color !default; 
+$vk-button-warning-disabled-bg-color: lighten($vk-button-warning-bg-color, 45%) !default; 
+$vk-button-success-color: white !default; 
+$vk-button-success-bg-color: $vk-success-color !default; 
+$vk-button-success-disabled-bg-color: lighten($vk-button-success-bg-color, 45%) !default; 
+$vk-button-disabled-opacity: 0.5 !default;
+$vk-button-border-radius: $vk-border-radius !default; 
 
 $vk-dropdown-bg-color: $vk-static-bg-color !default;
 $vk-dropdown-border-radius: $vk-border-radius !default;
@@ -93,15 +108,23 @@ $vk-radio-border-color: $vk-border-color !default;
 $vk-radio-bg-color: $vk-transparent-color !default;
 $vk-radio-border-color: $vk-border-color !default;
 $vk-radio-border-radius: $vk-border-radius !default;
+$vk-radio-border-bottom-size: $vk-border-radius !default; 
 $vk-radio-stripe-bg-color: $vk-border-color !default;
+$vk-radio-active-color: $vk-text-color !default;
 $vk-radio-active-bg-color: $vk-static-bg-light-color !default;
 $vk-radio-active-stripe-bg-color: $vk-brand-primary-color !default;
+
+$vk-checkbox-color: $vk-brand-primary-color !default; 
+$vk-checkbox-bg-color: $vk-static-bg-color !default; 
+$vk-checkbox-border-color: $vk-static-bg-color !default; 
+$vk-checkbox-hover-bg-color: darken($vk-checkbox-bg-color, 5%) !default; 
 
 $vk-table-color: $vk-text-mild-color !default;
 $vk-table-header-icon-color: $vk-static-light-color !default;
 $vk-table-border-color: $vk-border-color !default;
 $vk-table-border-radius: $vk-border-radius !default;
-$vk-table-button-color: $vk-static-light-color !default;
+$vk-table-link-color: darken($vk-static-light-color, 10%) !default;
+$vk-table-link-hover-color: darken($vk-static-light-color, 25%) !default;
 $vk-table-stripe-bg-color: $vk-static-bg-mild-color !default;
 $vk-table-total-color: $vk-static-color !default;
 $vk-table-more-color: $vk-text-mild-color !default;
@@ -111,6 +134,9 @@ $vk-table-more-icon-color: $vk-brand-primary-color !default;
 $vk-alert-info-color: $vk-text-color !default;
 $vk-alert-info-bg-color: $vk-static-bg-light-color !default;
 $vk-alert-info-border-color: $vk-alert-info-bg-color !default;
+$vk-alert-warning-color: $vk-text-color !default; 
+$vk-alert-warning-bg-color: lighten($vk-warning-color, 18%) !default;
+$vk-alert-warning-border-color: lighten($vk-warning-color, 18%) !default; 
 $vk-alert-error-color: darken(red, 35%) !default;
 $vk-alert-error-bg-color: lighten(red, 10%) !default;
 $vk-alert-error-border-color: $vk-alert-error-bg-color !default;
@@ -120,10 +146,9 @@ $vk-modal-header-color: $vk-text-mild-color !default;
 $vk-modal-header-bg-color: $vk-static-bg-light-color !default;
 $vk-modal-body-bg-color: $vk-body-bg-color !default;
 $vk-modal-footer-bg-color: $vk-body-bg-color !default;
+$vk-modal-border-color: $vk-border-color !default; 
 $vk-modal-border-radius: $vk-border-radius !default;
 $vk-modal-padding: 25px !default;
-
-$vk-progress-border-radius: $vk-border-radius !default;
 
 $vk-dashboard-color: $vk-static-color !default;
 $vk-dashboard-bg-color: $vk-static-bg-color !default;
@@ -134,12 +159,42 @@ $vk-dashboard-field-border-radius: $vk-border-radius !default;
 $vk-dashboard-inverse-color: $vk-text-mild-color !default;
 $vk-dashboard-inverse-border-color: $vk-border-color !default;
 $vk-dashboard-inverse-border-radius: $vk-border-radius !default;
+$vk-dashboard-inverse-field-color: $vk-text-mild-color !default; 
 $vk-dashboard-inverse-field-bg-color: $vk-static-bg-color !default;
 $vk-dashboard-inverse-field-border-radius: $vk-border-radius !default;
+$vk-dashboard-inverse-progress-bg-color: $vk-brand-primary-color !default; 
 $vk-dashboard-inverse-danger-border-color: lighten($vk-danger-color, 20%) !default;
+
+$vk-progress-bg-color: $vk-static-bg-color !default; 
+$vk-progress-stripe-bg-color: $vk-brand-primary-color !default; 
+$vk-progress-border-radius: $vk-border-radius !default;
+
+$vk-ajaxloader-color: $vk-brand-primary-color !default;
 
 $vk-preloader-rocket-color: $vk-body-bg-color !default;
 $vk-preloader-window-color: $vk-brand-primary-color !default;
+$vk-preloader-bg-color: $vk-preloader-window-color !default; 
+$vk-preloader-border-radius: $vk-border-radius !default;
+
+$vk-select-button-color: $vk-button-default-color !default; 
+$vk-select-button-bg-color: $vk-button-default-bg-color !default; 
+$vk-select-button-hover-color: $vk-button-default-color !default; 
+$vk-select-button-hover-bg-color: darken($vk-button-default-bg-color, 5%) !default; 
+$vk-select-list-color: $vk-button-default-color !default; 
+$vk-select-list-bg-color: $vk-button-default-bg-color !default; 
+$vk-select-list-highlight-color: $vk-button-primary-color !default; 
+$vk-select-list-highlight-bg-color: $vk-button-primary-bg-color !default; 
+$vk-select-border-radius: $vk-border-radius !default; 
+
+$vk-distroselect-button-color: $vk-select-button-color !default; 
+$vk-distroselect-button-bg-color: $vk-select-button-bg-color !default; 
+$vk-distroselect-button-hover-color: $vk-select-button-hover-color !default; 
+$vk-distroselect-button-hover-bg-color: darken($vk-select-button-hover-bg-color, 5%) !default; 
+$vk-distroselect-list-color: $vk-select-list-color !default; 
+$vk-distroselect-list-bg-color: $vk-select-list-bg-color !default; 
+$vk-distroselect-list-highlight-color: $vk-select-list-highlight-color !default; 
+$vk-distroselect-list-highlight-bg-color: $vk-select-list-highlight-bg-color !default; 
+$vk-distroselect-border-radius: $vk-select-border-radius !default; 
 
 $vk-switcher-color: lighten($vk-text-color, 30%) !default;
 $vk-switcher-hover-color: darken($vk-text-color, 10%) !default;
@@ -168,9 +223,10 @@ $vk-setup-color: $vk-text-mild-color !default;
 $vk-setup-button-color: $vk-muted-color !default;
 $vk-setup-button-bg-color: $vk-transparent-color !default;
 $vk-setup-button-active-color: $vk-brand-primary-color !default;
+$vk-setup-button-active-bg-color: $vk-static-bg-light-color !default; 
 $vk-setup-button-border-color: $vk-border-color !default;
 $vk-setup-button-border-radius: $vk-border-radius !default;
-$vk-setup-button-border-stripe-active-radius: $vk-border-radius !default;
+$vk-setup-button-border-bottom-active-size: $vk-border-radius !default;
 $vk-setup-button-disabled-opacity: 0.4;
 $vk-setup-button-active-border-color: $vk-brand-primary-color !default;
 
@@ -193,67 +249,3 @@ $vk-billing-tour-summary-color: $vk-text-mild-color !default;
 $vk-billing-tour-skip-button-color: $vk-text-mild-color !default;
 
 $vk-img-logo-center-left-margin: -40px;
-
-// ------ bootstrap overrides ------ // 
-
-$text-color: $vk-text-color;
-$brand-primary: $vk-brand-primary-color;
-$brand-secondary: $vk-brand-secondary-color;
-
-$body-bg: $vk-body-bg-color;
-$grid-float-breakpoint: 992px;
-$font-family-sans-serif: 'Source Sans Pro', sans-serif;
-$font-size-base: 18px;
-$font-size-h1: 32px;
-$font-size-h2: 26px;
-$font-size-h3: $font-size-base;
-
-$input-border-focus: $vk-brand-primary-color;
-$table-border-color: $vk-border-color;
-
-$brand-info: $vk-static-bg-color;
-$btn-info-color: $text-color;
-$btn-default-bg: $vk-static-bg-color;
-$btn-default-color: $brand-secondary;
-
-$modal-inner-padding: $vk-modal-padding;
-$modal-content-border-color: $vk-border-color;
-$modal-backdrop-bg: lighten($vk-modal-header-bg-color, 3%);
-$modal-backdrop-opacity: .75;
-$modal-header-border-color: $vk-border-color;
-$modal-footer-border-color: $modal-header-border-color;
-$modal-lg: 550px;
-$modal-md: 550px;
-$modal-sm: 300px;
-
-$navbar-margin-top: 0;
-$navbar-default-border: $vk-transparent-color;
-$navbar-default-bg: $vk-static-bg-color;
-$navbar-default-color: $vk-navbar-color;
-
-$navbar-border-radius: $vk-navbar-border-radius;
-$navbar-default-link-color: $navbar-default-color;
-$navbar-default-link-active-bg: $navbar-default-bg;
-$navbar-default-link-active-color: $brand-primary;
-$navbar-default-link-hover-bg: $vk-static-bg-color;
-$navbar-default-link-hover-color: $vk-brand-primary-color;
-
-$navbar-padding-vertical: 7px;
-$navbar-height: 68px;
-
-$nav-link-hover-bg: $vk-static-bg-color;
-$nav-tabs-active-link-hover-color: $brand-primary;
-$nav-tabs-border-color: $vk-brand-primary-color;
-$nav-tabs-active-link-hover-border-color: $nav-tabs-border-color;
-
-$progress-bg: $vk-static-bg-color;
-
-$border-radius-base: $vk-border-radius;
-$border-radius-large: $vk-border-large-radius;
-$border-radius-small: $vk-border-small-radius;
-$input-border-radius: $vk-input-border-radius;
-$input-border-radius-large: $vk-input-border-large-radius;
-$input-border-radius-small: $vk-input-border-small-radius;
-$alert-border-radius: $vk-alert-border-radius;
-$progress-border-radius: $vk-progress-border-radius;
-$nav-pills-border-radius: $vk-navpills-border-radius;

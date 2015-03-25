@@ -1,0 +1,85 @@
+// winged 
+//$brand-success: #354567;
+//$btn-primary-bg: $vk-brand-secondary-color;
+
+// ------ bootstrap overrides ------ // 
+
+$text-color: $vk-text-color;
+$brand-primary: $vk-brand-primary-color;
+$brand-secondary: $vk-brand-secondary-color;
+
+$body-bg: $vk-body-bg-color;
+$grid-float-breakpoint: 992px;
+$font-family-sans-serif: 'Source Sans Pro', sans-serif;
+$font-size-base: 18px;
+$font-size-h1: 32px;
+$font-size-h2: 26px;
+$font-size-h3: $font-size-base;
+
+$input-border-focus: $vk-brand-primary-color;
+$table-border-color: $vk-border-color;
+
+$brand-info: $vk-static-bg-color;
+$btn-info-color: $text-color;
+$btn-default-bg: $vk-static-bg-color;
+$btn-default-color: $vk-button-default-color;
+$btn-default-bg: $vk-button-default-bg-color;
+$btn-default-border: $btn-default-bg;
+$btn-primary-color: $vk-button-primary-color;
+$btn-primary-bg: $vk-button-primary-bg-color;
+$btn-primary-border: $btn-primary-bg;
+$btn-success-color: $vk-button-success-color;
+$btn-success-bg: $vk-button-success-bg-color;
+$btn-success-border: $btn-success-bg;
+$btn-info-color: $vk-button-info-color;
+$btn-info-bg: $vk-button-info-bg-color;
+$btn-info-border: $btn-info-bg;
+$btn-warning-color: $vk-button-warning-color;
+$btn-warning-bg: $vk-button-warning-bg-color;
+$btn-warning-border: $btn-warning-bg;
+$btn-danger-color: $vk-button-danger-color;
+$btn-danger-bg:  $vk-button-danger-bg-color;
+$btn-danger-border: $btn-danger-bg;
+
+$modal-inner-padding: $vk-modal-padding;
+$modal-content-border-color: $vk-border-color;
+$modal-backdrop-bg: lighten($vk-modal-header-bg-color, 3%);
+$modal-backdrop-opacity: .75;
+$modal-header-border-color: $vk-border-color;
+$modal-footer-border-color: $modal-header-border-color;
+$modal-lg: 550px;
+$modal-md: 550px;
+$modal-sm: 300px;
+
+$navbar-margin-top: 0;
+$navbar-default-border: $vk-transparent-color;
+$navbar-default-bg: $vk-static-bg-color;
+$navbar-default-color: $vk-navbar-color;
+
+$navbar-border-radius: $vk-navbar-border-radius;
+$navbar-default-link-color: $navbar-default-color;
+$navbar-default-link-active-bg: $navbar-default-bg;
+$navbar-default-link-active-color: $brand-primary;
+$navbar-default-link-hover-bg: $vk-static-bg-color;
+$navbar-default-link-hover-color: $vk-brand-primary-color;
+
+$navbar-padding-vertical: 7px;
+$navbar-height: 68px;
+
+$nav-link-hover-bg: $vk-static-bg-color;
+$nav-tabs-active-link-hover-color: $brand-primary;
+$nav-tabs-border-color: $vk-brand-primary-color;
+$nav-tabs-active-link-hover-border-color: $nav-tabs-border-color;
+
+$progress-bg: $vk-progress-bg-color;
+$progress-bar-bg: $vk-progress-stripe-bg-color;
+
+$border-radius-base: $vk-border-radius;
+$border-radius-large: $vk-border-large-radius;
+$border-radius-small: $vk-border-small-radius;
+$input-border-radius: $vk-input-border-radius;
+$input-border-radius-large: $vk-input-border-large-radius;
+$input-border-radius-small: $vk-input-border-small-radius;
+$alert-border-radius: $vk-alert-border-radius;
+$progress-border-radius: $vk-progress-border-radius;
+$nav-pills-border-radius: $vk-navpills-border-radius;

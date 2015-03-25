@@ -29,7 +29,7 @@
       .key State:
       .value-field.power-state.bigger(data-running="{{machine.status.running}}")
         span
-          i(class="icon fa fa-{{machine.status.icon}}")
+          i.power-state-icon(class="icon fa fa-{{machine.status.icon}}")
           span.status 
             | {{machine.status.name}}
 

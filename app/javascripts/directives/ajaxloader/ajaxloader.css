@@ -13,18 +13,10 @@
   animation:spin 0.77s ease infinite;
 }
 
-.ajaxloader-circle path {
-  fill: #9e8697;
-}
-
 .ajaxloader-circle-1 {
   -webkit-animation-delay: 0.1s;
   -moz-animation-delay: 0.1s;
   animation-delay: 0.1s;
-}
-
-.ajaxloader-circle-1 path {
-  fill: #6e5667;
 }
 
 .ajaxloader-circle-2 {

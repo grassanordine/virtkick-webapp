@@ -6,27 +6,42 @@
   &:hover, &.active {
     @include transition(background-color, 0.15s, ease-in, 0s);
   }
-  
-  &.btn-primary {
-    border: 0 !important; 
-  }
-
-  &.btn-default {
-    border: 0 !important; 
-  }
 }
 
 .btn.btn-lg {
-  @include button-size(20px, 35px, 17px, 17px, 4px);
+  @include button-size(20px, 35px, 17px, 17px, $vk-button-border-radius);
 }
 
-.btn.btn-danger {
-  color: $vk-button-danger-color;
-  background-color: $vk-button-danger-bg-color;
-  border-color: $vk-button-danger-border-color;
+.btn.disabled {
+  opacity: $vk-button-disabled-opacity;
 
-  &:hover, &:active, &:focus, &.active {
-    background-color: $vk-button-danger-hover-bg-color !important;
-    border-color: $vk-button-danger-hover-border-color !important;
+  &.btn-primary {
+    border-color: $vk-button-primary-disabled-bg-color;
+    background-color: $vk-button-primary-disabled-bg-color;
+  }
+
+  &.btn-default {
+    border-color: $vk-button-default-disabled-bg-color;
+    background-color: $vk-button-default-disabled-bg-color;
+  }
+
+  &.btn-danger {
+    border-color: $vk-button-danger-disabled-bg-color;
+    background-color: $vk-button-danger-disabled-bg-color;
+  }
+
+  &.btn-info {
+    border-color: $vk-button-info-disabled-bg-color;
+    background-color: $vk-button-info-disabled-bg-color;
+  }
+
+  &.btn-warning {
+    border-color: $vk-button-warning-disabled-bg-color;
+    background-color: $vk-button-warning-disabled-bg-color;
+  }
+
+  &.btn-success {
+    border-color: $vk-button-success-disabled-bg-color;
+    background-color: $vk-button-success-disabled-bg-color;
   }
 }

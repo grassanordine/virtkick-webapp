@@ -63,6 +63,15 @@ input.wide {
   }
 }
 
+.form-group .help-block {
+  display: none;
+}
+
+.form-group.has-error .help-block {
+  color: $vk-input-error-color;
+  display: block;
+}
+
 ::-webkit-input-placeholder { 
   color: $vk-input-placeholder-color !important;
 }

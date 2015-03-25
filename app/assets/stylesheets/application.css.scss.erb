@@ -1,5 +1,6 @@
 @import 'theme';
 @import 'mixins';
+@import 'bootstrap-variables';
 @import 'bootstrap-customize';
 @import 'bootstrap';
 @import 'bootstrap/bootstrap-alert';
@@ -35,6 +36,22 @@ display: none !important;
       border-bottom: solid 1px !important;
       text-decoration: none;
     }
+  }
+}
+
+i.power-state-icon {
+  margin-right: 7px;
+  &.fa-play {
+    color: $vk-action-run-color;
+  }
+  &.fa-pause {
+    color: $vk-action-pause-color;
+  }
+  &.fa-repeat { 
+    color: $vk-action-restart-color;
+  }
+  &.fa-stop {
+    color: $vk-action-stop-color;
   }
 }
 
@@ -429,12 +446,17 @@ html {
   overflow-y: scroll;
 }
 
-.form-group .help-block {
-  display: none;
+.no-side-padding {
+  padding-left: 0px;
+  padding-right: 0px;
+} 
+
+.no-right-padding {
+  padding-right: 0px;
 }
 
-.form-group.has-error .help-block {
-  display: block;
+.no-left-padding {
+  padding-left: 0px;
 }
 
 .no-transition {

@@ -139,18 +139,17 @@
   }
 
   .btn.chooser {
-    border-radius: $vk-setup-button-border-radius;
     padding: 1.1em;
     line-height: 1.5em;
     width: 4.5em;
     box-shadow: none !important;
-    background-color: $vk-setup-button-bg-color;
-    color: $vk-setup-button-color;
-    border-color: $vk-setup-button-border-color;
     box-sizing: border-box;
-    border-bottom: solid 1px $vk-setup-button-border-color;
+    color: $vk-setup-button-color;
+    background-color: $vk-setup-button-bg-color;
+    border-radius: $vk-setup-button-border-radius;
+    border-color: $vk-setup-button-border-color;
+    border-bottom-color: $vk-setup-button-border-color;
     @include transition(all, 0.25s, ease-in, 0s);
-
 
     .fa {
       font-size: 1.8em;
@@ -158,7 +157,12 @@
 
     &:hover, &:active, &.active {
       color: $vk-setup-button-active-color;
-      border-bottom: solid $vk-setup-button-border-stripe-active-radius $vk-setup-button-active-border-color;
+      background-color: $vk-setup-button-active-bg-color;
+      @if $vk-setup-button-border-bottom-active-size == 0px {
+        border-bottom: solid 1px $vk-setup-button-active-border-color;
+      } @else {
+        border-bottom: solid $vk-setup-button-border-bottom-active-size $vk-setup-button-active-border-color;
+      }
     }
   }
   .private-cloud-form {

@@ -14,6 +14,47 @@
       cursor: pointer;
       box-sizing: border-box;
       padding: 0.7em 0em; 
+      background-color: $vk-radio-bg-color;
+      border-radius: $vk-radio-border-radius;
+      border: solid 1px $vk-radio-border-color;
+      @if $vk-radio-border-bottom-size == 0px {
+        border-bottom: solid 1px $vk-radio-stripe-bg-color;
+      } @else {
+        border-bottom: solid $vk-radio-border-bottom-size $vk-radio-stripe-bg-color;
+      }
+      @include box-shadow(none !important);
+      @include transition(all, 0.25s, ease-in, 0s);
+      
+      &:hover, &:active, &.active {
+        @if $vk-radio-border-bottom-size == 0px {
+          border-bottom: solid 1px $vk-radio-active-stripe-bg-color;
+        } @else {
+          border-bottom: solid $vk-radio-border-bottom-size $vk-radio-active-stripe-bg-color;
+        }
+      }
+
+      &.active {
+        color: $vk-radio-active-color;
+        background-color: $vk-radio-active-bg-color;
+      }
+
+      .line {
+        padding-left: 1em;
+        padding-right: 1em;
+        font-size: 0.9em;
+        margin: 0;
+      }
+
+      .strong {
+        font-weight: bold;
+        font-size: 1.0em;
+      }
+    }
+    /*
+    label {
+      cursor: pointer;
+      box-sizing: border-box;
+      padding: 0.7em 0em; 
       border-radius: $vk-radio-border-radius;
       background-color: $vk-radio-bg-color;
       border: solid 1px $vk-input-border-color;
@@ -41,5 +82,6 @@
         font-size: 1.0em;
       }
     }
+    */
   }
 }
