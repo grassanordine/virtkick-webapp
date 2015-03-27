@@ -1,5 +1,6 @@
 class Setting < ActiveRecord::Base
   def self.get name
+    name = name.to_s
     if Rails.env.development? or Rails.env.test?
       find_by_key(name) || ENV['VIRTKICK_' + name.upcase]
     else
