@@ -33,8 +33,9 @@ class MachineCreateJob < TrackableJob
           finished: true,
           current_step: nil
       run_hook :post_create_machine, machine.id, hook_results
-    end
 
+      MachineActionJob.perform_later user, machine.id, 'start'
+    end
     CountDeploymentJob.track CountDeploymentJob::FIRST_VM_CREATE_SUCCESS
   end
 

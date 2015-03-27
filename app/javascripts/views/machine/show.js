@@ -15,6 +15,7 @@ define(function(require) {
       'ngRoute',
       require('angular-ui-router'),
       require('./console'),
+      require('angular-noVNC'),
       require('directives/distroselect/distroselect'),
       require('directives/ajaxloader/ajaxloader'),
       require('directives/long-run-button/directive')
@@ -128,11 +129,6 @@ define(function(require) {
     $scope.$on('$stateChangeSuccess', function(state, toState) {
       if(toState.name == 'user.machines.show') {
         $state.go('user.machines.show.power');
-      }
-      if(toState.name == 'user.machines.show.console') {
-        $scope.app.menuCollapse = true;
-      } else {
-        $scope.app.menuCollapse = false;
       }
     });
 

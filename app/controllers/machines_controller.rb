@@ -10,11 +10,7 @@ class MachinesController < ApiController
   find_machine_before_action :id, except: [:index, :create]
 
   def index
-    respond_to do |format|
-      format.json {
-        render json: {machines: current_user.machines}
-      }
-    end
+    render json: {machines: current_user.machines}
   end
 
   def validate

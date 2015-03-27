@@ -75,13 +75,13 @@ define(function(require) {
     };
 
     $scope.gotoMachine = function() {
-      $state.go('user.machines.show', {
+      $state.go('user.machines.show.console', {
         machineId: $scope.newMachine.id
       });
     };
 
     $scope.createMachine = function() {
-
+      $scope.newMachine.error = null;
       return $hook('createMachine').then(function() {
         return machineService.createMachine({
           hostname: $scope.newMachine.hostname,

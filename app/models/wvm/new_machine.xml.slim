@@ -67,7 +67,7 @@ domain type='kvm'
     - vnc_ip=(machine.vnc_listen_ip == 'localhost' ? '127.0.0.1' : machine.vnc_listen_ip)
     graphics type='vnc' listen=vnc_ip autoport='yes' passwd=machine.vnc_password
     video
-      model heads='1' type='cirrus' vram='9216'
+      model heads='1' type='cirrus' vram='4096'
       address bus='0x00' domain='0x0000' function='0x0' slot='0x02' type='pci'
     memballoon model='virtio'
       address bus='0x00' domain='0x0000' function='0x0' slot='0x05' type='pci'
