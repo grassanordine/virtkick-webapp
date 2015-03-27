@@ -2,7 +2,7 @@ class Mode
   MODES = %w(localhost demo private_cloud vps_provider)
 
   def self.get
-    mode = Setting.find_by_key :mode
+    mode = Setting.get :mode
     mode ? ActiveSupport::StringInquirer.new(mode) : nil
   end
 
@@ -14,6 +14,6 @@ class Mode
   end
 
   def self.none?
-    Setting.find_by_key(:mode).nil?
+    Setting.get(:mode).nil?
   end
 end

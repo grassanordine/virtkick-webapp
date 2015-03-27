@@ -18,8 +18,12 @@ module VirtkickWebapp
 
     ENV['PATH'] = "#{Rails.root.join('bin')}:#{ENV['PATH']}"
     Virtkick.engines.each do |gemspec_file|
-      dir_name = Rails.root.join File.dirname(gemspec_file), 'bin'
-      ENV['PATH'] = "#{dir_name}:#{ENV['PATH']}"
+      engine_dir = File.dirname gemspec_file
+
+      bin_dir = Rails.root.join engine_dir, 'bin'
+      ENV['PATH'] = "#{bin_dir}:#{ENV['PATH']}"
+
+      config.autoload_paths += ["#{config.root}/#{engine_dir}/lib"]
     end
 
     config.active_record.raise_in_transactional_callbacks = true
@@ -72,6 +76,5 @@ module VirtkickWebapp
         CountDeploymentJob.track CountDeploymentJob::APP_START_SUCCESS
       end
     end
-
   end
 end
