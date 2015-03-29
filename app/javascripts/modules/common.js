@@ -18,6 +18,7 @@ define(function(require) {
     require('modules/hook'),
     'ct.ui.router.extras.sticky',
     'ct.ui.router.extras.future',
+    require('angular-elif'),
     require('angular-ui-router'),
     require('modules/helpers'),
     require('modules/connectionError')

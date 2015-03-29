@@ -45,6 +45,10 @@ define(function(require) {
     app.controller('AppCtrl', function($scope, $state, $rootScope, $hook, virtkickMode) {
       $scope.$state = $state;
 
+      $scope.reload = function() {
+        $state.go($state.current.name, {}, {reload: true});
+      };
+
       $scope.primaryState = '';
 
       $rootScope.$on('$stateChangeStart',

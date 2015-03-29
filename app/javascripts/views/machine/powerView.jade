@@ -12,7 +12,7 @@
       .progress
         .progress-bar(role='progressbar', style="width: {{(100*machine.cpuUsage).toFixed(2)}}%; min-width: 1%")
           span.sr-only
-            | {{machine.processor_usage}}
+            | {{machine.cpuUsage}}
             | % usage
     .col-sm-3
       .key Storage:
@@ -37,7 +37,7 @@
 
   .controls
     .btn-group
-      a.btn.btn-default(ng-click="doAction('start')" ng-class="{disabled: !canDo.start}")
+      a.btn.btn-default(ng-click="machine.start()" ng-class="{disabled: !canDo.start}")
         // TODO: move it to stylesheet (and other below as well)
         div(style='width: 22px; display:inline-block;')
           span(ng-if="!requesting.start")
@@ -45,48 +45,50 @@
           span(ng-if="requesting.start")
             ajaxloader(size=16)
         span.status Start
-      a.btn.btn-default(ng-click="doAction('pause')" ng-class="{disabled: !canDo.pause}")
+      a.btn.btn-default(ng-click="machine.pause()" ng-class="{disabled: !canDo.pause}")
         div(style='width: 22px; display:inline-block;')
           span(ng-if="!requesting.pause")
             i.icon.fa.fa-pause
           span(ng-if="requesting.pause")
             ajaxloader(size=16)
         span.status Pause
-      a.btn.btn-default(ng-click="doAction('resume')" ng-class="{disabled: !canDo.resume}")
+      a.btn.btn-default(ng-click="machine.resume()" ng-class="{disabled: !canDo.resume}")
         div(style='width: 22px; display:inline-block;')
           span(ng-if="!requesting.resume")
             i.icon.fa.fa-forward
           span(ng-if="requesting.resume")
             ajaxloader(size=16)
         span.status Resume
-      a.btn.btn-default(ng-click="doAction('stop')" ng-class="{disabled: !canDo.stop}")
+      a.btn.btn-default(ng-click="machine.stop()" ng-class="{disabled: !canDo.stop}")
         div(style='width: 22px; display:inline-block;')
-          span(ng-if="!requesting.stop")
+          span(ng-if="!requesting.stop && !requesting.forceStop")
             i.icon.fa.fa-stop
-          span(ng-if="requesting.stop")
+          span(ng-if="requesting.stop || requesting.forceStop")
             ajaxloader(size=16)
         span.status Stop
       .btn-group(dropdown)
-        button.only-on.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', ng-class="{disabled: !canDo.force_stop}")
+        button.only-on.btn.btn-default.dropdown-toggle(type='button' data-toggle='dropdown' ng-class="{disabled: !canDo.forceStop}" ng-disabled='!canDo.stop')
           i.fa.fa-caret-down
         ul.dropdown-menu
           li(role="presentation")
-            a(role="menuitem" ng-click="doAction('force_stop')")
+            a(role="menuitem" action="doAction('forceStop')" title='Hard stop' confirm='Are you sure? This may cause data loss.')
               span.icon.fa.fa-power-off
               span.status Hard stop
-      a.btn.btn-default(ng-click="doAction('restart')", ng-class="{disabled: !canDo.restart}")
-        i.icon.fa.fa-repeat
+      a.btn.btn-default(ng-class="{disabled: !canDo.restart}" title='Restart' confirm='Are you sure? This may cause data loss.' action="machine.forceRestart()")
+        div(style='width: 22px; display:inline-block;')
+          span(ng-if="!requesting.forceRestart")
+            i.icon.fa.fa-power-off
+          span(ng-if="requesting.forceRestart")
+            ajaxloader(size=16)
         span.status Restart
-      .btn-group(dropdown)
-        button.only-on.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', ng-class="{disabled: !canDo.force_restart}")
-          i.fa.fa-caret-down
-        ul.dropdown-menu
-          li(role="presentation")
-            a(role="menuitem" ng-click="doAction('force_restart')")
-              span.icon.fa.fa-power-off
-              span.status Hard reset
-
-
   div.alert.alert-danger(ng-show='machine.error')
     button.close(data-dismiss="alert" ng-click='machine.error = null') ×
     | {{machine.error}}
+  div.alert.alert-warning(ng-show='machine.didNotStop')
+    | Machine did not react to stop request. It may be either taking longer to stop or does not react.
+    br
+    | Go to&nbsp;
+    a(ui-sref='^.console') console&nbsp;
+    | to see what's going on or&nbsp;
+    a(title='Force restart' confirm='Are you sure? This may cause data loss.' action="machine.forceRestart()") force restart&nbsp;
+    | the machine.

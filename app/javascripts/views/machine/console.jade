@@ -2,7 +2,15 @@
   .overlay
     .overlay-bg
     .state
-      div(ng-if='state.status.id == "stopped"')
+      div(ng-if='state.requesting.start || state.requesting.forceRestart')
+        .btn.btn-primary.symbol(disabled=1)
+          preloader(started,size=70)
+        .description
+          p(ng-if='state.requesting.start')
+            | Machine is starting.
+          p(ng-if='state.requesting.forceRestart')
+            | Machine is restarting.
+      div(ng-else-if='state.status.id == "stopped"')
         .btn.btn-primary.symbol(ng-click="state.start()",ng-disabled='state.requesting.start')
           div(ng-if='!state.requesting.start')
             .icon.fa.fa-play
@@ -11,7 +19,7 @@
         .description
           p
             | Machine is stopped.
-      div(ng-if='state.status.id == "suspended"')
+      div(ng-else-if='state.status.id == "suspended"')
         .btn.btn-primary.symbol(ng-click="state.resume()")
           div(ng-if='!state.requesting.resume')
             .icon.fa.fa-play

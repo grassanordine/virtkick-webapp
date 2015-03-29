@@ -131,7 +131,7 @@ class Wvm::Machine < Wvm::Base
   end
 
   def self.operation operation, id, hypervisor
-    call :post, "/#{hypervisor[:wvm_id]}/instances", operation => '', name: id
+    call :post, "/#{hypervisor[:wvm_id]}/instance/#{id}", operation => ''
   end
 
   def self.determine_status response

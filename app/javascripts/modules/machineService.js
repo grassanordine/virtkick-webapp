@@ -115,6 +115,7 @@ define(function(require) {
         }).catch(extractErrorMessage);
       },
       doAction: function(machineId, action) {
+        action = humps.decamelize(action);
         return $http.post('/api/machines/' + machineId + '/' + action).then(function(res) {
           return handleProgress(res.data.progress_id);
         }).catch(extractErrorMessage).finally(cleanCache);

@@ -12,7 +12,7 @@ class Wvm::Base
 
   include HTTParty
   base_uri 'http://0.0.0.0:8000/'
-  default_timeout 15
+  default_timeout 20
 
   def as_json config = {}
     self.instance_values.as_json config

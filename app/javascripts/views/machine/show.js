@@ -21,6 +21,7 @@ define(function(require) {
       require('directives/long-run-button/directive')
     ]
   );
+  var moment = require('moment');
 
 
   app.controller('PowerCtrl', function($scope) {
@@ -179,11 +180,16 @@ define(function(require) {
       return machineService.forceRestart($scope.machine.id);
     };
 
-    $scope.doAction = function(name) {
+    $scope.doAction = function(name, ensureStatus) {
       $scope.requesting[name] = true;
       $scope.machine.erorr = null;
       return machineService.doAction($scope.machine.id, name)
-          .then(updateState).catch(showAndRethrow)
+          .then(function() {
+            if(ensureStatus) {
+              return ensureStatus();
+            }
+          })
+          .catch(showAndRethrow)
         .finally(function() {
           $scope.requesting[name] = false;
       });
@@ -200,40 +206,81 @@ define(function(require) {
       return $scope.doAction('start');
     };
     $scope.machine.stop = function() {
-      return $scope.doAction('stop');
+      return $scope.doAction('stop', function() {
+        var started = (new Date()).getTime();
+        function recheck() {
+          if((new Date()).getTime() - started > 10000) {
+            $scope.machine.didNotStop = true;
+            return;
+          }
+
+          if (!$scope.machine.status.running || !$scope.requesting.stop) {
+            return;
+          }
+          return $timeout(function() {}, 500).then(recheck);
+        }
+        return recheck();
+      });
     };
     $scope.machine.forceStop = function() {
-      return $scope.doAction('force_stop');
+      return $scope.doAction('forceStop');
     };
     $scope.machine.forceRestart = function() {
-      return $scope.doAction('force_restart');
+      return $scope.doAction('forceRestart', function() {
+        function recheck() {
+          if ($scope.machine.status.running) {
+            return;
+          }
+          return $timeout(function() {}, 500).then(recheck);
+        }
+        return recheck();
+      });
     };
 
     $scope.console = {}; // will be bound by directive
 
+    $scope.$watch('machine.status.id', function() {
+      $scope.machine.didNotStop = false;
+    });
+
     $scope.$watch(function() {
 
-      if($scope.machine.status.id === 'stopped') {
-        $scope.canDo = {
-          start: !$scope.requesting.start, pause: false, resume: false, stop: false, restart: false, force_restart: false, force_stop: false
-        };
+      var requesting = false;
+      for(key in $scope.requesting) {
+        if($scope.requesting[key]) {
+          requesting = true;
+        }
       }
-      else {
+
+      if(requesting) {
+        $scope.canDo = {
+          start: false,
+          pause: false,
+          resume: false,
+          stop: false,
+          restart: false,
+          forceRestart: false,
+          forceStop: false
+        };
+      } else if($scope.machine.status.id === 'stopped') {
+        $scope.canDo = {
+          start: !$scope.requesting.start, pause: false, resume: false, stop: false, restart: false, forceRestart: false, forceStop: false
+        };
+      }  else {
         $scope.canDo = {
           start: false,
           pause: $scope.machine.status.running,
           resume: !$scope.machine.status.running,
           stop: $scope.machine.status.running,
           restart: $scope.machine.status.running && !$scope.requesting.restart,
-          force_restart:true,
-          force_stop: true
+          forceRestart:true,
+          forceStop: true
         };
       }
 
     });
 
     $scope.requesting = {};
-
     $scope.machine.requesting = $scope.requesting;
 
     $scope.canDo = {};
@@ -252,7 +299,6 @@ define(function(require) {
       if(lastPromise) {
         return lastPromise;
       }
-
       lastPromise = machineService.get($scope.machine.id).then(function(machineData) {
         if(abortRequest)
           return;
@@ -276,16 +322,16 @@ define(function(require) {
         $scope.machine.stateDisconnected = false;
 
         // prevent live updates from changing this until the process ended
-        if(!skipIsoUpdate) {
+        if(!skipIsoUpdate && !$scope.requesting.changeIso) {
           updateSelectedIso();
         }
 
         timeoutHandler = $timeout(updateState, 1000);
       }, function(err) {
-        if(err && err.status === 0) {
+        if(err && (err.status === 0 || err.status === 500)) {
           throw err;
         }
-        // make a better message
+        // go to machine index if there is error with this machine
         $state.go('user.machines.index');
 
         $scope.machine.stateDisconnected = true;

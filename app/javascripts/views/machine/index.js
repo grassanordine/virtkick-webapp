@@ -47,10 +47,13 @@ define(function(require) {
 
     $timeout(function() {
       machineService.index().then(function(data) {
+        $scope.state.error = null;
         if(abortRequest) return;
 
         angular.extend($scope, data);
         $scope.state.loading = false;
+      }).catch(function(err) {
+        $scope.state.error = err;
       });
     }, 0);
 

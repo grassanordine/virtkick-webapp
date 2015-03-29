@@ -111,7 +111,7 @@
         }
       }
 
-      &.paused, &.stopped {
+      &.paused, &.stopped, &.starting {
         .canvas-wrapper .overlay {
           visibility: visible;
           opacity: 1;

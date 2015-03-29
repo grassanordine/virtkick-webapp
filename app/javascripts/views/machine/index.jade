@@ -5,7 +5,7 @@
         p
           i.oi.oi-monitor
           | Machines
-        p.value-field.ng-cloak(ng-if='!state.loading')
+        p.value-field(ng-if='!state.loading')
           | {{machines.length}}
         p.value-field(ng-if='state.loading')
           | &nbsp;
@@ -13,7 +13,7 @@
         p
           i.oi.oi-puzzle-piece
           | Memory
-        p.value-field.ng-cloak(ng-if='!state.loading')
+        p.value-field(ng-if='!state.loading')
           | {{machines | map: 'memory' | sum | bytes: 'mb'}}
         p.value-field(ng-if='state.loading')
           | &nbsp;
@@ -21,7 +21,7 @@
         p
           i.fa.fa-database
           | Storage
-        p.value-field.ng-cloak(ng-if='!state.loading')
+        p.value-field(ng-if='!state.loading')
           | {{machines | map: 'disks' | flatten | map: 'size' | sum | bytes}}
         p.value-field(ng-if='state.loading')
           | &nbsp;
@@ -32,7 +32,7 @@
         p.value-field
           | free
 
-  div.ng-cloak(ng-if='machines.length')
+  div(ng-if='machines.length')
     table.table.table-striped
       thead
         tr
@@ -49,10 +49,14 @@
             | {{machine.memory | bytes: 'mb'}}
           td.storage
             | {{machine.disks | map: 'size' | sum | bytes}}
-  div.ng-cloak(ng-if='!machines.length && !state.loading')
+  div(ng-if='!machines.length && !state.loading')
     p You don't have a machine yet. Kick things off and <a href="/machines/new">create one!</a>
-  div.ng-cloak(ng-if='state.loading')
+  div(ng-if='state.loading && !state.error')
     p
       ajaxloader(size=16 style='margin-right: 5px')
       | Wait a sec while we load all of your machines ...
+  p
+    div.alert.alert-danger(ng-if='state.error')
+      | {{state.error}}
+      a.btn.btn-default.btn-sm(ng-click='reload()') Retry
 
