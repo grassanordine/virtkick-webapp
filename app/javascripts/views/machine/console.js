@@ -4,10 +4,13 @@ define(function(require) {
   var $ = require('jquery');
   var RFB = require('novnc/rfb');
 
-  function controller($scope, $interval) {
+  function controller($scope, $interval, $location) {
     $scope.interface = {};
 
     $scope.display =  { height: 600, fitTo: 'height', fullScreen: false };
+
+    $scope.vncHost = $location.host();
+    $scope.vncPort = $location.port();
 
     $scope.ungrab = function() {
       $scope.interface.rfb.get_keyboard().set_focused(false)

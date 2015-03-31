@@ -28,4 +28,4 @@
         .description
           p
             | Machine paused.
-  vnc(host='localhost' port=3000 path='machines/{{state.id}}/vnc' is-connected='true' password='{{state.vncPassword}}' display="display" interface='interface')
+  vnc(host='{{vncHost}}' port='{{vncPort}}' path='machines/{{state.id}}/vnc' is-connected='true' password='{{state.vncPassword}}' display="display" interface='interface')
