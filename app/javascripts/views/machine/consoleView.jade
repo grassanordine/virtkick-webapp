@@ -1,6 +1,6 @@
 #page-console.text-center(ng-class="{focused: consoleFocused}")
   .console-window-wrapper
-    .console-window(ng-class="{focused: consoleFocused, paused: console.paused, stopped: machine.status.id == 'stopped', starting: requesting.start || requesting.forceRestart}")
+    .console-window(ng-class="{focused: consoleFocused, paused: console.paused, stopped: machine.status == 'stopped', starting: requesting.start || requesting.forceRestart}")
       .focus-indicator
       console(password="{{machine.vncPassword}}",uuid="{{machine.uuid}}",focused="consoleFocused",state="machine",control='console')
       .vm-actions
@@ -16,22 +16,22 @@
             | Reboot
           a.btn.btn-default.hardreset(title="Hard reset" confirm='Are you sure? This may cause data loss.' action="machine.forceRestart()")
             | Hard reset
-      .info-wrapper(ng-if="false")
-        .dashboard-inverse.network-setup
-          .info-row
-            label
-              | IP
-            .value-field
-              | 192.168.1.100
-          .info-row
-            label
-              | Gateway
-            .value-field
-              | 192.168.1.1
-          .info-row.mask
-            label
-              | Mask
-            .value-field
-              | 255.255.255.0
-            .value-field.mask-field
-              | /24
+      //.info-wrapper
+      //  .dashboard-inverse.network-setup
+      //    .row
+      //      .col-sm-12
+      //        .info-row
+      //          label
+      //            | IP:&nbsp;
+      //          .value-field
+      //            | 192.168.1.100
+      //          label
+      //            | Gateway:&nbsp;
+      //          .value-field
+      //            | 192.168.1.1
+      //          label
+      //            | Mask:&nbsp;
+      //          .value-field
+      //            | 255.255.255.0
+      //          .value-field.mask-field
+      //            | /24

@@ -14,6 +14,7 @@ class Infra::Machine < Infra::Base
   attr_accessor :hypervisor_id
   attr_accessor :mac_address
   attr_accessor :description
+  attr_accessor :public_ips
 
   def self.all hypervisor
     Wvm::Machine.all hypervisor
@@ -59,29 +60,5 @@ class Infra::Machine < Infra::Base
 
   def delete
     Wvm::Machine.delete self , Hypervisor.find(hypervisor_id)
-  end
-
-  class Status < ActiveHash::Base
-    # TODO: https://github.com/pluginaweek/state_machine
-
-    self.data = [
-        {id: :running, name: 'Running', running: true, icon: 'play'},
-        {id: :saved, name: 'Saved', running: false, icon: 'stop'},
-        {id: :suspended, name: 'Paused', running: false, icon: 'pause'},
-        {id: :stopped, name: 'Stopped', running: false, icon: 'stop'},
-        {id: :unknown, name: 'Unknown', running: nil, icon: 'question'}
-    ]
-
-    def stopped?
-      running === false
-    end
-
-    def running?
-      running
-    end
-
-    def to_s
-      name
-    end
   end
 end

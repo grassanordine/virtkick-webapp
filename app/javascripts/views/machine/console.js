@@ -7,7 +7,7 @@ define(function(require) {
   function controller($scope, $interval, $location) {
     $scope.interface = {};
 
-    $scope.display =  { height: 600, fitTo: 'height', fullScreen: false };
+    $scope.display =  { height: 605, fitTo: 'height', fullScreen: false };
 
     $scope.vncHost = $location.host();
     $scope.vncPort = $location.port();
@@ -28,7 +28,7 @@ define(function(require) {
 
     var reconnectTimeout = $interval(function() {
 
-      if($scope.state.status.id == 'running' &&
+      if($scope.state.status == 'running' &&
           $scope.interface.rfb_state == 'disconnected') {
         $scope.interface.connect()
       }

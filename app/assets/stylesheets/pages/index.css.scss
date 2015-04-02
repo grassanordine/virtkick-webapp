@@ -59,16 +59,16 @@
         margin-right: 9px;
       }
 
-      &.state-play a {
+      &.state-running a {
         color: $vk-action-run-color;
       }
-      &.state-pause a {
+      &.state-suspended a {
         color: $vk-action-pause-color;
       }
-      &.state-repeat a { 
+      &.state-restarting a {
         color: $vk-action-restart-color;
       }
-      &.state-stop a {
+      &.state-stopped a {
         color: $vk-action-stop-color;
       }
 

@@ -14,34 +14,47 @@ class MachinesController < ApiController
   end
 
   def validate
-    machine_params = NewMachine.check_params params
-    @machine = current_user.new_machines.build machine_params
+    machine_params = MetaMachine.check_params params
+    @machine = machine_from_params machine_params
 
     valid = @machine.valid?
     render json: {errors: valid ? [] : @machine.errors}
   end
 
   def create
-    machine_params = NewMachine.check_params params
-    @machine = current_user.new_machines.build machine_params
+    machine_params = MetaMachine.check_params params
+    @machine = machine_from_params machine_params
 
     return validate if params[:validate]
 
-    @machine.valid?
-
-    hypervisor = Hypervisor.find_best_hypervisor @machine.plan
-    hook_results = run_hook :pre_create_machine
-    if @machine.save
-      progress_id = MachineCreateJob.perform_later current_user, @machine.id, hypervisor.id, hook_results
-      render_progress progress_id, @machine.id
+    unless @machine.valid?
+      render_invalid @machine
       return
     end
 
-    new
+    hypervisor = Hypervisor.find_best_hypervisor @machine.plan
+    @machine.hypervisor = hypervisor
+    hook_results = run_hook :pre_create_machine
+    if @machine.save
+      render_progress MachineCreateJob.perform_later current_user, @machine.id, hook_results
+      return
+    end
+    render_invalid @machine
   end
 
   def show
-    machine = @meta_machine.machine.as_json.merge disk_types: @meta_machine.hypervisor.disk_types
+    machine = @meta_machine.machine.as_json.merge \
+      hostname: @meta_machine.hostname,
+      disk_types: @meta_machine.hypervisor.disk_types,
+      ips: @meta_machine.ips.map { |ip|
+        ip_pool = ip.ip_pool
+        network_address = IPAddress(ip_pool.network)
+        {
+          address: ip.ip,
+          gateway: ip_pool.gateway,
+          netmask: network_address.netmask + '/' + network_address.prefix.to_s
+        }
+      }
     render json: machine
   rescue ActiveRecord::RecordNotFound
     raise SafeException, 'Machine not found'
@@ -69,7 +82,7 @@ class MachinesController < ApiController
   end
 
   def state
-    render json: @machine.status.attributes
+    render json: @machine.status
   end
 
   def vnc
@@ -83,5 +96,18 @@ class MachinesController < ApiController
     else
       render json: {}, status: :precondition_failed
     end
+  end
+
+  private
+
+  def machine_from_params machine_params
+    current_user.meta_machines.build({
+       hostname: machine_params[:hostname],
+       plan_id: machine_params[:plan_id],
+       create_params: {
+         iso_distro_id: machine_params[:iso_distro_id],
+         iso_image_id: machine_params[:iso_image_id]
+       }
+     })
   end
 end

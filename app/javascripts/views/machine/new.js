@@ -89,14 +89,14 @@ define(function(require) {
           imageType: $scope.newMachine.imageType,
           isoId: $scope.newMachine.isoId
         });
-      }).then(function(machineId) {
-        $scope.newMachine.id = machineId
-      }, function(err) {
+      }).then(function(data) {
+        $scope.newMachine.id = data.machineId;
+      }).catch(function(err) {
         if(err === 'cancel' || err === 'backdrop click') {
           throw err;
         }
         // TODO: fix up error handling
-        if(err.data && err.data.message) {
+        if(err.data && (err.data.message || err.data.errors)) {
           err = err.data;
         }
         $scope.newMachine.error = err.message || err;

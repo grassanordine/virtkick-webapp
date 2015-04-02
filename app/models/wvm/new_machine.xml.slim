@@ -1,5 +1,5 @@
 domain type='kvm'
-  name = machine.hostname
+  name = libvirt_name
   uuid = machine.uuid
   / TODO: what if user changes email
   description = description
@@ -43,9 +43,10 @@ domain type='kvm'
     - elsif machine.network_type == 'bridge'
       interface type='bridge'
         mac address='#{machine.mac_address}'
-        source dev='br0' mode='bridge'
+        source bridge='br0' mode='bridge'
         filterref filter='clean-traffic'
-          parameter name='IP' value='150.107.224.1'
+          - for ip in machine.public_ips
+            parameter name='IP' value='#{ip}'
     - elsif machine.network_type == 'nat'
       interface type='network'
         - network = machine.networks.public

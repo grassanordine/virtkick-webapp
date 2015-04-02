@@ -61,16 +61,21 @@ class Wvm::Machine < Wvm::Base
     machine = build_new_machine new_machine, hypervisor, description
 
     template = File.dirname(__FILE__) + '/new_machine.xml.slim'
+
+    libvirt_name = "#{new_machine.user.id}_#{new_machine.hostname}"
     xml = Slim::Template.new(template, format: :xhtml).render Object.new, {
         machine: machine,
         hypervisor: hypervisor,
-        description: description
+        description: description,
+        libvirt_name: libvirt_name
     }
+    new_machine.libvirt_machine_name = libvirt_name
+    new_machine.save!
 
     call :post, "/#{hypervisor[:wvm_id]}/create", create_xml: '',
         from_xml: xml
 
-    machine = Infra::Machine.find machine.hostname, hypervisor
+    machine = Infra::Machine.find libvirt_name, hypervisor
 
     machine.create_disk Infra::Disk.new \
         size: new_machine.plan.storage,
@@ -135,6 +140,7 @@ class Wvm::Machine < Wvm::Base
   end
 
   def self.determine_status response
+
     status = case response[:status]
       when 1
         :running
@@ -145,7 +151,7 @@ class Wvm::Machine < Wvm::Base
       else
         :unknown
     end
-    Infra::Machine::Status.find status
+    status
   end
 
   def self.build_all_instances response, hypervisor
@@ -178,8 +184,9 @@ class Wvm::Machine < Wvm::Base
         iso_distro_id: machine.iso_distro.id,
         iso_image_id: machine.iso_distro.iso_images.first.id,
         mac_address: random_mac_address,
+        public_ips: machine.ips.pluck(:ip),
         networks: networks,
-        network_type: 'nat',
+        network_type: machine.ips.count > 0 ? 'bridge' : 'nat',
         vnc_listen_ip: hypervisor[:host],
         vnc_password: SecureRandom.urlsafe_base64(32),
         iso_dir: hypervisor[:iso][:path],

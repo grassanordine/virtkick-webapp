@@ -1,6 +1,6 @@
 class Ip < ActiveRecord::Base
   # belongs_to :machine # TODO
-  belongs_to :ip_range
+  belongs_to :ip_pool
   belongs_to :meta_machine
 
   scope :not_taken, -> {

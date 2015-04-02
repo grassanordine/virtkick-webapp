@@ -10,6 +10,7 @@ module FindMachine
           @meta_machine = current_user.meta_machines.find params[key]
           block.call
         rescue Exception => e
+          ExceptionLogger.log e
           raise SafeException, 'Cannot find machine with given id'
         end
       }, *options

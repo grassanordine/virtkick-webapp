@@ -6,7 +6,7 @@
         | {{machine.memory}} MB
     .col-sm-3
       .key Processors:
-      .value-field(ng-class="{bigger: machine.status.stopped}")
+      .value-field(ng-class="{bigger: machine.status === 'stopped'}")
         | {{machine.processors}}
         |  CPU
       .progress
@@ -27,13 +27,15 @@
             | %)
     .col-sm-3
       .key State:
-      .value-field.power-state.bigger(data-running="{{machine.status.running}}")
+      .value-field.power-state.bigger(data-running="{{machine.status === 'running'}}")
         span
-          i.power-state-icon(class="icon fa fa-{{machine.status.icon}}")
-          span.status 
-            | {{machine.status.name}}
-
-  //- = render partial: '/flash', locals: {section: 'power'}
+          i.power-state-icon(class="icon fa" ng-class='{"fa-play": machine.status == "running", "fa-stop": machine.status == "stopped", "fa-pause": machine.status == "suspended"}')
+          span.status(ng-switch='machine.status')
+            span(ng-switch-when='running') Running
+            span(ng-switch-when='suspended') Paused
+            span(ng-switch-when='stopped') Stopped
+            span(ng-switch-when='saved') Saved
+            span(ng-switch-default) Unknown
 
   .controls
     .btn-group

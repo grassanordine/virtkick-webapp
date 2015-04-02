@@ -17,7 +17,7 @@ define(function(require) {
           if(res.data.error) {
             throw res.data.error;
           }
-          return true;
+          return res.data.data;
         });
       }
       return $timeout(doQuery, 250);

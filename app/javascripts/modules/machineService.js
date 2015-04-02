@@ -11,8 +11,11 @@ define(function(require) {
     var cacheTime;
 
     function extractErrorMessage(response) {
-      if(response.data && response.data.error)
+      if(response.data && (response.data.error)) {
         throw response.data.error;
+      } else if(response.data) {
+        throw response.data;
+      }
       throw response;
     }
 
@@ -23,21 +26,6 @@ define(function(require) {
     function cleanCache() {
       cacheTime = undefined;
     }
-
-    var machineProgress =  function(progressId) {
-      function doQuery() {
-        return $http.get('/api/machine_progress/' + progressId).then(function(res) {
-          if (!res.data.finished) {
-            return $timeout(doQuery, 250);
-          }
-          if(res.data.error_message) {
-            throw new Error(res.data.error_message);
-          }
-          return res.data;
-        });
-      }
-      return $timeout(doQuery, 250);
-    };
 
     return {
       index: function(aborter) {
@@ -62,14 +50,8 @@ define(function(require) {
             image_type: data.imageType,
             iso_distro_id: data.isoId
           }
-        }).then(function(data) {
-          return machineProgress(data.data.data).then(function(data) {
-            cacheTime = undefined;
-            if(!data.given_meta_machine_id) {
-              throw Error("Couldn't create new machine");
-            }
-            return data.given_meta_machine_id;
-          });
+        }).then(function(res) {
+          return handleProgress(res.data.progress_id).then(humps.camelizeKeys);
         }).catch(extractErrorMessage).finally(cleanCache);
       },
       validateHostname: function(hostname) {

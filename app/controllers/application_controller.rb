@@ -74,10 +74,7 @@ class ApplicationController < ActionController::Base
     Bugsnag.notify_or_ignore e
     message = Rails.env.production? ? production_message : e.message
 
-    puts '^^== BEGIN EXCEPTION'
-    puts e.message
-    puts e.backtrace.map { |e| '    ' + e }.join "\n"
-    puts '__== END EXCEPTION'
+    ExceptionLogger.log e
     render json: {error: message}, status: status
   end
 

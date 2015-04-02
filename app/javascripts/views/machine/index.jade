@@ -41,8 +41,8 @@
           th.storage Storage
       tbody
         tr(ng-repeat="machine in machines | orderBy:'hostname'")
-          td(class="name state-{{machine.status.icon}}")
-            i.power-state-icon(class='icon fa fa-{{machine.status.icon}}')
+          td(class="name state-{{machine.status}}")
+            i.power-state-icon(class='icon fa' ng-class='{"fa-play": machine.status == "running", "fa-stop": machine.status == "stopped", "fa-pause": machine.status == "suspended"}')
             a(href="/machines/{{machine.id}}")
               | {{machine.hostname}}
           td.memory

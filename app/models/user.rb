@@ -5,7 +5,6 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :rememberable, :trackable, :registerable
 
   has_many :meta_machines, dependent: :destroy
-  has_many :new_machines, dependent: :destroy
   has_many :progresses, dependent: :destroy
 
   auto_strip_attributes :email
@@ -39,17 +38,32 @@ class User < ActiveRecord::Base
   def machines
     per_hypervisor_machines = {}
     id_to_machine = {}
-    meta_machines.not_deleted.each do |machine|
-      id_to_machine[machine.hostname] = machine.id
+    meta_machines.not_deleted.finished.each do |machine|
+      id_to_machine[machine.libvirt_machine_name] = machine
       per_hypervisor_machines[machine.hypervisor.wvm_id] ||= []
-      per_hypervisor_machines[machine.hypervisor.wvm_id].push machine.hostname
+      per_hypervisor_machines[machine.hypervisor.wvm_id].push machine.libvirt_machine_name
     end
 
     temporary_results = Wvm::Machine.status per_hypervisor_machines
-    temporary_results.each do |result|
-      result[:id] = id_to_machine[result[:hostname]]
+    temporary_results.map do |result|
+      machine = id_to_machine[result[:hostname]]
+      result[:id] = machine.id
+      {
+        id: result[:id],
+        status: result[:status],
+        hostname: machine.hostname,
+        memory: result[:memory],
+        processors: result[:processors],
+        disks: result[:disks].map {|disk|
+          {
+            used: disk.used,
+            size: disk.size,
+            type: disk.type,
+            device: disk.device
+          }
+        }
+      }
     end
-    temporary_results
   end
 
   def remember_me

@@ -101,7 +101,7 @@ define(function(require) {
     $scope.state = $state;
 
     $scope.app.header.title = initialMachineData.hostname;
-    $scope.app.header.icon = 'monitor';
+    $scope.app.header.icon = 'oi oi-monitor';
 
     $scope.machine = initialMachineData;
       // THIS is workaround for null value in rest endpoint
@@ -148,6 +148,7 @@ define(function(require) {
 
     $scope.machine.deletePermanently = function() {
       return machineService.deletePermanently($scope.machine.id)
+          .then($timeout(function() {}, 100))// TODO: this delay shouldn't be needed
           .then(function() {
             $state.go('user.machines.index');
           });
@@ -214,7 +215,7 @@ define(function(require) {
             return;
           }
 
-          if (!$scope.machine.status.running || !$scope.requesting.stop) {
+          if ($scope.machine.status !== 'running' || !$scope.requesting.stop) {
             return;
           }
           return $timeout(function() {}, 500).then(recheck);
@@ -228,7 +229,7 @@ define(function(require) {
     $scope.machine.forceRestart = function() {
       return $scope.doAction('forceRestart', function() {
         function recheck() {
-          if ($scope.machine.status.running) {
+          if ($scope.machine.status === 'running') {
             return;
           }
           return $timeout(function() {}, 500).then(recheck);
@@ -239,7 +240,7 @@ define(function(require) {
 
     $scope.console = {}; // will be bound by directive
 
-    $scope.$watch('machine.status.id', function() {
+    $scope.$watch('machine.status', function() {
       $scope.machine.didNotStop = false;
     });
 
@@ -262,17 +263,18 @@ define(function(require) {
           forceRestart: false,
           forceStop: false
         };
-      } else if($scope.machine.status.id === 'stopped') {
+      } else if($scope.machine.status === 'stopped') {
         $scope.canDo = {
           start: !$scope.requesting.start, pause: false, resume: false, stop: false, restart: false, forceRestart: false, forceStop: false
         };
       }  else {
+        var running = ($scope.machine.status === 'running');
         $scope.canDo = {
           start: false,
-          pause: $scope.machine.status.running,
-          resume: !$scope.machine.status.running,
-          stop: $scope.machine.status.running,
-          restart: $scope.machine.status.running && !$scope.requesting.restart,
+          pause: running,
+          resume: !running,
+          stop: running,
+          restart: running && !$scope.requesting.restart,
           forceRestart:true,
           forceStop: true
         };
@@ -317,7 +319,7 @@ define(function(require) {
 
         $scope.machine.cpuUsage = Math.min(1.0, usedMilis / maxMilis);
 
-        $scope.console.paused = machineData.status.id === 'suspended';
+        $scope.console.paused = machineData.status === 'suspended';
 
         $scope.machine.stateDisconnected = false;
 
