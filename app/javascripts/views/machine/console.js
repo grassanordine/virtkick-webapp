@@ -2,7 +2,6 @@ define(function(require) {
   var moduleId = require('module').id;
   var angular = require('angular');
   var $ = require('jquery');
-  var RFB = require('novnc/rfb');
 
   function controller($scope, $interval, $location) {
     $scope.interface = {};
