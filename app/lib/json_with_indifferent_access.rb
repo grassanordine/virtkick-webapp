@@ -13,5 +13,7 @@ class JsonWithIndifferentAccess
   def self.dump obj
     str = JSON.dump obj
     str
+  rescue Encoding::UndefinedConversionError => e
+    ''
   end
 end

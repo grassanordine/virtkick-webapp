@@ -78,8 +78,8 @@ class Wvm::Machine < Wvm::Base
     machine = Infra::Machine.find libvirt_name, hypervisor
 
     machine.create_disk Infra::Disk.new \
-        size: new_machine.plan.storage,
-        pool: new_machine.plan.storage_type
+        size: new_machine.plan.params[:storage],
+        pool: new_machine.plan.params[:storage_type]
 
     machine
   end
@@ -179,8 +179,8 @@ class Wvm::Machine < Wvm::Base
         uuid: uuid,
         description: description,
         hostname: machine.hostname,
-        memory: machine.plan.memory,
-        processors: machine.plan.cpu,
+        memory: machine.plan.params[:memory],
+        processors: machine.plan.params[:cpu],
         iso_distro_id: machine.iso_distro.id,
         iso_image_id: machine.iso_distro.iso_images.first.id,
         mac_address: random_mac_address,

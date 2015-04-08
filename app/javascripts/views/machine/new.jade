@@ -7,15 +7,15 @@
         .radio-elem.text-center(ng-repeat='plan in plans')
           label(ng-model='newMachine.planId' btn-radio="{{plan.id}}" ng-disabled='newMachine.creatingMachine')
             .line.strong
-              | {{plan.memory | bytes: 'gb'}}
+              | {{plan.params.memory | bytes: 'gb'}}
               |  RAM
             .line
-              | {{plan.storage | bytes }}
+              | {{plan.params.storage | bytes }}
               |  SSD
             .line
-              | {{plan.cpu}}
+              | {{plan.params.cpu}}
               |  CPU
-            .line
+            .line(ng-if='plan.price')
               | {{plan.price | currency: 'usd'}} / {{plan.period | payPeriod}}
           .paid(ng-if='plan.paidTo' title='Paid until {{plan.paidTo | date}}')
             img(src='/assets/paid.png' style='width: 100px;')
@@ -65,4 +65,3 @@
     div.alert.alert-danger(ng-if='newMachine.error')
       | {{newMachine.error}}
     include createMachineButton.jade
-

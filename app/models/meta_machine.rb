@@ -4,6 +4,7 @@ class MetaMachine < ActiveRecord::Base
   belongs_to :user
   belongs_to :hypervisor
   has_many :ips, dependent: :nullify
+  belongs_to :plan
 
   validates :hostname, presence: true, format: {with: /\A[a-zA-Z0-9\.]+\z/}
   # validates :hostname, uniqueness: { case_sensitive: false }
@@ -57,11 +58,6 @@ class MetaMachine < ActiveRecord::Base
     define_method operation do
       Wvm::Machine.send operation, libvirt_machine_name, hypervisor
     end
-  end
-
-
-  def plan
-    Defaults::MachinePlan.find plan_id if plan_id
   end
 
   def iso_distro

@@ -24,6 +24,6 @@ class SpaController < AfterSetupController
     @disk = Infra::Disk.new
     @iso_images = Plans::IsoImage.all
     @isos = Plans::IsoDistro.all
-    @plans ||= Defaults::MachinePlan.all
+    @plans ||= Plan.all.as_json
   end
 end

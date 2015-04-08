@@ -113,13 +113,11 @@ define(function(require) {
     });
 
     $scope.isoImages =  isoImagesData;
-
     $scope.diskTypes = initialMachineData.diskTypes;
 
     $scope.diskPlans = {};
 
     diskPlans.forEach(function(plan) {
-
       $scope.diskTypes.forEach(function(type) {
         if(!$scope.diskPlans[type.id])
          $scope.diskPlans[type.id] = [];

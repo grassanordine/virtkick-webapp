@@ -38,7 +38,6 @@ class SetupController < ApplicationController
   end
 
   private
-
   def redirect
     @@ready = true
     CountDeploymentJob.track CountDeploymentJob::SETUP_SUCCESS

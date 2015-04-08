@@ -12,10 +12,17 @@ module AfterSetupOnly
         return
       end
 
+      begin
+        Plan.bootstrap
+      rescue Exception => e
+        ExceptionLogger.log e
+      end
+
       ApplicationController.class_variable_set :@@ready, false
 
       begin
         SetupController.check
+
         ApplicationController.class_variable_set :@@ready, true
         if Virtkick.mode
           return

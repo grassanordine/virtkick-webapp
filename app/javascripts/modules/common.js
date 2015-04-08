@@ -21,7 +21,8 @@ define(function(require) {
     require('angular-elif'),
     require('angular-ui-router'),
     require('modules/helpers'),
-    require('modules/connectionError')
+    require('modules/connectionError'),
+    require('angular-bootstrap-checkbox')
   ];
 
 

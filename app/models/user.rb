@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   def machines
     per_hypervisor_machines = {}
     id_to_machine = {}
-    meta_machines.not_deleted.finished.each do |machine|
+    meta_machines.not_deleted.finished.includes(:plan).each do |machine|
       id_to_machine[machine.libvirt_machine_name] = machine
       per_hypervisor_machines[machine.hypervisor.wvm_id] ||= []
       per_hypervisor_machines[machine.hypervisor.wvm_id].push machine.libvirt_machine_name
@@ -49,6 +49,7 @@ class User < ActiveRecord::Base
       machine = id_to_machine[result[:hostname]]
       result[:id] = machine.id
       {
+        plan: machine.plan,
         id: result[:id],
         status: result[:status],
         hostname: machine.hostname,

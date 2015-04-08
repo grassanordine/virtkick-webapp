@@ -32,6 +32,7 @@ gem 'slim'
 gem 'uglifier', '>= 1.3.0'
 gem 'whenever', require: false
 gem 'hooks'
+gem 'justrun', '~> 1.0.0'
 
 # These require native extensions. Ensure Traveling Ruby provides an appropriate version before bumping.
 gem 'bcrypt', '3.1.9'

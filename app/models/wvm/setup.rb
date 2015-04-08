@@ -9,10 +9,8 @@ class Wvm::Setup < Wvm::Base
   def self.setup hypervisor
     handle_exceptions do
       id = create_connection_if_needed hypervisor
-
       hypervisor.wvm_id = id
       hypervisor.save
-
 
       networks = Array.wrap(hypervisor.network)
       networks.each do |network|
@@ -22,7 +20,6 @@ class Wvm::Setup < Wvm::Base
       all_storages(hypervisor).each do |storage|
         create_storage_if_needed hypervisor, storage
       end
-
       disk_types = Infra::DiskType.all(hypervisor).as_json
       hypervisor.disk_types = disk_types
       hypervisor.save

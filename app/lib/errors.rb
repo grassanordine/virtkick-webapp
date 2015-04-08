@@ -6,7 +6,9 @@ class Errors < StandardError
   end
 
   def message
-    if @errors.size == 0
+    if @errors.is_a? String
+      @errors.message
+    elsif @errors.size == 1
       @errors.first.to_s
     else
       @errors.map(&:to_s).to_s

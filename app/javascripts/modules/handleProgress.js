@@ -4,7 +4,7 @@ define(function(require) {
   var angular = require('angular');
   var mod = angular.module(module.id, []);
   mod.factory('handleProgress', function($http, $timeout, $q) {
-    return function(progressId) {
+    return function(progressId, cb) {
       if(progressId.data && progressId.data.progress_id) {
         progressId = progressId.data.progress_id;
       }
@@ -12,6 +12,7 @@ define(function(require) {
       function doQuery() {
         return $http.get('/api/progress/' + progressId).then(function(res) {
           if(!res.data.finished) {
+            if(cb) {cb(res.data.data)}
             return $timeout(doQuery, 250);
           }
           if(res.data.error) {
@@ -21,6 +22,14 @@ define(function(require) {
         });
       }
       return $timeout(doQuery, 250);
+    };
+  });
+
+  mod.factory('handleProgressWithUpdates', function(handleProgress) {
+    return function(cb) {
+      return function(progressId) {
+        return handleProgress(progressId, cb);
+      };
     };
   });
 

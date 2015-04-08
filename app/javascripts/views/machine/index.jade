@@ -29,7 +29,10 @@
         p
           i.oi.oi-credit-card
           | Monthly
-        p.value-field
+        p.value-field(ng-if='(machines | filter: {plan: {period: "monthly" } }).length')
+          | {{machines | filter: {plan: {period: "monthly" } } | map: 'plan.price' | sum | currency: 'usd' }}
+          //| free
+        p.value-field(ng-else)
           | free
 
   div(ng-if='machines.length')

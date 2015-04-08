@@ -9,7 +9,7 @@
       .value-field(ng-class="{bigger: machine.status === 'stopped'}")
         | {{machine.processors}}
         |  CPU
-      .progress
+      .progress(ng-if="machine.status !== 'stopped'")
         .progress-bar(role='progressbar', style="width: {{(100*machine.cpuUsage).toFixed(2)}}%; min-width: 1%")
           span.sr-only
             | {{machine.cpuUsage}}
